@@ -6,9 +6,9 @@ class CommentsController < ApplicationController
     end
     respond_to do |format|
       if defined? @comment and @comment.save
-        format.json { render json: {status: "created"}}
+        format.json { render json => {status: "created"}}
       else
-        format.json { render json: {status: "not_created"} }
+        format.json { render json => {status: "not_created"} }
       end
     end
   end

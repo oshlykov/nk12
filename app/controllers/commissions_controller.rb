@@ -6,7 +6,10 @@ class CommissionsController < ApplicationController
 
   def show
     @commission = Commission.find(params[:id])
-    render :layout => false
+    @election = @commission.election
+    if request.xhr?
+    else
+    end
   end
 
 end

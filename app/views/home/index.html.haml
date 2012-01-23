@@ -11,4 +11,4 @@
       - election.commissions.roots.each do |commission|
         %div.tree-root
           %h4
-            = link_to "#{commission.name}", :controller => "home", :action => "show", :id => commission.id  
+            = link_to "#{commission.name}", :controller => "commissions", :action => "show", :id => commission.id  

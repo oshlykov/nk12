@@ -139,8 +139,8 @@
 }
 
 .voting-table{
-	width:150px;
-	height:170px;
+//	width:150px;
+//	height:170px;
 	margin:5px;
 	padding:10px;
 	font-size: 12px;
@@ -164,9 +164,13 @@
 		z-index:5;
 		right:5px;
 	}
+	td{
+    	padding-right: 7px;
+		text-align: right;
+    }
 	.item_holder{
 		.item{
-			width:110px;
+			width:auto;
 			float:left;
 		}
 		.value{
