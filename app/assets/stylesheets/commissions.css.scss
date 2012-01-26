@@ -28,18 +28,32 @@
 	-webkit-transition: 0.10s ease-in;
 	-moz-transition: 0.10s ease-in;
 	
-	&:hover{
-		background :#ccc;
-		opacity: 1;	
-	}
+//	&:hover{
+//		background :#ccc;
+//		opacity: 1;	
+//	}
 	a{
 		color :#444;
 		text-decoration:none;
 		border-bottom: 1px dashed #444;
 	}
+
 }
+
+	a:hover{
+		color :#444;
+		text-decoration:none;
+	}
+
 .navigation-holder{
 	position: relative;
+	.uik-navigation{
+		position: relative;
+		z-index: 15;
+		font-size:1.2em;
+		color:#980905;
+		text-decoration:underline;
+	}
 	.show-navigation{
 		position: relative;
 		z-index: 15;

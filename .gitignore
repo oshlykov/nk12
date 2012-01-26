@@ -8,9 +8,10 @@
 # http://github.com/RailsApps/rails3-application-templates/issues
 #----------------------------------------------------------------------------
 
-# bundler state
-/.bundle
-/vendor/bundle/
+
+/public/uploads/
+nk12.sublime-workspace
+nk12.sublime-project
 
 # minimal Rails specific artifacts
 db/*.sqlite3
@@ -37,6 +38,7 @@ tmp/*
 /public/cache
 /public/stylesheets/compiled
 /public/system
+/public/uploads
 /spec/tmp/*
 /cache
 /capybara*

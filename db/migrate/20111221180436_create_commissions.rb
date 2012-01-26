@@ -4,36 +4,15 @@ class CreateCommissions < ActiveRecord::Migration
       t.string :name
       t.string :url
 
-      t.integer :poll
-      t.integer :received_by_commission
-      t.integer :voted_early
-      
-      t.integer :voted_in
-      t.integer :voted_out
-      t.integer :canceled_ballots
-      t.integer :mobile_ballots
-      t.integer :stationary_ballots
-      t.integer :invalid_ballots
-      t.integer :valid_ballots
-
-      t.integer :absentee_ballots_all
-      t.integer :absentee_ballots_given
-      t.integer :absentee_ballots_voted
-      t.integer :unused_absentee_ballots
-      t.integer :absentee_territorial
-      t.integer :lost_absentee_ballots
-      t.integer :ballots_not_taken
-      
-      t.integer :sr
-      t.integer :ldpr
-      t.integer :pr
-      t.integer :kprf
-      t.integer :yabloko
-      t.integer :er
-      t.integer :pd
-
-
       t.timestamps
+
+      t.string :ancestry
+      t.boolean :is_uik, :default => 0
+      t.integer :election_id
+      t.boolean :uik_holder, :default => 0
+      t.string :voting_table_url
+      t.boolean :votes_taken
     end
+    add_index :commissions, :ancestry
   end
 end

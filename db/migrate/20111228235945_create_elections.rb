@@ -3,9 +3,10 @@ class CreateElections < ActiveRecord::Migration
     create_table :elections do |t|
       t.string :name
       t.string :url
-      t.text :voting_names
 
       t.timestamps
+
+      t.text :voting_labels
     end
   end
 end

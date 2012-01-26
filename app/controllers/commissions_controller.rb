@@ -6,6 +6,9 @@ class CommissionsController < ApplicationController
 
   def show
     @commission = Commission.find(params[:id])
+    p = @commission.protocols
+    @iik = p.first
+    @checked_protocol = p[1] if p.count > 1
     @election = @commission.election
     if request.xhr?
     else

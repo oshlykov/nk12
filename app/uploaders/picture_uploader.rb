@@ -4,7 +4,7 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or ImageScience support:
   # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
   # include CarrierWave::ImageScience
 
   # Choose what kind of storage to use for this uploader:
@@ -15,6 +15,20 @@ class PictureUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+  end
+  
+  process :watermark => Rails.root.join("app","assets","images", "watermark.png")
+  
+  version :thumb do
+    process :resize_to_fit => [80, 80]
+  end
+  
+  def watermark(path_to_file)
+    manipulate! do |img|
+        logo = MiniMagick::Image.open(path_to_file)
+        logo.resize "#{img[:width]}x#{img[:height]}"
+        img = img.composite(logo, "jpg") {|c| c.gravity "Center"}
+    end
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:

@@ -2,8 +2,18 @@ Nkapp::Application.routes.draw do
 
   resources :comments
   
-  resources :commissions do
-    resources :protocols
+#  scope '(:elections)', :elections => /1|2/ do
+  
+
+  resources :commissions, :path => '/uik' do
+    resources :protocols do
+      resources :votings
+      resources :pictures, :only => [:create, :destroy]
+    end
+  end
+
+  resources :protocols do
+    resources :votings
   end
 
   resources :pictures, :only => [:index, :create]

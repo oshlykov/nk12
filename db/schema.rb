@@ -28,13 +28,10 @@ ActiveRecord::Schema.define(:version => 20111230194222) do
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "parent_id"
     t.string   "ancestry"
     t.boolean  "is_uik",           :default => false
     t.integer  "election_id"
     t.boolean  "uik_holder",       :default => false
-    t.string   "voting_table_url"
-    t.boolean  "votes_taken"
   end
 
   add_index "commissions", ["ancestry"], :name => "index_commissions_on_ancestry"
@@ -55,33 +52,9 @@ ActiveRecord::Schema.define(:version => 20111230194222) do
   end
 
   create_table "protocols", :force => true do |t|
-    t.integer  "poll"
-    t.integer  "received_by_commission"
-    t.integer  "voted_early"
-    t.integer  "voted_in"
-    t.integer  "voted_out"
-    t.integer  "canceled_ballots"
-    t.integer  "mobile_ballots"
-    t.integer  "stationary_ballots"
-    t.integer  "invalid_ballots"
-    t.integer  "valid_ballots"
-    t.integer  "absentee_ballots_all"
-    t.integer  "absentee_ballots_given"
-    t.integer  "absentee_ballots_voted"
-    t.integer  "unused_absentee_ballots"
-    t.integer  "absentee_territorial"
-    t.integer  "lost_absentee_ballots"
-    t.integer  "ballots_not_taken"
-    t.integer  "sr"
-    t.integer  "ldpr"
-    t.integer  "pr"
-    t.integer  "kprf"
-    t.integer  "yabloko"
-    t.integer  "er"
-    t.integer  "pd"
-    t.integer  "commission_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "commission_id"
   end
 
   create_table "users", :force => true do |t|
@@ -103,25 +76,15 @@ ActiveRecord::Schema.define(:version => 20111230194222) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
-  create_table "voting_dictionaries", :force => true do |t|
-    t.string   "name"
-    t.string   "en_name"
-    t.integer  "election_id"
-    t.integer  "source_identifier"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "main_role",         :default => false
-  end
-
   create_table "votings", :force => true do |t|
-    t.integer  "commission_id"
+    t.integer  "protocol_id"
     t.integer  "votes"
     t.integer  "voting_dictionary_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "votings", ["commission_id"], :name => "index_votings_on_commission_id"
+  add_index "votings", ["protocol_id"], :name => "index_votings_on_protocol_id"
   add_index "votings", ["voting_dictionary_id"], :name => "index_votings_on_voting_dictionary_id"
 
 end

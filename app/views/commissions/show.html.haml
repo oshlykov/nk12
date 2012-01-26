@@ -1,35 +1,78 @@
 -#    .item_holder
 - unless request.xhr?
   - if @commission.is_uik
+
+    %div.navigation-holder
+      %a.uik-navigation{:href => '/'}
+        = 'Регионы'
+      &nbsp;→&nbsp;
+      - @commission.ancestors.each do |c|
+        %a.uik-navigation{:href => commission_path(c.id)}
+          = c.name
+        &nbsp;→&nbsp;
     %h1
       = @commission.name
       %a.ico-link.sprite-link{:href=>@commission.url}
     %table
       %tr
-        - @commission.votings.each do |vote|
-          - if vote.main_role?
+        %td
+          ЦИК
+        - @iik.votings.each do |vote|
+          %td{"title"=>vote.name}
+            = vote.votes
+      %tr
+        - if @checked_protocol 
+          %td
+            КАРИК
+          - @checked_protocol.votings.each do |vote|
             %td{"title"=>vote.name}
               = vote.votes
+    %a{:href => new_commission_protocol_path(@commission.id)}
+      Загрузить протокол
+    %br
+    %br
+    %div#disqus_thread
+    %script(type="text/javascript")
+      - if ENV['RAILS_ENV'] == 'production'
+        var disqus_shortname = 'nk12'; // required: replace example with your forum shortname
+      - else
+        var disqus_shortname = 'example'; // required: replace example with your forum shortname
+      :plain
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
   - else
+
+    %div.navigation-holder
+      %a.uik-navigation{:href => '/'}
+        = 'Регионы'
+      &nbsp;→&nbsp;
+      - @commission.ancestors.each do |c|
+        %a.uik-navigation{:href => commission_path(c.id)}
+          = c.name
+        &nbsp;→&nbsp;
     %div.navigation-holder
       %a.show-navigation{:href=>"#"}
         = @commission.name
       = link_to "ЦИК", root_path  
       %div.tree-navigation
         %br
-    - @commission.subtree.each do |child|
-      - unless child.is_uik
-        %div.tree-node-holder{"id" => child.id, "class" => "depth-#{child.depth}"}
-          %div.node-name
-            %div.name
-              %h3{"id"=>child.id,"data-depth"=>child.depth}
-                = child.name
-                %a.ico-link.sprite-link{:href=>child.url}
-            .clearfix
-          - if child.uik_holder
-            %div.votings{"data-id"=>child.id, "data-loaded"=>"false", "data-url"=>"/uik/#{child.id}"}  
-              %div.loading
-                = image_tag('ajax-loader.gif')
+    - @commission.subtree.where(:is_uik => false).each do |child|
+      %div.tree-node-holder{"id" => child.id, "class" => "depth-#{child.depth}"}
+        %div.node-name
+          %div.name
+            %h3{"id"=>child.id,"data-depth"=>child.depth}
+              = child.name
+              %a.ico-link.sprite-link{:href=>child.url}
+          .clearfix
+        - if child.uik_holder
+          %div.votings{"data-id"=>child.id, "data-loaded"=>"false", "data-url"=>"/uik/#{child.id}"}  
+            %div.loading
+              = image_tag('ajax-loader.gif')
 - else
   %table.voting-table
     - @commission.children.each do |child|
@@ -37,7 +80,7 @@
         %td
           %a{:href => commission_path(child.id)}
             = child.name
-          - child.votings.each do |vote|
+          - child.protocols.first.votings.each do |vote|
             - if vote.main_role?
               %td{"title"=>vote.name}
                 = vote.votes

@@ -1,2 +1,25 @@
-= simple_form_for [@uik,@protocol] do |f|
-  = f.input :er, :label => "Единая Россия", :wrapper => :inline
+-#@protocol.votings.each do |v|
+-#= simple_form_for @protocol, :url => commission_protocol_path(@protocol.commission_id, 234) do |f|
+  -# @votings.each do |v|
+    -#= f.input , :label => 'asd', :wrapper => :inline
+
+  -#= f.association :company, :collection => Company.active.all(:order => 'name'), :prompt => "Choose a Company"
+
+-#  = f.button :submit
+%table
+  - @protocol.votings.each do |v|
+    %tr	
+      %td
+        = link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
+      %td
+        = v.votes
+      %td
+        = v.name
+      -#%td
+        -#= link_to 'Показать', trip
+      -#%td
+        -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
+
+
+-#  = simple_form_for [v] do |f|
+-#= f.input :er, :label => "Единая Россия", :wrapper => :inline
