@@ -9,7 +9,7 @@
 #----------------------------------------------------------------------------
 
 
-/public/uploads/
+/public/uploads/*
 nk12.sublime-workspace
 nk12.sublime-project
 

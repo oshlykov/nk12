@@ -1,3 +1,4 @@
 .picture[picture]
-  = image_tag picture.image_url(:thumb) if picture.image?
-  = link_to "Delete", commission_protocol_picture_path(@protocol.commission_id, @protocol, picture.id), :method => :delete, :confirm => "Удалит фотографию протокола?", :remote => :true
+  %a{:href => picture.image_url}
+    = image_tag picture.image_url(:thumb) if picture.image?
+  = link_to "Удалить", commission_protocol_picture_path(@protocol.commission_id, @protocol, picture.id), :method => :delete, :confirm => "Удалит цифровую копию?", :remote => :true

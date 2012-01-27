@@ -24,8 +24,9 @@ namespace :deploy do
   #task :before_symlink do
   before :symlink do
     # public/uploads
-    #run "rm -drf #{release_path}/public/uploads"
-    #run "ln -s #{shared_path}/uploads #{release_path}/public/uploads"
+    run "rm -drf #{release_path}/public/uploads"
+    run "ln -s #{shared_path}/uploads #{release_path}/public/uploads"
+    run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
     #run "rmdir #{current_release}/public/assets" # remove the folder present for development 
     #run "ln -s #{deploy_to}/#{shared_dir}/assets #{current_release}/public"
     
@@ -33,7 +34,6 @@ namespace :deploy do
     #run "rm -drf #{release_path}/vendor/radiant"
     #run "ln -s #{shared_path}/radiant #{release_path}/vendor/radiant"
     #run "rm -f #{release_path}/config/database.yml"
-    #run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
   end
 end
 =begin

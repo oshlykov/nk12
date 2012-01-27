@@ -6,20 +6,26 @@
   -#= f.association :company, :collection => Company.active.all(:order => 'name'), :prompt => "Choose a Company"
 
 -#  = f.button :submit
-%table
-  - @protocol.votings.each do |v|
-    %tr	
+-#/uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)
+-#%form{:action => commission_protocols_path(@protocol.commission.id)+'/'+@protocol.id.to_s, :method => 'post', :id => 'protocol_update'}
+=form_for @protocol do |form|
+  %table
+    - @protocol.votings.each do |v|
+      %tr	
+        %td
+          %input{ :name =>v.voting_dictionary_id, :id => v.id, :value => v.votes}
+          -#= link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
+          -#%td
+          -#= v.votes
+        %td
+          = v.name
+        -#%td
+          -#= link_to 'Показать', trip
+        -#%td
+          -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
+    %tr
       %td
-        = link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
-      %td
-        = v.votes
-      %td
-        = v.name
-      -#%td
-        -#= link_to 'Показать', trip
-      -#%td
-        -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
-
+        = form.submit('Сохранить')
 
 -#  = simple_form_for [v] do |f|
 -#= f.input :er, :label => "Единая Россия", :wrapper => :inline
