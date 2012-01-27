@@ -16,19 +16,30 @@
     %table
       %tr
         %td
-          ЦИК
+          %a{:href=>@commission.url}
+            ЦИК
         - @iik.votings.each do |vote|
           %td{"title"=>vote.name}
             = vote.votes
-      %tr
-        - if @checked_protocol 
+      - if @checked_protocol 
+        %tr
           %td
-            КАРИК
+            %a{:href => commission_protocol_path(@commission.id, @checked_protocol.id)}
+              КАРИК
           - @checked_protocol.votings.each do |vote|
             %td{"title"=>vote.name}
               = vote.votes
+    - if @checked_protocol 
+      #pictures
+        - @checked_protocol.pictures.each do |p|
+          .picture[p]
+            %a{:href => p.image_url}
+              = image_tag p.image_url(:thumb) if p.image?
+      
+
+          
     %a{:href => new_commission_protocol_path(@commission.id)}
-      Загрузить протокол
+      Загрузить новый протокол
     %br
     %br
     %div#disqus_thread

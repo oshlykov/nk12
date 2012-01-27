@@ -1,5 +1,7 @@
 %h1
-  = "Протокол к #{@uik.name}(#{@uik.root.name})"
+  = "Протокол к "
+  %a{:href => commission_path(@uik.id)}
+    =@uik.name+'('+@uik.root.name+')'
 %h2 
   Загрузка цифровых копий протокола
 
@@ -36,11 +38,11 @@
 #pictures
   = render :partial => 'picture', :collection => @protocol.pictures
 
-%table
-  %tr
-    - @protocol.pictures.each do |pic|
-      %td
-        = pic.id
+-#%table
+  -#%tr
+    -# @protocol.pictures.each do |pic|
+      -#%td
+        -#= pic.id
 
 %h2
   Данные с копии

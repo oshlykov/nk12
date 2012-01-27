@@ -1,6 +1,8 @@
 class PicturesController < ApplicationController
 
   before_filter :get_protocol
+before_filter :authenticate_user!, :except => [:index, :show]
+
   
 #  def index
 #    @pictures = @protocol.pictures

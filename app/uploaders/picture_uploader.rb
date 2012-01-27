@@ -20,7 +20,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   process :watermark => Rails.root.join("app","assets","images", "watermark.png")
   
   version :thumb do
-    process :resize_to_fit => [80, 80]
+    process :resize_to_limit => [100,100]
   end
   
   def watermark(path_to_file)
@@ -56,8 +56,11 @@ class PictureUploader < CarrierWave::Uploader::Base
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
-  # def filename
-  #   "something.jpg" if original_filename
-  # end
+  def filename
+    if original_filename 
+      @@name ||= Digest::MD5.hexdigest(File.read(current_path))
+      "nk12_su-#{@@name}.#{file.extension}"
+    end
+  end
 
 end
