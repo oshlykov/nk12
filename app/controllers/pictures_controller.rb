@@ -12,19 +12,12 @@ class PicturesController < ApplicationController
 
   def create
     @picture = @protocol.pictures.new(params[:picture])
-    @picture.user_id = current_user.id if current_user
-#    if @picture.save
-#      render :json => [@picture.to_jq_upload].to_json
-#    else 
-#      render :json => [{:error => "custom_failure"}], :status => 304
+    @picture.user = current_user
     if @picture.save
-      respond_to do |format|
-        format.js do
-          render :partial => 'protocols/picture', :locals => {:picture => @picture}
-        end
-      end
+      render :json => @picture.to_jq_upload, :content_type => 'text/html'
+    else 
+      render :json => [{:error => "custom_failure"}], :status => 304
     end
-    
   end
 
    def destroy

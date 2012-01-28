@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
   def record_not_found
-    render :file => "public/404.html", :status => 404, :layout => false
+    #render :file => "public/404.html", :status => 404, :layout => false
   end
 
 

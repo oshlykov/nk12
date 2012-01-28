@@ -1,15 +1,16 @@
 set :stages, %w(staging production)
 set :default_stage, "staging"
 require 'capistrano/ext/multistage'
-require 'yaml'
-
+#require 'yaml'
+=begin
 set :backup_database_before_migrations, false
 set :disable_web_during_migrations,     false
 set :build_gems,                        false
 set :tag_on_deploy,                     false
 set :cleanup_on_deploy,                 true
 set :compress_assets,                   false
-
+=end
+after "deploy:update_code", "deploy:symlink"
 
 namespace :deploy do
 

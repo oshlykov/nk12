@@ -4,41 +4,40 @@
     =@uik.name+'('+@uik.root.name+')'
 %h2 
   Цифровые копии протокола и других документов
-
+  
 - if @protocol.own?(current_user)
   - unless @protocol.new_record?
-    = fields_for Picture.new do |f|
-      = f.file_field :image, :rel => commission_protocol_pictures_path(@protocol.commission_id, @protocol)
+    .files
+      = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
+        = f.file_field :image
+        %table.upload_files
 
-
-  - key = Rails.application.config.session_options[:key]
   = content_for :head do
+    = javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"
     :javascript
-      $(document).ready(function(){
+       $(document).ready(function(){
+         var url = $('input#picture_image').attr('rel');
 
+         $('.upload').fileUploadUI({
+           uploadTable: $('.upload_files'),
+           downloadTable: $('#pictures'),
+           buildUploadRow: function (files, index) {
+             var file = files[index];
+             return $('<tr><td>' + file.name + '<\/td>' +
+                      '<td class="file_upload_progress"><div><\/div><\/td>' +
+                      '<td class="file_upload_cancel">' +
+                      '<button class="ui-state-default ui-corner-all" title="Cancel">' +
+                      '<img src="/assets/cancel.png"/>' +
+                      '<\/button><\/td><\/tr>');
+             },
+           buildDownloadRow: function (file) {
+             return $('<div id="picture_'+file.id+'" class="picture">'+
+                      '<a href="'+file.url+'"><img src="'+file.thumbnail_url+'"/></a>'+
+                      '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалит цифровую копию?" href="'+file.delete_url+'">Удалить</a></div>');
+           }
+         });
+        }); //ready
 
-      var upload_params = {
-        '#{key}' : '#{cookies[key]}',
-        '#{request_forgery_protection_token}' : encodeURI(encodeURIComponent('#{form_authenticity_token}')),
-        'X-CSRF-Token': encodeURI(encodeURIComponent('#{form_authenticity_token.to_s}')),
-        'csrf-token': encodeURI(encodeURIComponent('#{form_authenticity_token.to_s}')),
-        '_http_accept': 'application/javascript'
-      };
-      var url = $('input#picture_image').attr('rel');
-      $('input#picture_image').uploadify({
-        'uploader'     : '/assets/uploadify.swf',
-        'script'       : url,
-        'fileDataName' : 'picture[image]',
-        'fileExt'      : '*.png;*.jpg;*.gif',
-        'cancelImg'    : '/assets/cancel.png',
-        'multi'        : true,
-        'scriptData'   : upload_params,
-        'auto'         : true,
-        'onComplete'   : function(e, id, obj, response, data) {
-          $('#pictures').append(response);
-        }
-      });
-      });
 
 #pictures
   = render :partial => 'picture', :collection => @protocol.pictures

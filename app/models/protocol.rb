@@ -1,8 +1,7 @@
 class Protocol < ActiveRecord::Base
   belongs_to :commission
   belongs_to :user
-  has_many :votings, :dependent => :destroy 
-  has_many :voting_dictionaries, :through => :votings
+  has_many :votings, :dependent => :destroy, :order=>'voting_dictionary_id ASC'
   has_many :pictures, :dependent => :destroy
 
   def own?(user)
