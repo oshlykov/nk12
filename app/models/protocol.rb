@@ -1,8 +1,13 @@
 class Protocol < ActiveRecord::Base
   belongs_to :commission
+  belongs_to :user
   has_many :votings, :dependent => :destroy 
   has_many :voting_dictionaries, :through => :votings
   has_many :pictures, :dependent => :destroy
+
+  def own?(user)
+    user_id == user.id if user
+  end
   
 =begin
   def self.with_votes    

@@ -13,7 +13,10 @@
     - @protocol.votings.each do |v|
       %tr	
         %td
-          %input{ :name =>v.voting_dictionary_id, :id => v.id, :value => v.votes}
+          - if @protocol.own?(current_user)
+            %input{ :name =>v.voting_dictionary_id, :id => v.id, :value => v.votes}
+          - else
+            = v.votes
           -#= link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
           -#%td
           -#= v.votes
@@ -25,7 +28,7 @@
           -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
     %tr
       %td
-        = form.submit('Сохранить')
+        = form.submit('Сохранить') if @protocol.own?(current_user)
 
 -#  = simple_form_for [v] do |f|
 -#= f.input :er, :label => "Единая Россия", :wrapper => :inline

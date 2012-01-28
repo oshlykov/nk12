@@ -3,10 +3,15 @@ class Picture < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   validates_presence_of :image
   belongs_to :protocol
+  belongs_to :user
   
   after_destroy :remove_image!
   
   mount_uploader :image, PictureUploader
+
+#  def own?(user)
+#    user_id == user.id
+# =>   end
     
   def to_jq_upload
   {

@@ -1,0 +1,17 @@
+%h1
+  Вход
+= form_tag sessions_path do
+  %div.field
+    = label_tag "Электропочта"
+    = text_field_tag :email, params[:email]
+  %div.field
+    = label_tag "Пароль"
+    = password_field_tag :password
+  %div.field
+    = check_box_tag :remember_me
+    = label_tag "Запомнить на долго?"
+  %div.actions
+    = submit_tag "Войти"
+
+%a{:href => new_user_path}
+  Регистрация
