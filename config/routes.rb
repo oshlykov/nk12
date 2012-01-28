@@ -1,10 +1,12 @@
 Nkapp::Application.routes.draw do
 
+  get "sessions/new"
+
   resources :comments
   
 #  scope '(:elections)', :elections => /1|2/ do
   
-
+  resources :users
   resources :commissions, :path => '/uik' do
     resources :protocols do
       resources :votings
@@ -23,8 +25,10 @@ Nkapp::Application.routes.draw do
 
   root :to => "home#index"
 
-  devise_for :users
-  resources :users, :only => :show
+#-  devise_for :users
+  resources :sessions
+  get "login" => "sessions#new", :as => "login"
+  #resources :users, :only => :show
   resources :home
   resources :verify
 

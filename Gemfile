@@ -28,8 +28,8 @@ case HOST_OS
     gem 'rb-fsevent', :group => :development
     gem 'growl', :group => :development
   when /linux/i
-    gem 'libnotify', :group => :development
-    gem 'rb-inotify', :group => :development
+#    gem 'libnotify', :group => :development
+#    gem 'rb-inotify', :group => :development
   when /mswin|windows/i
     gem 'rb-fchange', :group => :development
     gem 'win32console', :group => :development
@@ -41,6 +41,8 @@ gem "guard-livereload", ">= 0.3.0", :group => :development
 gem "guard-rspec", ">= 0.4.3", :group => :development
 gem "guard-cucumber", ">= 0.6.1", :group => :development
 gem "devise", ">= 1.5.0"
+gem 'bcrypt-ruby'
+gem 'cancan'
 gem "twitter-bootstrap-rails", :platform => :ruby
 gem "rails-footnotes", ">= 3.7", :group => :development
 

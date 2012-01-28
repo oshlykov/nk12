@@ -1,6 +1,7 @@
 class ProtocolsController < ApplicationController
 
-before_filter :authenticate_user!, :except => [:index, :show]
+#-before_filter :authenticate_user!, :except => [:index, :show]
+before_filter :auth, :except => [:index, :show]
 
   def new
     #@@voting_dictionary[1]
@@ -8,6 +9,7 @@ before_filter :authenticate_user!, :except => [:index, :show]
     redirect_to :back unless @uik = Commission.find_by_id(params[:commission_id])
     @protocol = @uik.protocols.new
     #@protocol.votings = @votings
+    @protocol.user_id = current_user.id
     if @protocol.save 
       #TODO election
       VOTING_DICTIONARY[1].count.times do |i| 
@@ -30,6 +32,13 @@ before_filter :authenticate_user!, :except => [:index, :show]
     
   def create
     #p = Protocol.new(params[:protocol])
+  end  
+
+  def destroy
+    @p = Protocol.find(params[:id])
+    if @p.can_destroy?
+      #destroy
+    end
   end  
   
 

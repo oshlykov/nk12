@@ -1,7 +1,8 @@
 class PicturesController < ApplicationController
 
+  #-before_filter :authenticate_user!, :except => [:index, :show]
+  before_filter :auth, :except => [:index, :show, :create]
   before_filter :get_protocol
-before_filter :authenticate_user!, :except => [:index, :show]
 
   
 #  def index
@@ -11,6 +12,7 @@ before_filter :authenticate_user!, :except => [:index, :show]
 
   def create
     @picture = @protocol.pictures.new(params[:picture])
+    @picture.user_id = current_user.id if current_user
 #    if @picture.save
 #      render :json => [@picture.to_jq_upload].to_json
 #    else 
@@ -26,15 +28,17 @@ before_filter :authenticate_user!, :except => [:index, :show]
   end
 
    def destroy
-     @picture = @protocol.pictures.find(params[:id])
+    @picture = @protocol.pictures.find(params[:id])
 #     @picture.destroy
 #     render :json => true
     respond_to do |format|
-      unless @picture.destroy
-        flash[:error] = 'Photo could not be deleted'
+      if @protocol.own?(current_user)
+        unless @picture.destroy
+          flash[:error] = 'Photo could not be deleted'
+        end
       end
-      format.js
-     end
+        format.js
+    end
    end
   
 private
