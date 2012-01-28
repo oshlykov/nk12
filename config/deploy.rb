@@ -10,7 +10,11 @@ set :tag_on_deploy,                     false
 set :cleanup_on_deploy,                 true
 set :compress_assets,                   false
 =end
-after "deploy:update_code", "deploy:symlink"
+
+set :normalize_asset_timestamps, false
+
+
+after "deploy:symlink", "deploy:other_symlink"
 
 namespace :deploy do
 
@@ -22,8 +26,7 @@ namespace :deploy do
   end
 
   desc "Link shared files"
-  #task :before_symlink do
-  before :symlink do
+  task :other_symlink do
     # public/uploads
     run "rm -drf #{release_path}/public/uploads"
     run "ln -s #{shared_path}/uploads #{release_path}/public/uploads"
