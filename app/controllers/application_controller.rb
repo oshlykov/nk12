@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  force_ssl
+#  force_ssl
 
 #  protect_from_forgery
   rescue_from ActiveRecord::RecordNotFound, :with => :record_not_found
@@ -22,7 +22,8 @@ class ApplicationController < ActionController::Base
 
 
   def current_user
-      @current_user ||= User.find(session[:user_id]) if session[:user_id] 
+    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    #User.find(nil)
   end
 
 private
@@ -31,7 +32,7 @@ private
   def auth
     unless login?
       session[:ref] = request.url
-      redirect_to signin_url, :alert => "Вам необходимо сначала войти"
+      redirect_to new_session_url, :alert => "Вам необходимо сначала войти"
     end
   end
 

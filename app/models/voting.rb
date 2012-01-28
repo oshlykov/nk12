@@ -7,6 +7,7 @@ class Voting < ActiveRecord::Base
 
 
   def name
+    #fix
     VOTING_DICTIONARY[protocol.commission.election_id][voting_dictionary_id]
   end
 
