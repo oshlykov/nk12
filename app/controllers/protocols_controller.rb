@@ -15,13 +15,13 @@ before_filter :auth, :except => [:index, :show]
     # 0 - данные ЦИК
     # 1 - основной для сверки
     protocol.priority = @uik.protocols.count + 100
-    if @protocol.save 
+    if protocol.save 
       #TODO election
       VOTING_DICTIONARY[1].count.times do |i| 
-        v = @protocol.votings.new(:voting_dictionary_id => i+1) 
+        v = protocol.votings.new(:voting_dictionary_id => i+1) 
         v.save
       end
-      redirect_to commission_protocol_url(@uik.id, @protocol.id)
+      redirect_to commission_protocol_url(@uik.id, protocol.id)
     end
 
 #    respond_to do |format| 
