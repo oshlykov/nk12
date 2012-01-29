@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111229101930) do
+ActiveRecord::Schema.define(:version => 20120129192136) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -53,14 +53,19 @@ ActiveRecord::Schema.define(:version => 20111229101930) do
   end
 
   create_table "protocols", :force => true do |t|
-    t.integer  "commission_id"
-    t.integer  "user_id"
+    t.integer  "commission_id",                    :null => false
+    t.integer  "user_id",                          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "priority"
+    t.boolean  "conflict",      :default => false
   end
 
+  add_index "protocols", ["conflict"], :name => "index_protocols_on_conflict"
+  add_index "protocols", ["priority"], :name => "index_of_priority"
+
   create_table "users", :force => true do |t|
-    t.string   "email"
+    t.string   "email",           :default => ""
     t.string   "password_digest"
     t.string   "name"
     t.string   "role"
@@ -69,7 +74,6 @@ ActiveRecord::Schema.define(:version => 20111229101930) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["password_digest"], :name => "index_users_on_password_digest", :unique => true
 
   create_table "votings", :force => true do |t|
     t.integer  "protocol_id"
