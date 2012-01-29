@@ -26,10 +26,10 @@
         - else
           %tr
             %td
-              %a{:href => commission_protocol_path(@commission.id, p.id), :class => ("red" if p.conflict)}
+              %a{:href => commission_protocol_path(@commission.id, p.id), :class => (if p.conflict then "red" else "green" end)}
                 = 'КАРИК №' + p.id.to_s
             - p.votings.each do |vote|
-              %td{"title"=>vote.name, :class => ("red" unless vote.votes == uik_votes(@protocols.first, vote.voting_dictionary_id))}
+              %td{"title"=>vote.name, :class => vote_class(p, vote.voting_dictionary_id)}
                 = vote.votes
           %tr
             %td{:colspan => p.votings.count+1}
@@ -91,10 +91,9 @@
         %td
           %a{:href => commission_path(child.id)}
             = child.name
-          - child.protocols.first.votings.each do |vote|
-            - if vote.main_role?
-              %td{"title"=>vote.name}
-                = vote.votes
+          - uik = child.protocols.first; uik.votings.each do |vote|
+            %td{"title"=>vote.name, :class => (vote_class_uik(uik, vote.voting_dictionary_id))}
+              = vote.votes
 
 
 -#            = vote.voting_dictionary.name
