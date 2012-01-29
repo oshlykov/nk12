@@ -10,9 +10,8 @@ before_filter :auth, :except => [:index, :show]
 
   def show
     @commission = Commission.find(params[:id])
-    p = @commission.protocols
-    @iik = p.first #fix 
-    @checked_protocol = p[1] if p.count > 1
+    @protocols = @commission.protocols
+    #@checked_protocol = @protocols[1] if @protocols.count > 1
     @election = @commission.election
     if request.xhr?
     else

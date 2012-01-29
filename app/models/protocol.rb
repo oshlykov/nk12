@@ -3,6 +3,7 @@ class Protocol < ActiveRecord::Base
   belongs_to :user
   has_many :votings, :dependent => :destroy, :order=>'voting_dictionary_id ASC'
   has_many :pictures, :dependent => :destroy
+  #default_scope :order => :priority
 
   def own?(user)
     user_id == user.id if user

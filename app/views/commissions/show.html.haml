@@ -14,30 +14,30 @@
       = @commission.name
       %a.ico-link.sprite-link{:href=>@commission.url}
     %table
-      %tr
-        %td
-          %a{:href=>@commission.url}
-            ЦИК
-        - @iik.votings.each do |vote|
-          %td{"title"=>vote.name}
-            = vote.votes
-      - if @checked_protocol 
-        %tr
-          %td
-            %a{:href => commission_protocol_path(@commission.id, @checked_protocol.id)}
-              КАРИК
-          - @checked_protocol.votings.each do |vote|
-            %td{"title"=>vote.name}
-              = vote.votes
-    - if @checked_protocol 
-      #pictures
-        - @checked_protocol.pictures.each do |p|
-          .picture[p]
-            %a{:href => p.image_url}
-              = image_tag p.image_url(:thumb) if p.image?
-      
-
-          
+      - @protocols.each do |p|
+        - if p == @protocols.first
+          %tr
+            %td
+              %a{:href=>@commission.url}
+                ЦИК
+            - p.votings.each do |vote|
+              %td{"title"=>vote.name}
+                = vote.votes
+        - else
+          %tr
+            %td
+              %a{:href => commission_protocol_path(@commission.id, p.id), :class => ("red" if p.conflict)}
+                = 'КАРИК №' + p.id.to_s
+            - p.votings.each do |vote|
+              %td{"title"=>vote.name, :class => ("red" unless vote.votes == uik_votes(@protocols.first, vote.voting_dictionary_id))}
+                = vote.votes
+          %tr
+            %td{:colspan => p.votings.count+1}
+              #pictures
+                - p.pictures.each do |pic|
+                  .picture[pic]
+                    %a{:href => pic.image_url}
+                      = image_tag pic.image_url(:thumb) if pic.image?
     %a{:href => new_commission_protocol_path(@commission.id)}
       Загрузить новый протокол
     %br

@@ -3,6 +3,6 @@ class Commission < ActiveRecord::Base
    
   belongs_to :election
   has_many :comments, :dependent => :destroy 
-  has_many :protocols, :dependent => :destroy 
+  has_many :protocols, :dependent => :destroy, :order => 'priority ASC'
   
 end
