@@ -17,10 +17,10 @@ before_filter :auth, :except => [:index, :show]
     protocol.priority = @uik.protocols.count + 100
     if protocol.save 
       #TODO election
-      VOTING_DICTIONARY[1].count.times do |i| 
-        v = protocol.votings.new(:voting_dictionary_id => i+1) 
-        v.save
-      end
+      #VOTING_DICTIONARY[1].count.times do |i| 
+      #  v = protocol.votings.new(:voting_dictionary_id => i+1) 
+      #  v.save
+      #end
       redirect_to commission_protocol_url(@uik.id, protocol.id)
     end
 
@@ -45,22 +45,20 @@ before_filter :auth, :except => [:index, :show]
       #destroy
     end
   end  
-  
 
   def update
-    @protocol = Protocol.find_by_id!(params[:id])
+    @protocol = Protocol.find_by_id!(params[:id]) 
     uik_protocol = @protocol.commission.protocols.first
     conflict = false
-    @protocol.votings.each do |v|
-      v.votes = params[v.voting_dictionary_id.to_s]
-      v.save 
-      conflict = true if uik_protocol.votings.find_by_voting_dictionary_id(v.voting_dictionary_id).votes != v.votes
+    @protocol.votings.each_with_index do |v,i|
+      @protocol.send("v#{i+1}=", params["#{i+1}"])
+      conflict = true if params[i+1] != uik_protocol.votings[i+1]
     end
     if @protocol.conflict != conflict
-        @protocol.conflict = conflict
-        uik_protocol.conflict = conflict if @protocol.priority == 1
-        @protocol.save
+      @protocol.conflict = conflict
+      uik_protocol.conflict = conflict if @protocol.priority == 1
     end
+    @protocol.save #fixme
     redirect_to :back
   end
   

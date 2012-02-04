@@ -20,17 +20,17 @@
             %td
               %a{:href=>@commission.url}
                 ЦИК
-            - p.votings.each do |vote|
-              %td{"title"=>vote.name}
-                = vote.votes
+            - p.votings.each_with_index do |vote,i|
+              %td{"title"=>p.voting_name(i+1)}
+                = vote
         - else
           %tr
             %td
               %a{:href => commission_protocol_path(@commission.id, p.id), :class => (if p.conflict then "red" else "green" end)}
                 = 'КАРИК №' + p.id.to_s
-            - p.votings.each do |vote|
-              %td{"title"=>vote.name, :class => vote_class(p, vote.voting_dictionary_id)}
-                = vote.votes
+            - p.votings.each_with_index do |vote,i|
+              %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)}
+                = vote
           %tr
             %td{:colspan => p.votings.count+1}
               #pictures
@@ -91,9 +91,9 @@
         %td
           %a{:href => commission_path(child.id)}
             = child.name
-          - uik = child.protocols.first; uik.votings.each do |vote|
-            %td{"title"=>vote.name, :class => (vote_class_uik(uik, vote.voting_dictionary_id))}
-              = vote.votes
+          - (uik = child.protocols.first).votings.each_with_index do |vote,i|
+            %td{"title"=>uik.voting_name(i+1), :class => (vote_class_uik(uik, i+1))}
+              = vote
 
 
 -#            = vote.voting_dictionary.name

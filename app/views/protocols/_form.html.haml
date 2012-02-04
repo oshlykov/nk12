@@ -10,18 +10,18 @@
 -#%form{:action => commission_protocols_path(@protocol.commission.id)+'/'+@protocol.id.to_s, :method => 'post', :id => 'protocol_update'}
 =form_for @protocol do |form|
   %table
-    - @protocol.votings.each do |v|
+    - @protocol.votings.each_with_index do |v,i|
       %tr	
         %td
           - if @protocol.own?(current_user)
-            %input{ :name =>v.voting_dictionary_id, :id => v.id, :value => v.votes}
+            %input{ :name =>i+1, :id => i+1, :value => v}
           - else
-            = v.votes
+            = v
           -#= link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
           -#%td
           -#= v.votes
         %td
-          = v.name
+          = @protocol.voting_name(i+1)
         -#%td
           -#= link_to 'Показать', trip
         -#%td

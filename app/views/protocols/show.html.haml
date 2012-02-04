@@ -12,7 +12,7 @@
         %table.upload_files
 
   = content_for :head do
-    = javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"
+    - # javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"
     :javascript
        $(document).ready(function(){
          var url = $('input#picture_image').attr('rel');

@@ -1,6 +1,6 @@
-class Voting < ActiveRecord::Base
-  belongs_to :protocol
-  belongs_to :commission
+class Voting1 < ActiveRecord::Base
+  #belongs_to :protocol
+  #belongs_to :commission
 
   attr_accessor :name
   attr_accessor :main_role
@@ -8,7 +8,8 @@ class Voting < ActiveRecord::Base
 
   def name
     #fix
-    VOTING_DICTIONARY[protocol.commission.election_id][voting_dictionary_id]
+    @election_id ||= protocol.commission.election_id
+    VOTING_DICTIONARY[@election_id][voting_dictionary_id]
   end
 
   def main_role?

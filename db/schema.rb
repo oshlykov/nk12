@@ -57,8 +57,38 @@ ActiveRecord::Schema.define(:version => 20120129192136) do
     t.integer  "user_id",                          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "priority"
+    t.integer  "priority",      :default => 100
     t.boolean  "conflict",      :default => false
+    t.integer  "v1",            :default => 0
+    t.integer  "v2",            :default => 0
+    t.integer  "v3",            :default => 0
+    t.integer  "v4",            :default => 0
+    t.integer  "v5",            :default => 0
+    t.integer  "v6",            :default => 0
+    t.integer  "v7",            :default => 0
+    t.integer  "v8",            :default => 0
+    t.integer  "v9",            :default => 0
+    t.integer  "v10",           :default => 0
+    t.integer  "v11",           :default => 0
+    t.integer  "v12",           :default => 0
+    t.integer  "v13",           :default => 0
+    t.integer  "v14",           :default => 0
+    t.integer  "v15",           :default => 0
+    t.integer  "v16",           :default => 0
+    t.integer  "v17",           :default => 0
+    t.integer  "v18",           :default => 0
+    t.integer  "v19",           :default => 0
+    t.integer  "v20",           :default => 0
+    t.integer  "v21",           :default => 0
+    t.integer  "v22",           :default => 0
+    t.integer  "v23",           :default => 0
+    t.integer  "v24",           :default => 0
+    t.integer  "v25",           :default => 0
+    t.integer  "v26",           :default => 0
+    t.integer  "v27",           :default => 0
+    t.integer  "v28",           :default => 0
+    t.integer  "v29",           :default => 0
+    t.integer  "v30",           :default => 0
   end
 
   add_index "protocols", ["conflict"], :name => "index_protocols_on_conflict"
