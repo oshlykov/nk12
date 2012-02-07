@@ -8,9 +8,13 @@ class RebuildData < ActiveRecord::Migration
     end
 
     # Получение голосов
-    Protocol.where('user_id > 0').each do |p|
-      p.commission.votes_taken = 1
-    end
+    #Protocol.where('user_id > 0').each do |p|
+    #  p.commission.votes_taken = 1
+    #end
+    execute <<-SQLTEXT0
+    update protocols set votes_taken = 0 where user_id = 0;
+    update protocols set votes_taken = 1 where user_id > 0;
+    SQLTEXT0
 
     execute <<-SQLTEXT
 	update protocols as p set 
