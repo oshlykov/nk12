@@ -1,5 +1,5 @@
 .picture[picture]
   %a{:href => picture.image_url}
     = image_tag picture.image_url(:thumb) if picture.image?
-  - if picture.protocol.own?(current_user)
+  - if can? :update, picture.protocol
     = link_to "Удалить", commission_protocol_picture_path(@protocol.commission_id, @protocol, picture.id), :method => :delete, :confirm => "Удалит цифровую копию?", :remote => :true

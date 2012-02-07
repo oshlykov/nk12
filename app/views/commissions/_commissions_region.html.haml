@@ -17,7 +17,11 @@
     %div.node-name
       %div.name
         %h3{"id"=>child.id,"data-depth"=>child.depth}
-          = child.name
+          - if child.uik_holder
+            %a.load-new{ :href => "##{child.id}" }
+              = child.name
+            - else
+              = child.name
           %a.ico-link.sprite-link{:href=>child.url}
       .clearfix
     - if child.uik_holder

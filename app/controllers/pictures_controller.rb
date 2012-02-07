@@ -17,10 +17,8 @@ class PicturesController < ApplicationController
    def destroy
     @picture = @protocol.pictures.find(params[:id])
     respond_to do |format|
-      if @protocol.own?(current_user)
-        unless @picture.destroy
-          flash[:error] = 'Photo could not be deleted'
-        end
+      if can? :destroy, @protocol
+        flash[:error] = 'Photo could not be deleted' unless @picture.destroy
       end
         format.js
     end

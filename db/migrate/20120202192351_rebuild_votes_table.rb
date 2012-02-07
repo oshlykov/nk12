@@ -31,7 +31,10 @@ v22=(select distinct votes from votings where protocol_id = p.id and voting_dict
 v23=(select distinct votes from votings where protocol_id = p.id and voting_dictionary_id=23), 
 v24=(select distinct votes from votings where protocol_id = p.id and voting_dictionary_id=24), 
 v25=(select distinct votes from votings where protocol_id = p.id and voting_dictionary_id=25)
+where priority > 0
 SQLTEXT
+
+# where priority > 0 - special
 
     execute <<-SQLTEXT2
 drop table votings

@@ -13,7 +13,7 @@
     - @protocol.votings.each_with_index do |v,i|
       %tr	
         %td
-          - if @protocol.own?(current_user)
+          - if can? :update, @protocol
             %input{ :name =>i+1, :id => i+1, :value => v}
           - else
             = v
@@ -28,7 +28,7 @@
           -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
     %tr
       %td
-        = form.submit('Сохранить') if @protocol.own?(current_user)
+        = form.submit('Сохранить') if can? :update, @protocol
 
 -#  = simple_form_for [v] do |f|
 -#= f.input :er, :label => "Единая Россия", :wrapper => :inline

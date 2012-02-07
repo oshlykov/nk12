@@ -13,20 +13,25 @@ class Ability
     #end
     if user.role? :guest
       can :read, :all
-      can :update, Protocol, :user_id => user.id
     end
 
     if user.role? :observer
       can :new, Protocol
+      can [:update, :destroy], Protocol do |p|
+        p.priority >= 100 and p.user_id == user.id
+      end
       #can :update, Protocol, :active => true, :user_id => user.id
     end
 
     if user.role? :region
       #can :manage, 
+      can :destroy, Protocol
     end
 
     if user.role? :admin
+      #can :update_role
       can :manage, :all
+      #can :manage, Protocol
     end
     #
     # The first argument to `can` is the action you are giving the user permission to do.

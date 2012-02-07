@@ -16,10 +16,14 @@ $ ->
       $(this).addClass('loaded')
       $('.loading',this).hide()
 
-      if flag is true        
-        $('.votings').appear ->
-          loader $(this)  
-  
+#     flag=true
+    if flag is true        
+      $('a.load-new').click (e) ->
+        e.preventDefault()
+        loader $(this).parents('.node-name').next()
+        #$('.votings').appear ->
+          #loader $(this)  
+
   loader $('.votings:first'),true
 
   

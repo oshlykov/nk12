@@ -41,8 +41,11 @@ before_filter :auth, :except => [:index, :show]
 
   def destroy
     @p = Protocol.find(params[:id])
-    if @p.can_destroy?
-      #destroy
+    respond_to do |format|
+      unless can? :destroy, @p and @p.destroy
+        flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
+      end
+      format.js
     end
   end  
 

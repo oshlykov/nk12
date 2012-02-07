@@ -19,6 +19,16 @@ class Protocol < ActiveRecord::Base
     @election_id ||= protocol.commission.election_id
     VOTING_DICTIONARY[@election_id][(vdi)]
   end  
+
+  def self.voting_name(vdi=1, election=nil)
+    #fix
+    if election
+      @election_id = election 
+    else
+      @election_id ||= protocol.commission.election_id
+    end
+    VOTING_DICTIONARY[@election_id][(vdi)]
+  end  
   
    
 =begin

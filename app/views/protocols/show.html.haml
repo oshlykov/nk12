@@ -2,14 +2,14 @@
   = "Протокол к "
   %a{:href => commission_path(@uik.id)}
     =@uik.name+'('+@uik.root.name+')'
-%h2 
-  Цифровые копии протокола и других документов
+- if @protocol.pictures.size
+  %h2
+    Цифровые копии протокола и других документов
 - if can? :update, @protocol
-  - unless @protocol.new_record?
-    .files
-      = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
-        = f.file_field :image
-        %table.upload_files
+  .files
+    = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
+      = f.file_field :image
+      %table.upload_files
 
   = content_for :head do
     - # javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"

@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   has_secure_password
   ROLES = %w[admin region observer guest]
   def role?(base_role)
-    ROLES.index(base_role.to_s) <= ROLES.index(role)
+    ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
   has_many :protocols
   has_many :pictures
