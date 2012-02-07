@@ -1,6 +1,7 @@
 - if login?
   %li
     = link_to('Выйти', session_path(session.id), :method=>'delete')
+    = link_to('Править', edit_user_path(current_user))
 - else
   %li
     = link_to('Войти', new_session_path)

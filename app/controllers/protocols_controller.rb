@@ -53,6 +53,13 @@ before_filter :auth, :except => [:index, :show]
     @protocol.votings.each_with_index do |v,i|
       @protocol.send("v#{i+1}=", params["#{i+1}"])
       conflict = true if params[i+1] != uik_protocol.votings[i+1]
+=begin - заполнение кэша
+    if @protocol is 
+    state = Hash.new
+    state[:uik] = @protocol.votings
+    uik_protocol
+=end
+
     end
     if @protocol.conflict != conflict
       @protocol.conflict = conflict

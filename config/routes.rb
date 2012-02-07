@@ -2,7 +2,7 @@ Nkapp::Application.routes.draw do
 
   get "sessions/new"
 
-  resources :comments
+  #resources :comments
   
 #  scope '(:elections)', :elections => /1|2/ do
   

@@ -4,11 +4,11 @@ class Protocol < ActiveRecord::Base
   
   has_many :pictures, :dependent => :destroy
   #default_scope :order => :priority
-
+=begin
   def own?(user)
     user_id == user.id if user
   end
-
+=end
   def votings
     @election_id ||= commission.election_id
     VOTING_DICTIONARY[@election_id].each_with_index.map {|v,i| send("v#{i+1}")} 

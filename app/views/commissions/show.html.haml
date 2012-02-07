@@ -1,98 +1,18 @@
 -#    .item_holder
 - unless request.xhr?
   - if @commission.is_uik
-
-    %div.navigation-holder
-      %a.uik-navigation{:href => '/'}
-        = 'Регионы'
-      &nbsp;→&nbsp;
-      - @commission.ancestors.each do |c|
-        %a.uik-navigation{:href => commission_path(c.id)}
-          = c.name
-        &nbsp;→&nbsp;
-    %h1
-      = @commission.name
-      %a.ico-link.sprite-link{:href=>@commission.url}
-    %table
-      - @protocols.each do |p|
-        - if p == @protocols.first
-          %tr
-            %td
-              %a{:href=>@commission.url}
-                ЦИК
-            - p.votings.each_with_index do |vote,i|
-              %td{"title"=>p.voting_name(i+1)}
-                = vote
-        - else
-          %tr
-            %td
-              %a{:href => commission_protocol_path(@commission.id, p.id), :class => (if p.conflict then "red" else "green" end)}
-                = 'КАРИК №' + p.id.to_s
-            - p.votings.each_with_index do |vote,i|
-              %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)}
-                = vote
-          %tr
-            %td{:colspan => p.votings.count+1}
-              #pictures
-                - p.pictures.each do |pic|
-                  .picture[pic]
-                    %a{:href => pic.image_url}
-                      = image_tag pic.image_url(:thumb) if pic.image?
-    %a{:href => new_commission_protocol_path(@commission.id)}
-      Загрузить новый протокол
-    %br
-    %br
-    %div#disqus_thread
-    %script(type="text/javascript")
-      - if ENV['RAILS_ENV'] == 'production'
-        var disqus_shortname = 'nk12'; // required: replace example with your forum shortname
-      - else
-        var disqus_shortname = 'example'; // required: replace example with your forum shortname
-      :plain
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
+    = render :partial => 'commissions_uik'
   - else
-
-    %div.navigation-holder
-      %a.uik-navigation{:href => '/'}
-        = 'Регионы'
-      &nbsp;→&nbsp;
-      - @commission.ancestors.each do |c|
-        %a.uik-navigation{:href => commission_path(c.id)}
-          = c.name
-        &nbsp;→&nbsp;
-    %div.navigation-holder
-      %a.show-navigation{:href=>"#"}
-        = @commission.name
-      = link_to "ЦИК", root_path  
-      %div.tree-navigation
-        %br
-    - @commission.subtree.where(:is_uik => false).each do |child|
-      %div.tree-node-holder{"id" => child.id, "class" => "depth-#{child.depth}"}
-        %div.node-name
-          %div.name
-            %h3{"id"=>child.id,"data-depth"=>child.depth}
-              = child.name
-              %a.ico-link.sprite-link{:href=>child.url}
-          .clearfix
-        - if child.uik_holder
-          %div.votings{"data-id"=>child.id, "data-loaded"=>"false", "data-url"=>"/uik/#{child.id}"}  
-            %div.loading
-              = image_tag('ajax-loader.gif')
+    = render :partial => 'commissions_region'
 - else
   %table.voting-table
-    - @commission.children.each do |child|
+    - @commission.children.each do |c|
       %tr
         %td
-          %a{:href => commission_path(child.id)}
-            = child.name
-          - (uik = child.protocols.first).votings.each_with_index do |vote,i|
-            %td{"title"=>uik.voting_name(i+1), :class => (vote_class_uik(uik, i+1))}
+          %a{:href => commission_path(c.id)}
+            = c.name
+          - (uik_protocol = c.state['uik']).each_with_index do |vote,i|
+            %td{"title"=>uik_protocol.voting_name(i+1), :class => vote_class_uik(c, i+1)}
               = vote
 
 

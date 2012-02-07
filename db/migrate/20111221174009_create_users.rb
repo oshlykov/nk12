@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :email
       t.string :password_digest
       t.string :name
-      t.string :role
+      t.string :role, :default => 'guest'
 
 
       # t.encryptable

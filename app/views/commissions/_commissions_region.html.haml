@@ -1,0 +1,26 @@
+%div.navigation-holder
+  %a.uik-navigation{:href => '/'}
+    = 'Регионы'
+  &nbsp;→&nbsp;
+  - @commission.ancestors.each do |c|
+    %a.uik-navigation{:href => commission_path(c.id)}
+      = c.name
+    &nbsp;→&nbsp;
+%div.navigation-holder
+  %a.show-navigation{:href=>"#"}
+    = @commission.name
+  = link_to "ЦИК", root_path
+  %div.tree-navigation
+    %br
+- @commission.subtree.where(:is_uik => false).each do |child|
+  %div.tree-node-holder{"id" => child.id, "class" => "depth-#{child.depth}"}
+    %div.node-name
+      %div.name
+        %h3{"id"=>child.id,"data-depth"=>child.depth}
+          = child.name
+          %a.ico-link.sprite-link{:href=>child.url}
+      .clearfix
+    - if child.uik_holder
+      %div.votings{"data-id"=>child.id, "data-loaded"=>"false", "data-url"=>"/uik/#{child.id}"}
+        %div.loading
+          = image_tag('ajax-loader.gif')

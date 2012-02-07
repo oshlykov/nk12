@@ -34,7 +34,7 @@ v25=(select distinct votes from votings where protocol_id = p.id and voting_dict
 SQLTEXT
 
     execute <<-SQLTEXT2
-drop table votes
+drop table votings
 SQLTEXT2
 
   end

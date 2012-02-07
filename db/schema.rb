@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120129192136) do
+ActiveRecord::Schema.define(:version => 20120205074339) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20120129192136) do
     t.boolean  "uik_holder",       :default => false
     t.string   "voting_table_url"
     t.boolean  "votes_taken"
+    t.text     "state"
   end
 
   add_index "commissions", ["ancestry"], :name => "index_commissions_on_ancestry"
@@ -92,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20120129192136) do
   end
 
   add_index "protocols", ["conflict"], :name => "index_protocols_on_conflict"
-  add_index "protocols", ["priority"], :name => "index_of_priority"
+  add_index "protocols", ["priority"], :name => "index_protocols_on_priority"
 
   create_table "users", :force => true do |t|
     t.string   "email",           :default => ""
@@ -104,16 +105,5 @@ ActiveRecord::Schema.define(:version => 20120129192136) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-
-  create_table "votings", :force => true do |t|
-    t.integer  "protocol_id"
-    t.integer  "votes"
-    t.integer  "voting_dictionary_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "votings", ["protocol_id"], :name => "index_votings_on_protocol_id"
-  add_index "votings", ["voting_dictionary_id"], :name => "index_votings_on_voting_dictionary_id"
 
 end

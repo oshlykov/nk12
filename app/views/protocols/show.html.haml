@@ -4,7 +4,7 @@
     =@uik.name+'('+@uik.root.name+')'
 %h2 
   Цифровые копии протокола и других документов
-- if @protocol.own?(current_user)
+- if can? :update, @protocol
   - unless @protocol.new_record?
     .files
       = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|

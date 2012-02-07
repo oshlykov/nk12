@@ -14,16 +14,13 @@ module CommissionsHelper
     end
   end
 
-  def vote_class_uik(uik_protocol, index)
+  def vote_class_uik(commission, index)
     #СДЕЛАТЬ Оптимизировать
-    if p = uik_protocol.commission.protocols.where('priority > 0').first
-      if p.votings[index-1] ==  uik_protocol.votings[index-1]
-        'green'
-      else
-        'red'
-      end
+    return 'gray' unless commission.votes_taken
+    if commission.state['uik'][index-1] ==  commission.state['taken'][index-1]
+      'green'
     else
-      'gray'
+      'red'
     end
   end
 
