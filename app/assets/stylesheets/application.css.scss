@@ -53,10 +53,19 @@ header nav ul li {
   color: #AAAAAA;
 }
 
-a {
-  text-decoration: underline
+.red {
+  color: #9d261d;
 }
 
-a:hover {
-  text-decoration: none
+.green {
+  color: #46a546;
 }
+
+a { text-decoration: underline  }
+a:hover { text-decoration: none }
+
+a.btn { text-decoration: none }
+a.btn:hover { text-decoration: underline }
+
+a.brand { text-decoration: none }
+a.brand:hover { text-decoration: underline }

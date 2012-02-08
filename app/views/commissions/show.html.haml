@@ -13,8 +13,12 @@
             = c.name
           - if c.state
             - (uik_protocol = c.state[:uik]).each_with_index do |vote,i|
-              %td{"title"=>Protocol.voting_name(i+1, c.election_id), :class => vote_class_uik(c, i+1)}
-                = vote
+              %td{"title"=>Protocol.voting_name(i+1, c.election_id), :class => vote_color_uik(c, i+1)}
+                - if c.state[:checked] and c.state[:uik][i] != c.state[:checked][i]
+                  = "#{vote} (#{c.state[:checked][i]})"
+                - else
+                  = vote
+
 
 
 -#            = vote.voting_dictionary.name

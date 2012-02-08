@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120205074339) do
+ActiveRecord::Schema.define(:version => 20120208175922) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -34,9 +34,11 @@ ActiveRecord::Schema.define(:version => 20120205074339) do
     t.string   "voting_table_url"
     t.boolean  "votes_taken"
     t.text     "state"
+    t.boolean  "conflict",         :default => false
   end
 
   add_index "commissions", ["ancestry"], :name => "index_commissions_on_ancestry"
+  add_index "commissions", ["conflict"], :name => "index_commissions_on_conflict"
 
   create_table "elections", :force => true do |t|
     t.string   "name"
@@ -54,12 +56,11 @@ ActiveRecord::Schema.define(:version => 20120205074339) do
   end
 
   create_table "protocols", :force => true do |t|
-    t.integer  "commission_id",                    :null => false
-    t.integer  "user_id",                          :null => false
+    t.integer  "commission_id",                  :null => false
+    t.integer  "user_id",                        :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "priority",      :default => 100
-    t.boolean  "conflict",      :default => false
     t.integer  "v1",            :default => 0
     t.integer  "v2",            :default => 0
     t.integer  "v3",            :default => 0
@@ -92,7 +93,6 @@ ActiveRecord::Schema.define(:version => 20120205074339) do
     t.integer  "v30",           :default => 0
   end
 
-  add_index "protocols", ["conflict"], :name => "index_protocols_on_conflict"
   add_index "protocols", ["priority"], :name => "index_protocols_on_priority"
 
   create_table "users", :force => true do |t|

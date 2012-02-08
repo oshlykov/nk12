@@ -15,6 +15,9 @@ before_filter :auth, :except => [:index, :show]
     # 0 - данные ЦИК
     # 1 - основной для сверки
     protocol.priority = @uik.protocols.count + 100
+    
+    protocol.election_id = 1 #fix
+
     if protocol.save 
       #TODO election
       #VOTING_DICTIONARY[1].count.times do |i| 
@@ -40,9 +43,8 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def destroy
-    @p = Protocol.find(params[:id])
     respond_to do |format|
-      unless can? :destroy, @p and @p.destroy
+      unless can? :destroy, @p and @p.priority != 1 and @p.destroy
         flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
       end
       format.js
@@ -52,9 +54,11 @@ before_filter :auth, :except => [:index, :show]
   def update  
     @protocol = Protocol.find_by_id!(params[:id]) 
     uik_protocol = @protocol.commission.protocols.first
+    commission = @protocol.commission
     conflict = false
     @protocol.votings.each_with_index do |v,i|
       @protocol.send("v#{i+1}=", params["#{i+1}"])
+      commission.state[:checked][i] = @protocol.send("v#{i+1}") if @protocol.priority == 1
       conflict = true if params[i+1] != uik_protocol.votings[i+1]
 =begin - заполнение кэша
     if @protocol is 
@@ -63,17 +67,16 @@ before_filter :auth, :except => [:index, :show]
     uik_protocol
 =end
 
+      commission.conflict = conflict if @protocol.priority == 1 and commission.conflict != conflict
     end
-    if @protocol.conflict != conflict
-      @protocol.conflict = conflict
-      uik_protocol.conflict = conflict if @protocol.priority == 1
-    end
+    commission.save #fixme
     @protocol.save #fixme
     redirect_to :back
   end
 
   def checking
-    @protocols = Protocol.where('priority >= 100 and priority < 200').all
+    @protocols = Protocol.where('priority >= 100').limit(100).all
+    
     if can? :cheking, Protocol
 
     end
@@ -81,12 +84,28 @@ before_filter :auth, :except => [:index, :show]
 
   def check
     @protocol = Protocol.find_by_id!(params[:id])
+    @commission = @protocol.commission
     respond_to do |format|
       if can? :check, @protocol
-        @protocol.priority = 1
-        
-
-
+        unless @commission.protocols.where('priority = 1').first
+          @protocol.priority = 1
+          @commission.votes_taken = true
+          @commission.state[:checked] = Array.new(VOTING_DICTIONARY[@commission.election_id].size)
+          
+          @protocol.votings.each_with_index do |v,i|
+            @commission.state[:checked][i] = @protocol.send("v#{i+1}")
+            if @commission.state[:uik][i] != @commission.state[:checked][i]
+              @commission.conflict = true
+            end
+          end
+          @commission.save
+        else
+          if p = Protocol.where("priority>=50 and priority<100 and commission_id = ?", @commission.id).order('priority DESC').first
+            @protocol.priority = p.priority+1
+          else
+            @protocol.priority = 50
+          end
+        end
         flash[:error] = 'Ошибка удаления' unless @protocol.save
       end
       format.js

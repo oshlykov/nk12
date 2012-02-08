@@ -11,6 +11,57 @@
     =raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
 .row
   .span12
+    %table.voting-table
+      - @checked.each do |p|
+        - if p == @checked.first
+          %tr
+            %td
+              %a{:href=>@commission.url} ЦИК
+            - p.votings.each_with_index do |vote,i|
+              %td{"title"=>p.voting_name(i+1)}= vote
+        - else
+          %tr{:id => ('protocol_'+p.id.to_s)}
+            %td
+              %a{:href => commission_protocol_path(@commission.id, p.id)}
+                = 'КАРИК №' + p.id.to_s
+                - if can? :destroy, p
+                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+
+            - p.votings.each_with_index do |vote,i|
+              %td{"title"=>p.voting_name(i+1), :class => vote_class(@commission, p, i+1)}
+                = vote
+          %tr{:id => ('protocol_pic_'+p.id.to_s)}
+            %td{:colspan => p.votings.count+1}
+              #pictures
+                - p.pictures.each do |pic|
+                  .picture[pic]
+                    %a{:href => pic.image_url}
+                      = image_tag pic.image_url(:thumb) if pic.image?
+
+    - if @unchecked
+      %h2 Непроверенные протоколы
+      %table.voting-table
+        - @unchecked.each do |p|
+          %tr{:id => ('protocol_'+p.id.to_s)}
+            %td
+              %a{:href => commission_protocol_path(@commission.id, p.id)}
+                = 'КАРИК №' + p.id.to_s
+                - if can? :destroy, p
+                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+
+            - p.votings.each_with_index do |vote,i|
+              %td{"title"=>p.voting_name(i+1), :class => vote_class(@commission, p, i+1)}
+                = vote
+            %tr{:id => ('protocol_pic_'+p.id.to_s)}
+              %td{:colspan => p.votings.count+1}
+                #pictures
+                  - p.pictures.each do |pic|
+                    .picture[pic]
+                      %a{:href => pic.image_url}
+                        = image_tag pic.image_url(:thumb) if pic.image?
+.row
+  .span12  
+    %br
     %br
     -if can? :new, Protocol
       %a{:href => new_commission_protocol_path(@commission.id), :class => 'btn btn-danger'}
@@ -22,33 +73,8 @@
         = link_to("зарегистрироваться", new_user_path)
     %br
     %br
-    %table.voting-table
-      - @protocols.each do |p|
-        - if p == @protocols.first
-          %tr
-            %td
-              %a{:href=>@commission.url} ЦИК
-            - p.votings.each_with_index do |vote,i|
-              %td{"title"=>p.voting_name(i+1)}= vote
-        - else
-          %tr{:id => ('protocol_'+p.id.to_s)}
-            %td
-              %a{:href => commission_protocol_path(@commission.id, p.id), :class => (if p.conflict then "red" else "green" end)}
-                = 'КАРИК №' + p.id.to_s
-                - if can? :destroy, p
-                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
 
-            - p.votings.each_with_index do |vote,i|
-              %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)}
-                = vote
-          %tr{:id => ('protocol_pic_'+p.id.to_s)}
-            %td{:colspan => p.votings.count+1}
-              #pictures
-                - p.pictures.each do |pic|
-                  .picture[pic]
-                    %a{:href => pic.image_url}
-                      = image_tag pic.image_url(:thumb) if pic.image?
-.row
+  .row
   .span12
     - if request.env['HTTP_USER_AGENT'] =~ /Opera/ and (request.domain == 'xn----btbcb0bgnhbeargu4lna.xn--p1ai')
       %br

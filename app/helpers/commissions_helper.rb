@@ -5,9 +5,8 @@ module CommissionsHelper
     #uik.votings[index].votes
 #  end
 
-  def vote_class(p, index)
-
-    if uik_protocol = p.commission.protocols.first and p.votings[index-1] ==  uik_protocol.votings[index-1]
+  def vote_class(c, p, index)
+    if c.state[:uik][index-1] ==  p.votings[index-1]
       'green'
     else
       'red'
@@ -17,7 +16,17 @@ module CommissionsHelper
   def vote_class_uik(commission, index)
     #СДЕЛАТЬ Оптимизировать
     return 'gray' unless commission.votes_taken
-    if commission.state['uik'][index-1] ==  commission.state['taken'][index-1]
+    if commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
+      'green'
+    else
+      'red'
+    end
+  end
+
+  def vote_color_uik(commission, index)
+    #СДЕЛАТЬ Оптимизировать
+    return 'gray' unless commission.votes_taken
+    if commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
       'green'
     else
       'red'
