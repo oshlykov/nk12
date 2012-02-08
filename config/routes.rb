@@ -14,7 +14,10 @@ Nkapp::Application.routes.draw do
     end
   end
 
+  #get "protocols/cheking", :controller => 'protocols', :action => 'cheking'
   resources :protocols do
+    get 'checking', :on => :collection
+    post 'check', :on => :member
     resources :votings
   end
 

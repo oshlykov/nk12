@@ -11,7 +11,7 @@
         %span.divider →
 .row
   .span12
-    -if can? :new, @commisssion
+    -if can? :new, Protocol
       %a{:href => new_commission_protocol_path(@commission.id)}
         Загрузить новый протокол
       %br

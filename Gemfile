@@ -43,7 +43,7 @@ gem "guard-cucumber", ">= 0.6.1", :group => :development
 gem "devise", ">= 1.5.0"
 gem 'bcrypt-ruby'
 gem 'cancan'
-gem "twitter-bootstrap-rails", :platform => :ruby
+gem "twitter-bootstrap-rails", ">= 2.0.0", :platform => :ruby
 gem "rails-footnotes", ">= 3.7", :group => :development
 
 #Формы
