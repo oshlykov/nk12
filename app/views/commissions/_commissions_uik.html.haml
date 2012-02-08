@@ -11,6 +11,11 @@
         %span.divider →
 .row
   .span12
+    -if can? :new, @commisssion
+      %a{:href => new_commission_protocol_path(@commission.id)}
+        Загрузить новый протокол
+      %br
+      %br
     %table.voting-table
       - @protocols.each do |p|
         - if p == @protocols.first
@@ -25,10 +30,11 @@
               %a{:href => commission_protocol_path(@commission.id, p.id), :class => (if p.conflict then "red" else "green" end)}
                 = 'КАРИК №' + p.id.to_s
                 - if can? :destroy, p
-                  = link_to raw('<i class="icon-ok"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
 
             - p.votings.each_with_index do |vote,i|
-              %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)} = vote
+              %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)}
+                = vote
           %tr{:id => ('protocol_pic_'+p.id.to_s)}
             %td{:colspan => p.votings.count+1}
               #pictures
@@ -36,9 +42,6 @@
                   .picture[pic]
                     %a{:href => pic.image_url}
                       = image_tag pic.image_url(:thumb) if pic.image?
-    -if can? :new, @commisssion
-      %a{:href => new_commission_protocol_path(@commission.id)}
-        Загрузить новый протокол
 .row
   .span12
     %div#disqus_thread

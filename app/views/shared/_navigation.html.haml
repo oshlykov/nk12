@@ -4,7 +4,7 @@
   %li
     = link_to('Править', edit_user_path(current_user))
   %li
-    = link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
+    -#= link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
 - else
   %li
     = link_to('Войти', new_session_path)
