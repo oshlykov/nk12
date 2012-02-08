@@ -11,15 +11,19 @@
     = yield(:head)
 
   %body{:class => params[:controller]}
-    #container.container
-      %header
-        %nav
-          %ul.hmenu
+
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container
+          %a.brand{:href => root_url}
+            Контроль-выборов.рф
+          %ul.nav
             = render 'shared/navigation'
-        - flash.each do |name, msg|
-          = content_tag :div, msg, :id => "flash_\#{name}" if msg.is_a?(String)
-      #main{:role => "main"}
-        = yield
+          - flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_\#{name}" if msg.is_a?(String)
+    #container.container
+      -#main{:role => "main"}
+      = yield
       %footer
   :javascript
     var reformalOptions = {

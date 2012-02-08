@@ -29,6 +29,8 @@ before_filter :auth
   def update
     @user = User.find(params[:id])
     @user.role = params[:user][:role] if current_user.role == 'admin'
+    @user.name = params[:user][:name]
+    #@user.name = params[:user][:name]
     @user.save
     redirect_to :back
   end

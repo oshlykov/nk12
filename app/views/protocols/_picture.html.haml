@@ -2,4 +2,4 @@
   %a{:href => picture.image_url}
     = image_tag picture.image_url(:thumb) if picture.image?
   - if can? :update, picture.protocol
-    = link_to "Удалить", commission_protocol_picture_path(@protocol.commission_id, @protocol, picture.id), :method => :delete, :confirm => "Удалит цифровую копию?", :remote => :true
+    = link_to raw('<i class="icon-remove"></i>'), commission_protocol_picture_path(@protocol.commission_id, @protocol, picture.id), :method => :delete, :confirm => "Удалит цифровую копию?", :remote => :true

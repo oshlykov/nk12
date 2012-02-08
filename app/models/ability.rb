@@ -25,7 +25,7 @@ class Ability
 
     if user.role? :region
       #can :manage, 
-      can :destroy, Protocol
+      can [:destroy, :checking], Protocol
     end
 
     if user.role? :admin

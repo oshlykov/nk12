@@ -1,3 +1,8 @@
 = simple_form_for @user do |f|
-  = f.collection_select :role, User::ROLES, :to_s, :humanize if can? :update_role, @user
+  = f.input :role, :label => 'Роль', :collection => User::ROLES, :include_blank => false if can? :update_role, @user
+  = f.input :name, :label => "ФИО полностью:"
+  -#= f.input :name, :label => "Номер участка:"
+  -#= f.input :name, :label => "Номер телефона:"
+  -#= f.input :name, :label => "Доверяющий:"
+  -#= f.input :name, :label => ":"
   = f.submit('Сохранить')

@@ -32,7 +32,7 @@ before_filter :auth, :except => [:index, :show]
   def show
     #@uik = Commission.find_by_id!(params[:commission_id])
     #@protocol = Protocol.find_by_id!(params[:id])
-    redirect_to :back unless @uik = Commission.find_by_id(params[:commission_id]) and @protocol = Protocol.find_by_id(params[:id])
+    redirect_to :back unless @protocol = Protocol.find_by_id(params[:id]) and (@uik = @protocol.commission)
   end
     
   def create
@@ -70,6 +70,25 @@ before_filter :auth, :except => [:index, :show]
     end
     @protocol.save #fixme
     redirect_to :back
+  end
+
+  def checking
+    @protocols = Protocol.where('priority >= 100 and priority < 200').all
+    if can? :cheking, Protocol
+
+    end
+  end
+
+  def check
+    @protocol = Protocol.find_by_id!(params[:id])
+    respond_to do |format|
+      if can? :check, @protocol
+        @protocol.priority = 1
+        flash[:error] = 'Ошибка удаления' unless @protocol.save
+      end
+      format.js
+    end
+
   end
   
 end

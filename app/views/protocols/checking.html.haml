@@ -1,0 +1,28 @@
+%h1 Проверка протоколов
+%table.voting-table
+  - @protocols.each do |p|
+    %tr{:id => ('protocol_'+p.id.to_s)}
+      %td
+        - if can? :check, p
+          = link_to raw('<i class="icon-ok"></i>'), check_protocol_path(p.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить"
+      %td
+        = "#{@u.name} ##{@u.id}" if @u = User.find(p.user_id)
+        %br
+        %a{:href => protocol_path(p.id), :class => (if p.conflict then "red" else "green" end)}
+          = 'КАРИК №' + p.id.to_s
+          - if can? :destroy, p
+            = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+
+      - p.votings.each_with_index do |vote,i|
+        %td{"title"=>p.voting_name(i+1), :class => vote_class(p, i+1)}
+          = vote
+    - if p.pictures.size > 0
+      %tr{:id => ('protocol_pic_'+p.id.to_s)}
+        %td
+        %td{:colspan => p.votings.count+1}
+          #pictures
+            - p.pictures.each do |pic|
+              .picture[pic]
+                %a{:href => pic.image_url}
+                  = image_tag pic.image_url(:thumb) if pic.image?
+          %br
