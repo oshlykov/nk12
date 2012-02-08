@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   #-before_filter :authenticate_user!
 
-before_filter :auth
+before_filter :auth, :except => [:new, :create]
 
   def new
     @user = User.new
@@ -9,7 +9,7 @@ before_filter :auth
 
   def create
     @user = User.new(params[:user])
-    @user.role = 'guest'
+    @user.role = 'auth'
     if @user.save
       session[:user_id] = @user.id
       

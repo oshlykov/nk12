@@ -1,17 +1,29 @@
 %h1
   Вход
-= form_tag sessions_path do
-  %div.field
-    = label_tag "Электропочта"
-    = text_field_tag :email, params[:email]
-  %div.field
-    = label_tag "Пароль"
-    = password_field_tag :password
-  %div.field
-    = check_box_tag :remember_me
-    = label_tag "Запомнить на долго?"
-  %div.actions
-    = submit_tag "Войти"
+= form_tag sessions_path, :class => "form-horizontal" do
+  %fieldset
+    .control-group
+      = label_tag :email, "Электропочта"
+      .controls
+        = text_field_tag :email, params[:email]
+    .control-group
+      = label_tag :password, "Пароль", :class => "control-label"
+      .controls
+        = password_field_tag :password
+    .control-group
+      .controls
+        %label{:class => "control-label"}
+          = check_box_tag(:remember_me)
+          Запомнить на долго?
+    .control-group
+      .controls
+        = submit_tag "Войти"
 
-%a{:href => new_user_path}
-  Регистрация
+    .control-group
+      .controls
+    .control-group
+      .controls
+    .control-group
+      .controls
+        %a.btn.btn-primary{:href => new_user_path}
+          Регистрация

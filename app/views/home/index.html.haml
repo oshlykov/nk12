@@ -1,8 +1,6 @@
--#.hero-unit
-  %h1 
-  %p
-    Фильтровать по названию: 
-    %input#go-to.xlarge{:name => "search", :size => "30", :type => "text"}  
+-#%p
+  Фильтровать по названию: 
+  %input#go-to.xlarge{:name => "search", :size => "30", :type => "text"}  
 %div.row
   %div.span12
     - @elections.each do |election|

@@ -8,7 +8,7 @@
 - if can? :update, @protocol
   .files
     = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
-      = f.file_field :image
+      = f.file_field :image, :class => 'input-file'
       %table.upload_files
 
   = content_for :head do

@@ -1,6 +1,4 @@
 %header.jumbotron.subhead#overview
-  %h1
-    =raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
   .breadcrumb
     %li
       %a{:href => '/'} Регионы
@@ -9,13 +7,21 @@
       %li
         %a{:href => commission_path(c.id)}= c.name
         %span.divider →
+  %h1
+    =raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
 .row
   .span12
+    %br
     -if can? :new, Protocol
-      %a{:href => new_commission_protocol_path(@commission.id)}
+      %a{:href => new_commission_protocol_path(@commission.id), :class => 'btn btn-danger'}
         Загрузить новый протокол
-      %br
-      %br
+    -else
+      .alert.alert-info 
+        %b Загрузить протокол
+        Чтобы загрузить протокол, необходимо 
+        = link_to("зарегистрироваться", new_user_path)
+    %br
+    %br
     %table.voting-table
       - @protocols.each do |p|
         - if p == @protocols.first
@@ -44,17 +50,21 @@
                       = image_tag pic.image_url(:thumb) if pic.image?
 .row
   .span12
-    %div#disqus_thread
-    %script(type="text/javascript")
-      - if ENV['RAILS_ENV'] == 'production'
-        var disqus_shortname = 'nk12'; // required: replace example with your forum shortname
-      - else
-        var disqus_shortname = 'example'; // required: replace example with your forum shortname
-      :plain
+    - if request.env['HTTP_USER_AGENT'] =~ /Opera/ and (request.domain == 'xn----btbcb0bgnhbeargu4lna.xn--p1ai')
+      %br
+      = link_to "Просмотреть или добавить комментарий", '/'
+    - else
+      %div#disqus_thread
+      %script(type="text/javascript")
+        - if ENV['RAILS_ENV'] == 'production'
+          var disqus_shortname = 'nk12'; // required: replace example with your forum shortname
+        - else
+          var disqus_shortname = 'example'; // required: replace example with your forum shortname
+        :plain
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();

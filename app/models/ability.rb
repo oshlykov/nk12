@@ -6,20 +6,19 @@ class Ability
     #
     user ||= User.new # guest user (not logged in)
     user.role ||= 'guest'
-    #if user.admin?
-    #  can :manage, :all
-    #else
-    #  can :read, :all
-    #end
+
     if user.role? :guest
       can :read, :all
     end
 
-    if user.role? :observer
+    if user.role? :auth
       can :new, Protocol
       can [:update, :destroy], Protocol do |p|
         p.priority >= 100 and p.user_id == user.id
       end
+    end
+
+    if user.role? :observer
       #can :update, Protocol, :active => true, :user_id => user.id
     end
 

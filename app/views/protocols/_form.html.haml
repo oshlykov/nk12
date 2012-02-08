@@ -14,7 +14,7 @@
       %tr	
         %td
           - if can? :update, @protocol
-            %input{ :name =>i+1, :id => i+1, :value => v}
+            %input{ :name =>i+1, :id => i+1, :value => v, :class =>'span1'}
           - else
             = v
           -#= link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)

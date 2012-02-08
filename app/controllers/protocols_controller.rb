@@ -49,7 +49,7 @@ before_filter :auth, :except => [:index, :show]
     end
   end  
 
-  def update
+  def update  
     @protocol = Protocol.find_by_id!(params[:id]) 
     uik_protocol = @protocol.commission.protocols.first
     conflict = false
@@ -84,6 +84,9 @@ before_filter :auth, :except => [:index, :show]
     respond_to do |format|
       if can? :check, @protocol
         @protocol.priority = 1
+        
+
+
         flash[:error] = 'Ошибка удаления' unless @protocol.save
       end
       format.js

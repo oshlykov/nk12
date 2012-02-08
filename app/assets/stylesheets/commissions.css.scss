@@ -11,8 +11,8 @@
 .tree-root{
 
 	margin:5px;
-	padding:5px 10px;
-	font-size: 12px;
+	padding:10px 10px;
+	font-size: 14px;
 	background:#F0F0F0;
 
 	color: #444;
@@ -34,15 +34,15 @@
 //	}
 	a{
 		color :#444;
-		text-decoration:none;
-		border-bottom: 1px dashed #444;
+//		text-decoration:under;
+//		border-bottom: 1px dashed #444;
 	}
 
 }
 
 	a:hover{
 		color :#444;
-		text-decoration:none;
+//		text-decoration:none;
 	}
 
 .navigation-holder{
