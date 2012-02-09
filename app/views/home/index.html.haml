@@ -1,8 +1,8 @@
 -#%p
   Фильтровать по названию: 
   %input#go-to.xlarge{:name => "search", :size => "30", :type => "text"}  
-%div.row
-  %div.span12
+.row
+  .span10
     - @elections.each do |election|
       %h2
         = election.name
@@ -12,3 +12,12 @@
             %div.tree-root
               %h4
                 = link_to "#{commission.name}", :controller => "commissions", :action => "show", :id => commission.id  
+  .span2
+    Протоколов:
+    %h2.green
+      %span{:title => "Проверенных протоколов"}= @checked_count
+      - if @unchecked_count
+        %sup.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
+  .span2
+    Наблюдателей:
+    %h2.green= @users_count

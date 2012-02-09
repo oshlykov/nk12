@@ -2,7 +2,7 @@
   = request.domain
 - if login?
   %li
-    = link_to('Выйти', session_path(session.id), :method=>'delete')
+    = link_to('Выйти', session_path(session.object_id), :method=>'delete')
   %li
     = link_to('Править', edit_user_path(current_user))
   %li
