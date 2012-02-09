@@ -16,7 +16,7 @@ before_filter :auth, :except => [:index, :show]
     # 1 - основной для сверки
     protocol.priority = @uik.protocols.count + 100
     
-    protocol.election_id = 1 #fix
+    #protocol.election_id = 1 #fix
 
     if protocol.save 
       #TODO election
@@ -43,6 +43,7 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def destroy
+    redirect_to :back unless @p = Protocol.find_by_id(params[:id])
     respond_to do |format|
       unless can? :destroy, @p and @p.priority != 1 and @p.destroy
         flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
