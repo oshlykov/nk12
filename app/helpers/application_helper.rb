@@ -13,4 +13,8 @@ module ApplicationHelper
     end
     fuc.call(node.descendants.arrange)
   end
+
+  def vds(i=0)
+    VOTING_DICTIONARY_SHORT[1][i]
+  end
 end

@@ -53,9 +53,11 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def update  
+    #ИСПРАВИТЬ если протокол проверен, то щапрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
+    @protocol.source = params[:source]
     conflict = false
     @protocol.votings.each_with_index do |v,i|
       @protocol.send("v#{i+1}=", params["#{i+1}"])

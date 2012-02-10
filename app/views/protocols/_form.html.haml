@@ -10,8 +10,18 @@
 -#%form{:action => commission_protocols_path(@protocol.commission.id)+'/'+@protocol.id.to_s, :method => 'post', :id => 'protocol_update'}
 =form_for @protocol do |form|
   %table
+    -#%tr
+      %td
+        = form.input('Сохранить') if can? :update, @protocol
+    %tr 
+      %td
+      %td{:colspan => 2}
+        %input{ :name => :source, :id => :source, :value => @protocol.source, :class =>'span3'}
+        Откуда получен протокол (сайт, партия или организация)
     - @protocol.votings.each_with_index do |v,i|
       %tr	
+        %td
+          = "#{i+1}. #{vds(i+1)}"
         %td
           - if can? :update, @protocol
             %input{ :name =>i+1, :id => i+1, :value => v, :class =>'span1'}
@@ -21,7 +31,7 @@
           -#%td
           -#= v.votes
         %td
-          = @protocol.voting_name(i+1)
+          = "#{@protocol.voting_name(i+1)}"
         -#%td
           -#= link_to 'Показать', trip
         -#%td

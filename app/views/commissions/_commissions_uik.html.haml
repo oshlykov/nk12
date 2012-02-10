@@ -12,6 +12,12 @@
 .row
   .span12
     %table.voting-table
+      %tr
+        %td{:width => "100px"}
+        %td{:colspan => 18}
+        - 7.times do |i|
+          %td
+            %small{"title"=>Protocol.voting_name(i+19, 1)}= vds(i+19)
       - @checked.each do |p|
         - if p == @checked.first
           %tr

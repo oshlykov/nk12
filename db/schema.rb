@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120208175922) do
+ActiveRecord::Schema.define(:version => 20120210183520) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(:version => 20120208175922) do
     t.integer  "v28",           :default => 0
     t.integer  "v29",           :default => 0
     t.integer  "v30",           :default => 0
+    t.string   "source"
   end
 
   add_index "protocols", ["priority"], :name => "index_protocols_on_priority"

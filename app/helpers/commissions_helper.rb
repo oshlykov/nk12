@@ -6,6 +6,7 @@ module CommissionsHelper
 #  end
 
   def vote_class(c, p, index)
+    return 'green' if index == 26 
     if c.state[:uik][index-1] ==  p.votings[index-1]
       'green'
     else
@@ -16,6 +17,7 @@ module CommissionsHelper
   def vote_class_uik(commission, index)
     #СДЕЛАТЬ Оптимизировать
     return 'gray' unless commission.votes_taken
+    return 'green' if index == 26 
     if commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
       'green'
     else
@@ -26,6 +28,7 @@ module CommissionsHelper
   def vote_color_uik(commission, index)
     #СДЕЛАТЬ Оптимизировать
     return 'gray' unless commission.votes_taken
+    return 'green' if index == 26 
     if commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
       'green'
     else

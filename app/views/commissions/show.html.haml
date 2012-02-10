@@ -6,6 +6,12 @@
     = render :partial => 'commissions_region'
 - else
   %table.voting-table
+    %tr
+      %td{:width => "100px"}
+      %td{:colspan => 18}
+      - 7.times do |i|
+        %td
+          %small{"title"=>Protocol.voting_name(i+19, 1)}= vds(i+19)
     - @commission.children.each do |c|
       %tr
         %td
