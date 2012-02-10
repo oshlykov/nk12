@@ -17,7 +17,8 @@
     %h2.green
       %span{:title => "Проверенных протоколов"}= @checked_count
       - if @unchecked_count
-        %sup.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
+        %sup
+          %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
   .span2
     Наблюдателей:
     %h2

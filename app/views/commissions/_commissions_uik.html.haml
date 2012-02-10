@@ -15,13 +15,13 @@
       - @checked.each do |p|
         - if p == @checked.first
           %tr
-            %td
+            %td{:width => "100px"}
               %a{:href=>@commission.url} ЦИК
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1)}= vote
         - else
           %tr{:id => ('protocol_'+p.id.to_s)}
-            %td
+            %td{:width => "100px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
                 = 'КАРИК №' + p.id.to_s
                 - if can? :destroy, p
@@ -43,7 +43,7 @@
       %table.voting-table
         - @unchecked.each do |p|
           %tr{:id => ('protocol_'+p.id.to_s)}
-            %td
+            %td{:width => "100px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
                 = 'КАРИК №' + p.id.to_s
                 - if can? :destroy, p

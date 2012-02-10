@@ -21,42 +21,45 @@
             = render 'shared/navigation'
           - flash.each do |name, msg|
             = content_tag :div, msg, :id => "flash_\#{name}" if msg.is_a?(String)
+    %a{:href => "http://karik.su", :style => "position: fixed;top: 00px;right: 0px;left: 800px;z-index: 1130;"}
+      %img{:src=>'/assets/karik_logo.gif'}
     #container.container
       -#main{:role => "main"}
       = yield
-      %footer
-  - if Rails.env.production?
-    :javascript
-      var reformalOptions = {
-          project_id: 54065,
-          project_host: "nk12.reformal.ru",
-          force_new_window: false,
-          tab_alignment: "right",
-          tab_top: "300",
-          tab_bg_color: "#F08200",
-          tab_image_url: "http://tab.reformal.ru/0J%252FRgNC10LTQu9C%252B0LbQtdC90LjRjyDQv9GA0L7QtdC60YLRgw==/FFFFFF/0bbddf01a0d75b7c53d59f57dec259ba"
-      };
+    %footer
+      - if Rails.env.production?
+        :javascript
+          var reformalOptions = {
+              project_id: 54065,
+              project_host: "nk12.reformal.ru",
+              force_new_window: false,
+              tab_alignment: "right",
+              tab_top: "300",
+              tab_bg_color: "#F08200",
+              tab_image_url: "http://tab.reformal.ru/0J%252FRgNC10LTQu9C%252B0LbQtdC90LjRjyDQv9GA0L7QtdC60YLRgw==/FFFFFF/0bbddf01a0d75b7c53d59f57dec259ba"
+          };
+          
+          (function() {
+              var script = document.createElement('script');
+              script.type = 'text/javascript'; script.async = true;
+              script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v1/reformal.js?1';
+              document.getElementsByTagName('head')[0].appendChild(script);
+          })();
       
-      (function() {
-          var script = document.createElement('script');
-          script.type = 'text/javascript'; script.async = true;
-          script.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'media.reformal.ru/widgets/v1/reformal.js?1';
-          document.getElementsByTagName('head')[0].appendChild(script);
-      })();
-  
-    -# <!-- Yandex.Metrika counter -->
-    %div{:style=>"display:none;"}
-      :javascript
-        (function(w, c) {
-            (w[c] = w[c] || []).push(function() {
-                try {
-                    w.yaCounter12475498 = new Ya.Metrika({id:12475498, enableAll: true});
-                }
-                catch(e) { }
-            });
-        })(window, "yandex_metrika_callbacks");
+        -# <!-- Yandex.Metrika counter -->
+        %div{:style=>"display:none;"}
+          :javascript
+            (function(w, c) {
+                (w[c] = w[c] || []).push(function() {
+                    try {
+                        w.yaCounter12475498 = new Ya.Metrika({id:12475498, enableAll: true});
+                    }
+                    catch(e) { }
+                });
+            })(window, "yandex_metrika_callbacks");
 
-    %script{:src=>'//mc.yandex.ru/metrika/watch.js', :type=>'text/javascript', :defer=>"defer"}
-    %noscript
-      %div
-        %img{:src=>'//mc.yandex.ru/watch/12475498', :style=>'position:absolute; left:-9999px;'}
+        %script{:src=>'//mc.yandex.ru/metrika/watch.js', :type=>'text/javascript', :defer=>"defer"}
+        %noscript
+          %div
+            %img{:src=>'//mc.yandex.ru/watch/12475498', :style=>'position:absolute; left:-9999px;'}
+
