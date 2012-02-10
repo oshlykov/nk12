@@ -1,5 +1,3 @@
-%li
-  = request.domain
 - if login?
   %li
     = link_to('Выйти', session_path(session.object_id), :method=>'delete')
