@@ -10,10 +10,12 @@ before_filter :auth, :except => [:index, :show]
 
   def show
     @commission = Commission.find(params[:id])
-    @unchecked = @commission.protocols.where('priority >= 100')
-    @checked = @commission.protocols.where('priority < 100')
-    @checked_count = @checked.size
-    @unchecked_count = @unchecked.size
+    if @commission.is_uik
+      @unchecked = @commission.protocols.where('priority >= 100')
+      @checked = @commission.protocols.where('priority < 100')
+    else
+      @checked_count = @commission.subtree.where('votes_taken=1').size
+    end
     #@checked_protocol = @protocols[1] if @protocols.count > 1
     @election = @commission.election
     if request.xhr?
