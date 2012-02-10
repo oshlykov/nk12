@@ -61,10 +61,11 @@ header nav ul li {
   color: #46a546;
 }
 
-.navbar-inner {
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#9d261d), to(#ae372e));
-  background-image: -webkit-linear-gradient(top, #9d261d, #ae372e);
-}
+
+//.navbar-inner {
+//  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#9d261d), to(#ae372e));
+//  background-image: -webkit-linear-gradient(top, #9d261d, #ae372e);
+//}
 
 a { text-decoration: underline  }
 a:hover { text-decoration: none }
