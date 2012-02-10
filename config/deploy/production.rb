@@ -12,7 +12,7 @@ set :deploy_to, "/home/nk12/data/www/#{application}"
 
 # git and Auth
 set :scm, :git
-set :repository, "git@github.com:jesteracer/nk12.git"
+set :repository, "https://github.com/jesteracer/nk12.git"
 #set :branch, "production"
 set :deploy_via, :remote_cache
 

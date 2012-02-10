@@ -25,7 +25,7 @@
       -#main{:role => "main"}
       = yield
       %footer
-  - if 1#Rails.env.production?
+  - if Rails.env.production?
     :javascript
       var reformalOptions = {
           project_id: 54065,

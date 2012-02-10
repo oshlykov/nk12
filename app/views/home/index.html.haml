@@ -20,4 +20,7 @@
         %sup.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
   .span2
     Наблюдателей:
-    %h2.green= @users_count
+    %h2
+      %span.green{:title => "Зарегистрировано на сайте"}= @users_count
+      %sup
+        %small.green{:title => "Данные из Вконтакта и школ наблюдателей КАРИК"} (>2000)

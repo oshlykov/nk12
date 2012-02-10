@@ -1,4 +1,5 @@
 = simple_form_for @user do |f|
+  %h1= @user.email
   = f.input :role, :label => 'Роль', :collection => User::ROLES, :include_blank => false if can? :update_role, @user
   = f.input :name, :label => "ФИО полностью:"
   -#= f.input :name, :label => "Номер участка:"
