@@ -15,6 +15,9 @@ before_filter :auth, :except => [:new, :create]
       
       redirect_to root_url, :notice => "Рады вас видеть."
     end
+    respond_to do |format|
+      format.html { render "new" }
+    end
   end
 
   def show

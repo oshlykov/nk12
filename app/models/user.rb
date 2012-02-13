@@ -7,6 +7,9 @@ class User < ActiveRecord::Base
   has_many :protocols
   has_many :pictures
 
+  validates :email, :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false}
+  validates :password, :confirmation => {:message => "Пароли не совпадают"}
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   #-devise :database_authenticatable, :registerable,

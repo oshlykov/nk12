@@ -45,7 +45,7 @@ before_filter :auth, :except => [:index, :show]
   def destroy
     redirect_to :back unless @p = Protocol.find_by_id(params[:id])
     respond_to do |format|
-      unless can? :destroy, @p and @p.priority != 1 and @p.destroy
+      unless can?(:destroy, @p) and @p.priority != 1 and @p.destroy
         flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
       end
       format.js
