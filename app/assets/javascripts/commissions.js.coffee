@@ -12,19 +12,19 @@ $ ->
     $(".loading",obj).show()
     $(obj).load $(obj).data("url"), ->
 
-      $(this).data('loaded') == true      
+#      $(this).data('loaded') == true      
       $(this).addClass('loaded')
       $('.loading',this).hide()
 
 #     flag=true
-    if flag is true        
-      $('a.load-new').click (e) ->
-        e.preventDefault()
-        loader $(this).parents('.node-name').next()
+#    if flag is true        
         #$('.votings').appear ->
           #loader $(this)  
 
-  loader $('.votings:first'),true
+#  loader $('.votings:first'),true
+  $('a.load-new').click (e) ->
+    e.preventDefault()
+    loader $(this).parents('.node-name').next()
 
   
 

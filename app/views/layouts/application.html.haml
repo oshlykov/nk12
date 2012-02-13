@@ -24,6 +24,11 @@
     %a{:href => "http://kapuk.info", :style => "position: fixed;top: 00px;right: 100px;z-index: 1130;float:right;"}
       %img{:src=>'/assets/karik_logo.png'}
     #container.container
+      .row
+        .span12
+          - flash.each do |key, msg|
+            = content_tag :div, msg, :class => "alert alert-info", :id => "notice_ #{key}"
+
       -#main{:role => "main"}
       = yield
     %footer

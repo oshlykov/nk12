@@ -9,15 +9,16 @@
 -#/uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)
 -#%form{:action => commission_protocols_path(@protocol.commission.id)+'/'+@protocol.id.to_s, :method => 'post', :id => 'protocol_update'}
 =form_for @protocol do |form|
-  %table
-    -#%tr
-      %td
-        = form.input('Сохранить') if can? :update, @protocol
+  %table{:width => '100%'}
     %tr 
       %td
-      %td{:colspan => 2}
-        %input{ :name => :source, :id => :source, :value => @protocol.source, :class =>'span3'}
         Откуда получен протокол (сайт, партия или организация)
+      %td
+        %input{ :name => :source, :id => :source, :value => @protocol.source, :class =>'span3'}
+  %br
+  %br
+  %table
+    %tr 
     - @protocol.votings.each_with_index do |v,i|
       %tr	
         %td
@@ -27,18 +28,12 @@
             %input{ :name =>i+1, :id => i+1, :value => v, :class =>'span1'}
           - else
             = v
-          -#= link_to 'Редактировать', edit_commission_protocol_voting_path(@uik.id, @protocol.id, v.id)
-          -#%td
-          -#= v.votes
         %td
           = "#{@protocol.voting_name(i+1)}"
-        -#%td
-          -#= link_to 'Показать', trip
-        -#%td
-          -#= link_to 'Удалить', trip, :confirm => 'Вы уверены?', :method => :delete
     %tr
       %td
-        = form.submit('Сохранить') if can? :update, @protocol
+      %td{:colspan => 2}
+        = form.submit('Сохранить', :class =>"btn btn-primary") if can? :update, @protocol
 
 -#  = simple_form_for [v] do |f|
 -#= f.input :er, :label => "Единая Россия", :wrapper => :inline

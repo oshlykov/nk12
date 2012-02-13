@@ -21,10 +21,14 @@
           %div.name
             %h3{"id"=>child.id,"data-depth"=>child.depth}
               - if child.uik_holder
-                %a.load-new{ :href => "##{child.id}" }
-                  = raw "#{child.name} <sup><small>#{link_to('цик', child.url)}</small></sup>"
+                %a.load-new.ajax{ :href => "##{child.id}" }
+                  = child.name
+                %sup
+                  %small= link_to('цик', child.url)
               - else
-                = raw "#{child.name} <sup><small>#{link_to('цик', child.url)}</small></sup>"
+                = child.name
+                %sup
+                  %small= link_to('цик', child.url)
           .clearfix
         - if child.uik_holder
           %div.votings{"data-id"=>child.id, "data-loaded"=>"false", "data-url"=>"/uik/#{child.id}"}

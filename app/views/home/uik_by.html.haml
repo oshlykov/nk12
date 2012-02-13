@@ -1,0 +1,15 @@
+%header
+  %h1 Поиск по номеру участка
+  = form_tag '/uik_by', :method => "get", :class => "well form-search" do
+    = label_tag :id, "Номер УИК"
+    = text_field_tag :id, params[:id], :class => "input-medium search-query span1"
+    = raw '<button class="btn" type="submit">показать</button>'
+- if @commissions    
+  .row
+    .span10
+      %ul
+      - @commissions.each do |child|
+        %li
+          %a{:href => commission_path(child[0].id)}
+            = "#{child[0].name}"
+          = " — #{child[1]}"

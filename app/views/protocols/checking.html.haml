@@ -9,7 +9,7 @@
         = raw"#{@u.name} #<span title='#{@u.email}'>#{@u.id}</span>" if @u = User.find(p.user_id)
         %br
         %a{:href => protocol_path(p.id)}
-          = 'КАРИК №' + p.id.to_s
+          = "КАРИК № #{p.id} (#{p.commission.id})"
           - if can? :destroy, p
             = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
 

@@ -1,51 +1,48 @@
-%h1
-  = "Протокол к "
-  %a{:href => commission_path(@uik.id)}
-    =@uik.name+'('+@uik.root.name+')'
-- if @protocol.pictures.size
-  %h2
-    Цифровые копии протокола и других документов
-- if can? :update, @protocol
-  .files
-    = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
-      = f.file_field :image, :class => 'input-file'
-      %table.upload_files
+%header
+  %h1
+    = "Протокол к "
+    %a{:href => commission_path(@uik.id)}
+      =@uik.name+'('+@uik.root.name+')'
+%br
+.row
+  .span8
+    %h2 Данные с копии протокола
+    = render "form"
+  .span3.alert.alert-info 
+    - if @protocol.pictures.size
+      %h3
+        Цифровые копии протокола и других документов c участка
+    - if can? :update, @protocol
+      .files
+        = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
+          = f.file_field :image, :class => 'input-file'
+          %table.upload_files
+        = content_for :head do
+          - # javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"
+          :javascript
+             $(document).ready(function(){
+               var url = $('input#picture_image').attr('rel');
 
-  = content_for :head do
-    - # javascript_include_tag "jquery.fileupload", "jquery.fileupload-ui", "jquery.fileupload-uix"
-    :javascript
-       $(document).ready(function(){
-         var url = $('input#picture_image').attr('rel');
+               $('.upload').fileUploadUI({
+                 uploadTable: $('.upload_files'),
+                 downloadTable: $('#pictures'),
+                 buildUploadRow: function (files, index) {
+                   var file = files[index];
+                   return $('<tr><td>' + file.name + '<\/td>' +
+                            '<td class="file_upload_progress"><div><\/div><\/td>' +
+                            '<td class="file_upload_cancel">' +
+                            '<button class="ui-state-default ui-corner-all" title="Cancel">' +
+                            '<img src="/assets/cancel.png"/>' +
+                            '<\/button><\/td><\/tr>');
+                   },
+                 buildDownloadRow: function (file) {
+                   return $('<div id="picture_'+file.id+'" class="picture">'+
+                            '<a href="'+file.url+'"><img src="'+file.thumbnail_url+'"/></a>'+
+                            '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалит цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
+                 }
+               });
+              }); //ready
 
-         $('.upload').fileUploadUI({
-           uploadTable: $('.upload_files'),
-           downloadTable: $('#pictures'),
-           buildUploadRow: function (files, index) {
-             var file = files[index];
-             return $('<tr><td>' + file.name + '<\/td>' +
-                      '<td class="file_upload_progress"><div><\/div><\/td>' +
-                      '<td class="file_upload_cancel">' +
-                      '<button class="ui-state-default ui-corner-all" title="Cancel">' +
-                      '<img src="/assets/cancel.png"/>' +
-                      '<\/button><\/td><\/tr>');
-             },
-           buildDownloadRow: function (file) {
-             return $('<div id="picture_'+file.id+'" class="picture">'+
-                      '<a href="'+file.url+'"><img src="'+file.thumbnail_url+'"/></a>'+
-                      '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалит цифровую копию?" href="'+file.delete_url+'">Удалить</a></div>');
-           }
-         });
-        }); //ready
+      #pictures
+        = render :partial => 'picture', :collection => @protocol.pictures
 
-#pictures
-  = render :partial => 'picture', :collection => @protocol.pictures
-
--#%table
-  -#%tr
-    -# @protocol.pictures.each do |pic|
-      -#%td
-        -#= pic.id
-
-%h2
-  Данные с копии
-= render "form"

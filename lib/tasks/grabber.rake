@@ -120,6 +120,8 @@ namespace :grab do
     execute_and_measure_time {
       fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
     }
+#2011      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2012      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&global=1&vrn=100100031793505&region=0&prver=0&pronetvd=null")
   end
 
   desc "Parse raw HTML data stored in the file system and put them to the database"

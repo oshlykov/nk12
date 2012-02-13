@@ -22,18 +22,20 @@ Nkapp::Application.routes.draw do
   end
 
   resources :pictures, :only => [:index, :create]
-  get "verify/index"
+  #get "verify/index"
 
-  #get \"users\/show\"
+  match 'uik_by/:id' => 'home#uik_by'
+  match 'uik_by' => 'home#uik_by'
+  #   match 'products/:id' => 'catalog#view'
 
   root :to => "home#index"
 
 #-  devise_for :users
   resources :sessions
-  get "login" => "sessions#new", :as => "login"
+  #get "login" => "sessions#new", :as => "login"
   #resources :users, :only => :show
-  resources :home
-  resources :verify
+  #resources :home
+  #resources :verify
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

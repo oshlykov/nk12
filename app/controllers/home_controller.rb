@@ -4,14 +4,23 @@ class HomeController < ApplicationController
     @checked_count = Protocol.where('priority = 1').size
     @unchecked_count = Protocol.where('priority > 1').size
     @users_count = User.count
-    # @commissions = Commission.roots
   end
-
+=begin
   def show
     @commission = Commission.find(params[:id])
     @election = @commission.election
 #    @commission
 #    election.commissions.roots.where()
     # @commission = Commission.all(:include => :votings, :conditions => {:is_uik => false})
+  end
+=end
+
+  def uik_by
+    @commissions = Commission.where("name like '%№#{params[:id]}'").map { |c| [c, c.root.name] }
+    if @commissions
+      @commissions.sort! { |a,b| a[1] <=> b[1] }
+    else
+      flash[:notice] = "Участка с номером #{params[:id]} не найдено" 
+    end
   end
 end

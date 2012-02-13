@@ -67,7 +67,20 @@ header nav ul li {
 //  background-image: -webkit-linear-gradient(top, #9d261d, #ae372e);
 //}
 
-a { text-decoration: underline  }
+a.ajax {
+  text-decoration: none;
+  border-bottom: 1px dashed #B2CCF0;
+}
+
+a:hover.ajax {
+  text-decoration: none;
+  border-bottom: none;
+}
+
+a { 
+  text-decoration: underline;
+  border-color: #B2CCF0;
+}
 a:hover { text-decoration: none }
 
 a.btn { text-decoration: none }
