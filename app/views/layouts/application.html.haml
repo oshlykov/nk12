@@ -32,6 +32,11 @@
       -#main{:role => "main"}
       = yield
     %footer
+      .row
+        .offset10.span2
+          %br Исходный код проекта
+          %iframe{:src=>"http://markdotto.github.com/github-buttons/github-btn.html?user=jesteracer&repo=nk12&type=watch&count=true",
+          :allowtransparency=>"true", :frameborder=>"0", :scrolling=>"0", :width=>"110px", :height=>"20px"}
       - if Rails.env.production?
         :javascript
           var reformalOptions = {
