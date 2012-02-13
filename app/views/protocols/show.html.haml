@@ -9,9 +9,11 @@
     %h2 Данные с копии протокола
     = render "form"
   .span3.alert.alert-info 
+    %h3
+      Цифровые копии протокола и других документов c участка
     - if @protocol.pictures.size
-      %h3
-        Цифровые копии протокола и других документов c участка
+      #pictures
+        = render :partial => 'picture', :collection => @protocol.pictures
     - if can? :update, @protocol
       .files
         = form_for Picture.new, :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol), :html => { :class => "upload", :multipart => true } do |f|
@@ -42,7 +44,4 @@
                  }
                });
               }); //ready
-
-      #pictures
-        = render :partial => 'picture', :collection => @protocol.pictures
 
