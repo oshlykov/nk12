@@ -13,7 +13,7 @@ before_filter :auth, :except => [:new, :create]
     if @user.save
       session[:user_id] = @user.id
       
-      redirect_to root_url, :notice => "Рады вас видеть."
+      redirect_to root_url, :notice => "Рады вас видеть." and return 
     end
     respond_to do |format|
       format.html { render "new" }

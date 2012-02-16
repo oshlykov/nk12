@@ -24,7 +24,8 @@
                 %a.load-new.ajax{ :href => "##{child.id}" }
                   = child.name
                 %sup
-                  %small= link_to('цик', child.url)
+                  %small
+                    = child.descendants.where('votes_taken=true').size
               - else
                 = child.name
                 %sup

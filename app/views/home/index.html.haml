@@ -13,10 +13,13 @@
         = election.name
       .row
         .span12
-          - election.commissions.roots.all(:order => :name).each do |commission|
+          - election.commissions.roots.all(:order => :name).each do |c|
             %div.tree-root
               %h4
-                = link_to "#{commission.name}", :controller => "commissions", :action => "show", :id => commission.id  
+                = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id
+                %sup
+                  %small
+                    = c.descendants.where('votes_taken=true').size
   .span2
     Протоколов:
     %h2.green

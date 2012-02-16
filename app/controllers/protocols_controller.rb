@@ -35,7 +35,7 @@ before_filter :auth, :except => [:index, :show]
   def show
     #@uik = Commission.find_by_id!(params[:commission_id])
     #@protocol = Protocol.find_by_id!(params[:id])
-    redirect_to :back unless @protocol = Protocol.find_by_id(params[:id]) and (@uik = @protocol.commission)
+    redirect_to root_url unless @protocol = Protocol.find_by_id(params[:id]) and (@uik = @protocol.commission)
   end
     
   def create
@@ -53,7 +53,7 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def update  
-    #ИСПРАВИТЬ если протокол проверен, то щапрет редактирования
+    #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
@@ -72,9 +72,13 @@ before_filter :auth, :except => [:index, :show]
 
       commission.conflict = conflict if @protocol.priority == 1 and commission.conflict != conflict
     end
-    commission.save #fixme
-    @protocol.save #fixme
-    redirect_to :back
+    if can?(:update, @protocol)
+      commission.save #fixme
+      @protocol.save #fixme
+      redirect_to :back
+    else
+      redirect_to :back, :notice => "У вас нет прав редактировать протокол"
+    end
   end
 
   def checking

@@ -16,7 +16,7 @@ class HomeController < ApplicationController
 =end
 
   def uik_by
-    @commissions = Commission.where("name like '%№#{params[:id]}'").map { |c| [c, c.root.name] }
+    @commissions = Commission.where("name like ?", '%№'+params[:id].to_s).map { |c| [c, c.root.name] }
     if @commissions
       @commissions.sort! { |a,b| a[1] <=> b[1] }
     else

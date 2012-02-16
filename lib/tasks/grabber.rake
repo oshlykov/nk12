@@ -118,10 +118,10 @@ namespace :grab do
     require 'open-uri'
 
     execute_and_measure_time {
-      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
     }
 #2011      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
-#2012      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&global=1&vrn=100100031793505&region=0&prver=0&pronetvd=null")
+#2012      fetch_commissions(inp_data_dir, "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
   end
 
   desc "Parse raw HTML data stored in the file system and put them to the database"
@@ -138,7 +138,9 @@ namespace :grab do
       # The code below is almost copy of grab:get task. Temporary solution. Not very effective in terms of execution time
 
       Rake::Task['grab:clean_up'].invoke
-      @election = Election.create!(:name => "Выборы депутатов Государственной Думы Федерального Собрания Российской Федерации шестого созыва", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+      @election = Election.create!(:name => "2012 - Выборы Президента Российской Федерации", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2011      @election = Election.create!(:name => "2012 - Выборы Президента Российской Федерации", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2012      @election = Election.create!(:name => "2012 - Выборы Президента Российской Федерации", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
 
       #Хеш имен и их индексов в таблицх голосований (меняется на каждых выборах)
 
@@ -211,7 +213,9 @@ YAML_TEXT2
      end
 
      # Getting commission's page from the file system. No fetching/saving happens. As all the data is already in filesystem's cache
-     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2011     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2012     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
      agent = Nokogiri::HTML(raw_html, nil, 'Windows-1251')
 
      agent.search("select option").each_with_index do |option,index|
@@ -321,7 +325,11 @@ YAML_TEXT2
     require 'pp'
 
         
-    @election = Election.create!(:name => "Выборы депутатов Государственной Думы Федерального Собрания Российской Федерации шестого созыва", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+    @election = Election.create!(:name => "2012 — Выборы Президента Российской Федерации", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+
+#2011    @election = Election.create!(:name => "Выборы депутатов Государственной Думы Федерального Собрания Российской Федерации шестого созыва", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+#2012    @election = Election.create!(:name => "2012 — Выборы Президента Российской Федерации", :url => "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+
 
     #Хеш имен и их индексов в таблицх голосований (меняется на каждых выборах)
 #    voting_names = {"poll"=>1,"received_by_commission"=>2,"voted_early"=>3,"voted_in"=>4,"voted_out"=>5,"canceled_ballots"=>6,"mobile_ballots"=>7,"stationary_ballots"=>8,"invalid_ballots"=>9,"valid_ballots"=>10,"absentee_ballots_all"=>11,"absentee_ballots_given"=>12,"absentee_ballots_voted"=>13,"unused_absentee_ballots"=>14,"absentee_territorial"=>15,"lost_absentee_ballots"=>16,"ballots_not_taken"=>18,"sr"=>19,"ldpr"=>20,"pr"=>21,"kprf"=>22,"yabloko"=>23,"er"=>24,"pd"=>25}
@@ -391,7 +399,9 @@ YAML_TEXT2
     end
     
 
-    agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
+    agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
+#2011    agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
+#2012    agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
     agent.search("select option").each_with_index do |option,index|      
       if (option['value'])      
         commission = Commission.create!(:name => option.content,:url => option['value'], :election_id => @election.id)        
