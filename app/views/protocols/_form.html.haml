@@ -14,7 +14,7 @@
       %td
         Откуда получен протокол (сайт, партия или организация)
       %td
-        - if can? :update, @protocol and @protocol.priority >=100
+        - if can? :update, @protocol
           %input{ :name => :source, :id => :source, :value => @protocol.source, :class =>'span3'}
         - else
           = @protocol.source
@@ -27,13 +27,13 @@
         %td
           = "#{i+1}. #{vds(i+1)}"
         %td
-          - if can? :update, @protocol and @protocol.priority >=100
+          - if can? :update, @protocol
             %input{ :name =>i+1, :id => i+1, :value => v, :class =>'span1'}
           - else
             = v
         %td
           = "#{@protocol.voting_name(i+1)}"
-    - if can? :update, @protocol and @protocol.priority >=100
+    - if can? :update, @protocol
       %tr
         %td
         %td{:colspan => 2}
