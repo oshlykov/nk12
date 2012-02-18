@@ -20,21 +20,15 @@ before_filter :auth, :except => [:new, :create]
     end
   end
 
-  def show
-    @user = User.find(params[:id])
-
-  end
-
-  def edit
-    @user = User.find(params[:id])
+  def show 
+    @user = User.find params[:id]
   end
 
   def update
-    @user = User.find(params[:id])
-    @user.role = params[:user][:role] if current_user.role == 'admin'
-    @user.name = params[:user][:name]
-    #@user.name = params[:user][:name]
-    @user.save
+    current_user.role = params[:user][:role] if current_user.role == 'admin'
+    current_user.name = params[:user][:name]
+    current_user.commission = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
+    current_user.save
     redirect_to :back
   end
 

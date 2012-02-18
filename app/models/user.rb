@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   end
   has_many :protocols
   has_many :pictures
+  belongs_to  :commission
 
   validates :email, :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false}
   #validates :password, :confirmation => true
@@ -15,5 +16,9 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
   #-devise :database_authenticatable, :registerable,
   #-       :recoverable, :rememberable, :trackable, :validatable
+
+  def name
+    read_attribute(:name) || "Аноним"
+  end
 
 end

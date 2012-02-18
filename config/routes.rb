@@ -12,6 +12,8 @@ Nkapp::Application.routes.draw do
       resources :votings
       resources :pictures, :only => [:create, :destroy]
     end
+    get 'add_watcher', :on => :member
+    get 'del_watcher', :on => :collection
   end
 
   #get "protocols/cheking", :controller => 'protocols', :action => 'cheking'
