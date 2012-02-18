@@ -56,6 +56,62 @@ YAML_TEXT
 
 VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT2
 1:
+  1: 
+  2: 
+  3: 
+  4: 
+  5: 
+  6: 
+  7: 
+  8: 
+  9: 
+  10: 
+  11: 
+  12: 
+  13: 
+  14: 
+  15: 
+  16: 
+  17: 
+  18: 
+  19: СР
+  20: ЛДПР
+  21: ПР
+  22: КПРФ
+  23: ЯБЛ
+  24: ЕР
+  25: ПД
+  26: ЧН
+2:
+  1: 
+  2: 
+  3: 
+  4: 
+  5: 
+  6: 
+  7: 
+  8: 
+  9: 
+  10: 
+  11: 
+  12: 
+  13: 
+  14: 
+  15: 
+  16: 
+  17: 
+  18: 
+  19: к1
+  20: к2
+  21: к3
+  22: к4
+  23: к5
+  24: 
+YAML_TEXT2
+
+=begin
+VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT~~
+1:
   1: изб
   2: пол
   3: дос
@@ -107,4 +163,6 @@ VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT2
   22: к4
   23: к5
   24: ЧН
-YAML_TEXT2
+YAML_TEXT~~
+
+=end

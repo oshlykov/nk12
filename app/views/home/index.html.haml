@@ -7,6 +7,10 @@
       = label_tag :id, "Номер УИК"
       = text_field_tag :id, params[:id], :class => "input-medium search-query span1"
       = raw '<button class="btn" type="submit">показать</button>'
+  .span4
+    %h1
+      %a{:href => "#1"}
+        2012 Выборы Президента
   .span9
     - @elections.each do |election|
       %h2
@@ -20,6 +24,11 @@
                 %sup
                   %small
                     = c.descendants.where('votes_taken=true').size
+      %span{:id=>election.id}
+      %p
+        %br
+      %p
+        %br
   .span2
     Протоколов:
     %h2.green

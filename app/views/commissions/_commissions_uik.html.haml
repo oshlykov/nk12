@@ -102,15 +102,16 @@
   .span3
     %br
     %div
-      = "Наблюдатели на участке:" if @commission.watchers.first
-      - @commission.watchers.each do |watcher|
-        = link_to watcher.name, user_path(watcher), :class => "btn"
-        %br
-        %br
-      -if current_user.commission and current_user.commission.is_uik?
-        = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
-      -elsif @commission.watchers.size < 5
-        = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
+      -if current_user
+        = "Наблюдатели на участке:" if @commission.watchers.first
+        - @commission.watchers.each do |watcher|
+          = link_to watcher.name, user_path(watcher), :class => "btn"
+          %br
+          %br
+        -if current_user.commission and current_user.commission.is_uik?
+          = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
+        -elsif @commission.watchers.size < 5
+          = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
     %br
     #vk_com
       Наблюдатели в данном регионе:
