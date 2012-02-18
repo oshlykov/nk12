@@ -8,9 +8,12 @@ class User < ActiveRecord::Base
   has_many :pictures
   belongs_to  :commission
 
-  validates :email, :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false}
-  #validates :password, :confirmation => true
-  #validates_confirmation_of :password, :message => "123"
+  validates :email, :presence => true, 
+                    :length => {:minimum => 6, :maximum => 254},
+                    :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false},
+                    :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
+  validates :password, :confirmation => true
+  validates_confirmation_of :password, :message => "Пароли должны совпадать!"
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
