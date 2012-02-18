@@ -23,4 +23,20 @@ before_filter :auth, :except => [:index, :show]
     end
   end
 
+  def add_watcher
+    @commission = Commission.find(params[:id])
+    if @commission and @commission.watchers.size < 5 and not @commission.watchers.include? current_user
+      @commission.watchers << current_user
+      flash[:notice] = "Вы стали наблюдателем!"
+    else
+      flash[:error] = "Вы не можете стать наблюдателем этого участка!"
+    end
+    redirect_to :back
+  end
+
+  def del_watcher
+    current_user.update_attribute :commission_id, current_user.commission.root if current_user.commission
+    redirect_to :back
+  end
+
 end
