@@ -1,5 +1,5 @@
 %p Имя: #{@user.name}
-- if @user.email and current_user
+-# if @user.email and current_user
   %p Почта: #{@user.email }
 - if @user.commission and @user.commission.is_uik?
   %p Является наблюдателем на #{@user.commission.name}
