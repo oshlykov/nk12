@@ -9,14 +9,6 @@
         %span.divider →
   %h1
     =raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
-  %div{:style => "float:right"}
-    - @commission.watchers.each do |watcher|
-      = link_to watcher.name, user_path(watcher)
-      %br
-    -if current_user.commission and current_user.commission.is_uik?
-      = link_to 'Отказаться от наблюдения', del_watcher_commissions_path if @commission == current_user.commission
-    -elsif @commission.watchers.size < 5
-      = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission)
 .row
   .span12
     %table.voting-table
@@ -34,17 +26,18 @@
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1)}= vote
         - else
-          %tr{:id => ('protocol_'+p.id.to_s)}
+          %tr{:id => ("protocol_#{p.id}")}
             %td{:width => "100px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
-                = 'КАРИК №' + p.id.to_s
+                = "КАРИК №#{p.id}"
                 - if can? :destroy, p
                   = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+              %span{:title => "#{p.source}", :class => "label label-info"} источник
 
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1), :class => vote_class(@commission, p, i+1)}
                 = vote
-          %tr{:id => ('protocol_pic_'+p.id.to_s)}
+          %tr{:id => ("protocol_pic_#{p.id}")}
             %td{:colspan => p.votings.count+1}
               #pictures
                 - p.pictures.each do |pic|
@@ -56,17 +49,18 @@
       %h2 Непроверенные протоколы
       %table.voting-table
         - @unchecked.each do |p|
-          %tr{:id => ('protocol_'+p.id.to_s)}
+          %tr{:id => ("protocol_#{p.id}")}
             %td{:width => "100px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
-                = 'КАРИК №' + p.id.to_s
+                = "КАРИК №#{p.id}"
                 - if can? :destroy, p
                   = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+              %span{:title => "#{p.source}", :class => "label label-info"} источник
 
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1), :class => vote_class(@commission, p, i+1)}
                 = vote
-            %tr{:id => ('protocol_pic_'+p.id.to_s)}
+            %tr{:id => ("protocol_pic_#{p.id}")}
               %td{:colspan => p.votings.count+1}
                 #pictures
                   - p.pictures.each do |pic|
@@ -74,8 +68,7 @@
                       %a{:href => pic.image_url}
                         = image_tag pic.image_url(:thumb) if pic.image?
 .row
-  .span12  
-    %br
+  .span9
     %br
     -if can? :new, Protocol
       %a{:href => new_commission_protocol_path(@commission.id), :class => 'btn btn-danger'}
@@ -88,11 +81,9 @@
     %br
     %br
 
-  .row
-  .span12
     - if request.env['HTTP_USER_AGENT'] =~ /Opera/ and (request.domain == 'xn----btbcb0bgnhbeargu4lna.xn--p1ai')
       %br
-      = link_to "Просмотреть или добавить комментарий", '/'
+      = link_to "Просмотреть или добавить комментарий", 'http://nk12.su'
     - else
       %div#disqus_thread
       %script(type="text/javascript")
@@ -108,3 +99,19 @@
               dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
           })();
+  .span3
+    %br
+    %div
+      = "Наблюдатели на участке:" if @commission.watchers.first
+      - @commission.watchers.each do |watcher|
+        = link_to watcher.name, user_path(watcher), :class => "btn"
+        %br
+        %br
+      -if current_user.commission and current_user.commission.is_uik?
+        = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
+      -elsif @commission.watchers.size < 5
+        = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
+    %br
+    #vk_com
+      Наблюдатели в данном регионе:
+      =raw '<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script><!-- VK Widget --><div id="vk_groups"></div><script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, "'+VK_GROUP[@commission.root.id].to_s+'");</script>'

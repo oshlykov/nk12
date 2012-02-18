@@ -2,7 +2,7 @@
   %li
     = link_to('Выйти', session_path(session.object_id), :method=>'delete')
   %li
-    = link_to('Править', edit_user_path(current_user))
+    = link_to('Профиль', edit_user_path(current_user))
   %li
     = link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
 - else

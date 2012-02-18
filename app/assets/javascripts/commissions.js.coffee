@@ -10,6 +10,7 @@ $ ->
 
   loader = (obj,flag=false) ->    
     $(".loading",obj).show()
+    $("#vk_com").hide()
     $(obj).load $(obj).data("url"), ->
 
 #      $(this).data('loaded') == true      

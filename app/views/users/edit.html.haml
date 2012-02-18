@@ -1,19 +1,27 @@
-= simple_form_for current_user do |f|
+%header
   %h1= current_user.email
-  = f.input :role, :label => 'Роль', :collection => User::ROLES, :include_blank => false if can? :update_role, current_user
-  = f.input :name, :label => "ФИО полностью:"
-  -if current_user.commission
-      %p 
-        = current_user.commission.is_uik? ? "Вы наблюдатель на" : "Ваш регион"
-        = link_to current_user.commission.name, commission_path( current_user.commission.id )
-        = link_to 'Отказаться от наблюдения', del_watcher_commissions_path
-  -else
-    = f.input :commission, :label => "Регион:", :collection => Commission.where(:ancestry => nil).collect{|c| [ c.name, c.id ]}, :selected => current_user.commission_id
-  -#= f.input :name, :label => "Номер участка:"
-  -#= f.input :name, :label => "Номер телефона:"
-  -#= f.input :name, :label => "Доверяющий:"
-  -#= f.input :name, :label => ":"
-  = f.submit('Сохранить', :class => "btn btn-primary")
+.row
+  .span4
+    = simple_form_for current_user do |f|
+      = f.input :role, :label => 'Роль', :collection => User::ROLES, :include_blank => false if can? :update_role, current_user
+      = f.input :name, :label => "ФИО полностью:"
+      -unless current_user.commission
+        = f.input :commission, :label => "Регион:", :collection => Commission.where(:ancestry => nil).collect{|c| [ c.name, c.id ]}, :selected => current_user.commission_id
+      -#= f.input :name, :label => "Номер участка:"
+      -#= f.input :name, :label => "Номер телефона:"
+      -#= f.input :name, :label => "Доверяющий:"
+      -#= f.input :name, :label => ":"
+      = f.submit('Сохранить', :class => "btn btn-primary")
 
--if current_user.commission
-  =raw '<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script><!-- VK Widget --><div id="vk_groups"></div><script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 1, width: "200", height: "290"}, "'+VK_GROUP[current_user.commission.root.id].to_s+'");</script>'
+  .span4
+    -if current_user.commission
+      %h2= current_user.commission.is_uik? ? "Вы наблюдатель на" : "Ваш регион"
+      %p 
+        = link_to current_user.commission.name, commission_path( current_user.commission.id )
+        = "(#{current_user.commission.root.name})  "
+      %p 
+        = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "btn" if current_user.commission.is_uik?
+
+  .span3
+    -if current_user.commission
+      =raw '<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script><!-- VK Widget --><div id="vk_groups"></div><script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 1, width: "200", height: "290"}, "'+VK_GROUP[current_user.commission.root.id].to_s+'");</script>'
