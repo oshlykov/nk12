@@ -112,6 +112,10 @@
           = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
         -elsif @commission.watchers.size < 5
           = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
+      -else
+        .alert.alert-success 
+          %b Стать наблюдателем участка
+          = link_to("зарегистрируйтесь", new_user_path)
     %br
     #vk_com
       Наблюдатели в данном регионе:
