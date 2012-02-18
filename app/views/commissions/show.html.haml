@@ -7,11 +7,11 @@
 - else
   %table.voting-table
     %tr
-      %td{:width => "100px"}
-      %td{:colspan => 18}
-      - 7.times do |i|
-        %td
-          %small{"title"=>Protocol.voting_name(i+19, 1)}= vds(i+19)
+      %th{:width => "100px"}
+      -#%th{:colspan => 18}
+      - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
+        %th
+          %small{"title"=>Protocol.voting_name(i, @commission.election_id)}= vds(i, @commission.election_id)
     - @commission.children.each do |c|
       %tr
         %td
@@ -24,6 +24,7 @@
                   = "#{vote} (#{c.state[:checked][i]})"
                 - else
                   = vote
+
 
 
 -#            = vote.voting_dictionary.name

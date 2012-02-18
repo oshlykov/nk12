@@ -51,6 +51,7 @@ namespace :grab do
   # Fetches and stores all the needed data from the commission
   # Recursively calls itself to handle sub-commissions
   def fetch_commissions(dir, url)
+    return if /Regional\/Regional/ =~ dir
     if(!File.exists?(dir))
       mkdir(dir)
     end
@@ -204,34 +205,35 @@ YAML_TEXT2
 
 #{
 #        "poll" => "Число избирательных бюллетеней, полученных участковой избирательной комиссией","received_by_commission" => "Число избирательных бюллетеней, выданных избирателям, проголосовавшим досрочно","voted_early" => "Число избирательных бюллетеней, выданных избирателям в помещении для голосования","voted_in" => "Число избирательных бюллетеней, выданных избирателям вне помещения для голосования","voted_out" => "Число погашенных избирательных бюллетеней","canceled_ballots" => "Число избирательных бюллетеней в переносных ящиках для голосования","mobile_ballots" => "Число избирательных бюллетеней в стационарных ящиках для голосования","stationary_ballots" => "Число недействительных избирательных бюллетеней","invalid_ballots" => "Число действительных избирательных бюллетеней","valid_ballots" => "Число открепительных удостоверений, полученных участковой избирательной комиссией","absentee_ballots_all" => "Число открепительных удостоверений, выданных избирателям на избирательном участке","absentee_ballots_given" => "Число избирателей, проголосовавших по открепительным удостоверениям на избирательном участке","absentee_ballots_voted" => "Число погашенных неиспользованных открепительных удостоверений","unused_absentee_ballots" => "Число открепительных удостоверений, выданных избирателям территориальной избирательной комиссией","absentee_territorial" => "Число утраченных открепительных удостоверений","lost_absentee_ballots" => "Число утраченных избирательных бюллетеней","ballots_not_taken" => "Число избирательных бюллетеней, не учтенных при получении","sr" => "Политическая партия СПРАВЕДЛИВАЯ РОССИЯ","ldpr" => "Политическая партия Либерально-демократическая партия России","pr" => "Политическая партия ПАТРИОТЫ РОССИИ","kprf" => "Политическая партия Коммунистическая партия Российской Федерации","yabloko" => "Политическая партия Российская объединенная демократическая партия ЯБЛОКО","er" => "Всероссийская политическая партия ЕДИНАЯ РОССИЯ","pd" => "Всероссийская политическая партия ПРАВОЕ ДЕЛО"}
-
+=begin
     @voting_dictionaries = Hash.new
 
      voting_labels.each do |key,value|
        voting_dictionary = @election.voting_dictionaries.create(:en_name => key, :name => value, :source_identifier => voting_names[key])
        @voting_dictionaries[voting_names[key]] = voting_dictionary.id
      end
-
+=end
      # Getting commission's page from the file system. No fetching/saving happens. As all the data is already in filesystem's cache
-     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
+    raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
 #2011     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
 #2012     raw_html = fetch_and_save(inp_data_dir + '/about.html', "http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null")
-     agent = Nokogiri::HTML(raw_html, nil, 'Windows-1251')
+    agent = Nokogiri::HTML(raw_html, nil, 'Windows-1251')
 
-     agent.search("select option").each_with_index do |option,index|
-       if (option['value'])
-        name = option.content.gsub(/^\d+ /,'')
-        commission = Commission.create!(:name => name.strip, :url => option['value'], :election_id => @election.id)
-        print "Taken: #{option.content}\n"
-       end
+    agent.search("select option").each_with_index do |option,index|
+     if (option['value'])
+      name = option.content.gsub(/^\d+ /,'')
+      commission = Commission.create!(:name => name.strip, :url => option['value'], :election_id => @election.id)
+      print "Taken: #{option.content}\n"
      end
+    end
 
-     Parallel.each(Commission.all, :in_threads => 15){|commission| get_children_from_raw_html(inp_data_dir + '/' + commission.name, commission, commission.url)}
-   }
+    Parallel.each(Commission.all, :in_threads => 15){|commission| get_children_from_raw_html(inp_data_dir + '/' + commission.name, commission, commission.url)}
+  }
   end
 
   # The function below is almost copy of get_children_from_raw_html. Temporary solution. Not very effective in terms of execution time
   def get_children_from_raw_html(dir, parent_commission, url)
+    return if /Regional\/Regional/ =~ dir
     begin
       # Getting commission's page from the file system. No fetching/saving happens. As all the data is already in filesystem's cache
       agent = Nokogiri::HTML(fetch_and_save(dir + '/about.html', url), nil, 'Windows-1251')
@@ -261,12 +263,12 @@ YAML_TEXT2
             get_children_from_raw_html(dir + '/Regional', parent_commission, href['href'])
         end
       end
-      voting_table_from_raw_html(dir, parent_commission)
+#2012      voting_table_from_raw_html(dir, parent_commission)
     rescue Exception => ex
       print "Error: #{ex}\n"
     end
   end
-
+=begin
   def voting_table_from_raw_html(dir, commission)
     if commission.voting_table_url
       begin
@@ -290,7 +292,6 @@ YAML_TEXT2
        end
     end
    end
-
   desc "Get ungetted"
   task :get_lost => :environment do
 
@@ -312,6 +313,7 @@ YAML_TEXT2
       end
     end
   end
+=end
 
   desc "Grab all the commissions out there from 4-dec elections"
   task :get => :environment do        
@@ -390,14 +392,14 @@ yabloko: "Политическая партия Российская объед�
 er: "Всероссийская политическая партия ЕДИНАЯ РОССИЯ"
 pd: "Всероссийская политическая партия ПРАВОЕ ДЕЛО"
 YAML_TEXT2
-
+=begin
     @voting_dictionaries = Hash.new
 
     voting_labels.each do |key,value|
       voting_dictionary = @election.voting_dictionaries.create(:en_name => key, :name => value, :source_identifier => voting_names[key])  
       @voting_dictionaries[voting_names[key]] = voting_dictionary.id
     end
-    
+=end    
 
     agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100031793505&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
 #2011    agent = Nokogiri::HTML(open("http://www.vybory.izbirkom.ru/region/izbirkom?action=show&root_a=null&vrn=100100028713299&region=0&global=true&type=0&sub_region=0&prver=0&pronetvd=null"), nil, 'Windows-1251')
@@ -466,13 +468,13 @@ YAML_TEXT2
             get_children(parent_commission,href['href'])
         end
       end      
-      voting_table(parent_commission)
+#2012      voting_table(parent_commission)
     rescue Exception => ex
       print "Error: #{ex}\n"
     end             
     
   end
-  
+=begin  
   def voting_table(commission)    
     if commission.voting_table_url
       begin            
@@ -498,5 +500,5 @@ YAML_TEXT2
        end  
     end
   end
-
+=end
 end

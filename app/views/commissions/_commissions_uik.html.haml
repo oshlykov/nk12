@@ -13,11 +13,11 @@
   .span12
     %table.voting-table
       %tr
-        %td{:width => "100px"}
-        %td{:colspan => 18}
-        - 7.times do |i|
-          %td
-            %small{"title"=>Protocol.voting_name(i+19, 1)}= vds(i+19)
+        %th{:width => "100px"}
+        -#%th{:colspan => 18}
+        - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
+          %th
+            %small{"title"=>Protocol.voting_name(i, @commission.election_id)}= vds(i, @commission.election_id)
       - @checked.each do |p|
         - if p == @checked.first
           %tr
@@ -45,7 +45,7 @@
                     %a{:href => pic.image_url}
                       = image_tag pic.image_url(:thumb) if pic.image?
 
-    - if @unchecked
+    - unless @unchecked.blank?
       %h2 Непроверенные протоколы
       %table.voting-table
         - @unchecked.each do |p|

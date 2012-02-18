@@ -25,7 +25,7 @@
                   = child.name
                 %sup
                   %small
-                    = child.descendants.where('votes_taken=true').size
+                    = child.descendants.where(:votes_taken => true).size
               - else
                 = child.name
                 %sup
