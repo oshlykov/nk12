@@ -23,9 +23,17 @@ $ ->
           #loader $(this)  
 
 #  loader $('.votings:first'),true
+#  $('a.load-new').click (e) ->
+#    e.preventDefault()
+#    loader $(this).parents('.node-name').next()
+
   $('a.load-new').click (e) ->
     e.preventDefault()
-    loader $(this).parents('.node-name').next()
+    obj = $(this).parents('.node-name').next()
+    if obj.hasClass('loaded')
+      obj.toggle()
+    else 
+      loader $(this).parents('.node-name').next()
 
   
 
