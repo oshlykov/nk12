@@ -1,7 +1,7 @@
 %h1 Проверка протоколов
 %table.voting-table
   - @protocols.each do |p|
-    %tr{:id => ('protocol_'+p.id.to_s)}
+    %tr{:id => ("protocol_#{p.id}")}
       %td
         - if can? :check, p
           = link_to raw('<i class="icon-ok"></i>'), check_protocol_path(p.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить"
@@ -17,7 +17,7 @@
         %td{"title"=>p.voting_name(i+1), :class => vote_class(p.commission, p, i+1)}
           = vote
     - if p.pictures.size > 0
-      %tr{:id => ('protocol_pic_'+p.id.to_s)}
+      %tr{:id => ("protocol_pic_#{p.id}")}
         %td
         %td{:colspan => p.votings.count+1}
           #pictures
