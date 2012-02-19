@@ -5,10 +5,30 @@
     = link_to('Профиль', edit_user_path(current_user))
   %li
     = link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
+  %li
+    .addthis_toolbox.addthis_default_style
+      %a{:class => "addthis_button_vk"}
+      %a{:class => "addthis_button_odnoklassniki_ru"}
+      %a{:class => "addthis_button_facebook"}
+      %a{:class => "addthis_button_twitter"}
+      %a{:class => "addthis_button_google_plusone"}
+      %a{:class => "addthis_counter addthis_bubble_style"}
 - else
   %li
     = link_to('Войти', new_session_path)
   %li
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  %li
+    .addthis_toolbox.addthis_default_style
+      %a{:class => "addthis_button_vk"}
+      %a{:class => "addthis_button_odnoklassniki_ru"}
+      %a{:class => "addthis_button_facebook"}
+      %a{:class => "addthis_button_twitter"}
+      %a{:class => "addthis_button_google_plusone"}
+      %a{:class => "addthis_counter addthis_bubble_style"}
+  %li
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   %a.btn.btn-danger{:href => new_user_path}
     Регистрация
+
+=raw '<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f40a3483dfcd5e4"></script>'
