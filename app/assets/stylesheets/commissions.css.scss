@@ -182,9 +182,12 @@
 	tr {
 		border: 1px solid #DDD;
 	}
+	th{
+	  text-align: left;
+  }
 	td{
 		padding: 7px 7px 7px 7px;
-	  text-align: left;
+	  text-align: right;
   }
 	.item_holder{
 		.item{
