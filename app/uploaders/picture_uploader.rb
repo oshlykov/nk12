@@ -28,6 +28,8 @@ class PictureUploader < CarrierWave::Uploader::Base
         logo = MiniMagick::Image.open(path_to_file)
         logo.resize "#{img[:width]}x#{img[:height]}"
         img = img.composite(logo, "jpg") {|c| c.gravity "Center"}
+        logo.destroy!
+        img
     end
   end
 
