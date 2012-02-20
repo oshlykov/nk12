@@ -10,8 +10,8 @@
       %th{:width => "100px"}
       -#%th{:colspan => 18}
       - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
-        %th
-          %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}= vds(i+1, @commission.election_id)
+        %th{:style => "text-align: right"}
+          %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}=raw vds(i+1, @commission.election_id)
     - @commission.children.each do |c|
       %tr
         %td
