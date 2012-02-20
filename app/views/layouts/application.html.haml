@@ -12,20 +12,18 @@
 
   %body{:class => params[:controller]}
 
-    .navbar.navbar-fixed-top
+    .navbar
       .navbar-inner
         .container
           %a.brand{:href => root_url}
             Контроль-выборов.рф
           %ul.nav
             = render 'shared/navigation'
-          - flash.each do |name, msg|
-            = content_tag :div, msg, :id => "flash_\#{name}" if msg.is_a?(String)
-    %a{:href => "http://kapuk.info", :style => "position: fixed;top: 00px;right: 100px;z-index: 1130;float:right;"}
-      %img{:src=>'/assets/karik_logo.png'}
     #container.container
       .row
         .span12
+          -# flash.each do |name, msg|
+            = content_tag :div, msg, :id => "flash_\#{name}" if msg.is_a?(String)
           - flash.each do |key, msg|
             = content_tag :div, msg, :class => "alert alert-info", :id => "notice_ #{key}"
 

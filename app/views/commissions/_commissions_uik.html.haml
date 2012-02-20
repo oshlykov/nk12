@@ -17,7 +17,7 @@
         -#%th{:colspan => 18}
         - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
           %th
-            %small{"title"=>Protocol.voting_name(i, @commission.election_id)}= vds(i, @commission.election_id)
+            %small{"title"=>Protocol.voting_name(i, @commission.election_id)}= raw vds(i, @commission.election_id)
       - @checked.each do |p|
         - if p == @checked.first
           %tr
@@ -100,22 +100,23 @@
               (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
           })();
   .span3
-    %br
-    %div
-      = "Наблюдатели на участке:" if @commission.watchers.first
-      - @commission.watchers.each do |watcher|
-        = link_to watcher.name, user_path(watcher), :class => "btn"
-        %br
-        %br
-      -if current_user and current_user.commission and current_user.commission.is_uik?
-        = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
-      -elsif @commission.watchers.size < 5 and current_user
-        = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
-      -unless current_user
-        .alert.alert-success 
-          %b Стать наблюдателем участка
-          = link_to("зарегистрируйтесь", new_user_path)
-    %br
+    - if @commission.election_id == 2
+      %br
+      %div
+        = "Наблюдатели на участке:" if @commission.watchers.first
+        - @commission.watchers.each do |watcher|
+          = link_to watcher.name, user_path(watcher), :class => "btn"
+          %br
+          %br
+        -if current_user and current_user.commission and current_user.commission.is_uik?
+          = link_to 'Отказаться от наблюдения', del_watcher_commissions_path, :class => "" if @commission == current_user.commission
+        -elsif @commission.watchers.size < 5 and current_user
+          = link_to 'Стать наблюдателем', add_watcher_commission_path(@commission), :class => "btn btn-warning"
+        -unless current_user
+          .alert.alert-success 
+            %b Стать наблюдателем участка
+            = link_to("зарегистрируйтесь", new_user_path)
+      %br
     #vk_com
       Наблюдатели в данном регионе:
       =raw '<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script><!-- VK Widget --><div id="vk_groups"></div><script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, "'+VK_GROUP[@commission.root.id].to_s+'");</script>'

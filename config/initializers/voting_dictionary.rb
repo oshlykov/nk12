@@ -74,13 +74,13 @@ VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT2
   16: 
   17: 
   18: 
-  19: СР
-  20: ЛДПР
-  21: ПР
-  22: КПРФ
-  23: ЯБЛ
-  24: ЕР
-  25: ПД
+  19: <img src="/assets/icons/sr.png" />
+  20: <img src="/assets/icons/ldpr.png" />
+  21: <img src="/assets/icons/p-rossii.png" />
+  22: <img src="/assets/icons/kprf.png" />
+  23: <img src="/assets/icons/yablo.png" />
+  24: <img src="/assets/icons/edro.png" />
+  25: <img src="/assets/icons/pdelo.png" />
   26: ЧН
 2:
   1: 
