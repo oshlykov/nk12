@@ -55,6 +55,11 @@ before_filter :auth, :except => [:index, :show]
   def update  
     #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
+    unless can?(:update, @protocol)
+      redirect_to :back, :notice => "У вас нет прав редактировать протокол"
+      return
+    end
+
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
     @protocol.source = params[:source]
@@ -72,13 +77,9 @@ before_filter :auth, :except => [:index, :show]
 
       commission.conflict = conflict if @protocol.priority == 1 and commission.conflict != conflict
     end
-    if can?(:update, @protocol)
-      commission.save #fixme
-      @protocol.save #fixme
-      redirect_to :back
-    else
-      redirect_to :back, :notice => "У вас нет прав редактировать протокол"
-    end
+    commission.save #fixme
+    @protocol.save #fixme
+    redirect_to :back
   end
 
   def checking
