@@ -4,16 +4,20 @@ class User < ActiveRecord::Base
   def role?(base_role)
     ROLES.index(base_role.to_s) >= ROLES.index(role)
   end
+  
   has_many :protocols
   has_many :pictures
   belongs_to  :commission
 
+  validates :name, :presence => true
+  validates :commission, :presence => true
   validates :email, :presence => true, 
                     :length => {:minimum => 6, :maximum => 254},
                     :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false},
                     :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
-  validates :password, :confirmation => true
+#  validates :password, :confirmation => true
   validates_confirmation_of :password, :message => "Пароли должны совпадать!"
+
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable

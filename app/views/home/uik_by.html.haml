@@ -4,11 +4,22 @@
     = label_tag :id, "Номер УИК"
     = text_field_tag :id, params[:id], :class => "input-medium search-query span1"
     = raw '<button class="btn" type="submit">показать</button>'
-- if @commissions    
+- if @commissions_1  
   .row
     .span10
+      %h2 2011 — Выборы депутатов
       %ul
-      - @commissions.each do |child|
+      - @commissions_1.each do |child|
+        %li
+          %a{:href => commission_path(child[0].id)}
+            = "#{child[0].name}"
+          = " — #{child[1]}"
+- if @commissions_2
+  .row
+    .span10
+      %h2 2012 — Выборы Президента
+      %ul
+      - @commissions_2.each do |child|
         %li
           %a{:href => commission_path(child[0].id)}
             = "#{child[0].name}"

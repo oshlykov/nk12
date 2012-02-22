@@ -28,6 +28,7 @@ before_filter :auth, :except => [:index, :show]
     @commission = Commission.find(params[:id])
     if @commission and @commission.watchers.size < 5 and not @commission.watchers.include? current_user
       @commission.watchers << current_user
+      UserMailer.notify_admin(current_user).deliver
       flash[:notice] = "Вы стали наблюдателем!"
     else
       flash[:error] = "Вы не можете стать наблюдателем этого участка!"

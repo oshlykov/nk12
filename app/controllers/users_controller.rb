@@ -8,6 +8,7 @@ before_filter :auth, :except => [:new, :create]
   end
 
   def create
+    params[:user][:commission] = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
     @user = User.new(params[:user])
     @user.role = 'auth'
     if @user.save
