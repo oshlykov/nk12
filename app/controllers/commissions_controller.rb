@@ -44,7 +44,7 @@ before_filter :auth, :except => [:index, :show]
   def get_csv
     @commission = Commission.find(params[:id])
     if @commission.update_csv params[:cik] == "cik"
-      redirect_to  "/uik_csv/#{@commission.id}"+(params[:cik] ? "_cik" : "")+".csv"
+      redirect_to  "/uploads/csv/#{@commission.id}"+(params[:cik]=='cik' ? "_cik" : "")+".csv"
     else
       render :nothing => true, :status => 404
     end

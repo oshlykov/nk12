@@ -9,9 +9,9 @@ class Commission < ActiveRecord::Base
   scope :child_uik, lambda{|id| Commission.where(["ancestry like ?", "%#{id}%"]).where(:is_uik => true) }
 
   def update_csv cik = false
-    childs = Commission.child_uik self.id
-    return true if File.exist?(self.path) and childs.maximum(:updated_at) < File.ctime(self.path)
-    create_csv childs, cik
+    commissions = Commission.child_uik self.id
+    return true if File.exist?(self.path( cik ? "_cik" : "" )) and commissions.maximum(:updated_at) < File.ctime(self.path( cik ? "_cik" : "" ))
+    create_csv commissions, cik
   rescue Exception => e
     logger.error "[CSV ERROR] "+e.inspect
     return false
@@ -25,14 +25,15 @@ class Commission < ActiveRecord::Base
       csv << [self.name]
       csv << [ "Номер уик", "Дата загрузки" ] + VOTING_DICTIONARY[self.election_id].values
       childs.each do |child|
-        next unless state = child.state[ cik ? :uik : :checked ]
-        csv << [ child.name, child.updated_at, state ].flatten.compact 
+        if child.state and state = child.state[ cik ? :uik : :checked ]
+          csv << [ child.name, child.updated_at, state ].flatten.compact 
+        end
       end
     end
   end
 
   def path postfix = ''
-    Rails.root.join( "public/uik_csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
+    Rails.root.join( "public/uploads/csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
   end
   
 end

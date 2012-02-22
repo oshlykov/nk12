@@ -24,9 +24,9 @@
     %tr 
     - @protocol.votings.each_with_index do |v,i|
       %tr	
-        %td
-          = raw "#{i+1}. #{vds(i+1)}"
-        %td
+        %td{:width => 50}
+          = raw "#{i+1}.#{vds(i+1)}"
+        %td{:width => 50}
           - if can? :update, @protocol
             %input{ :name =>i+1, :id => i+1, :value => v, :class =>'span1'}
           - else
