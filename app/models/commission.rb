@@ -6,47 +6,33 @@ class Commission < ActiveRecord::Base
   has_many :comments, :dependent => :destroy 
   has_many :protocols, :dependent => :destroy, :order => 'priority ASC'
   has_many :watchers, :class_name => "User", :foreign_key => "commission_id"
+  scope :child_uik, lambda{|id| Commission.where(["ancestry like ?", "%#{id}%"]).where(:is_uik => true) }
 
-  def update_csv( cik = false )
-    return cik ? self.protocols.first.to_a : self.protocols.size - 1 if self.is_uik
-
-    protocols_to_csv = self.children.map{ |child| child.update_csv }.flatten
-
-    return false unless protocols_to_csv and protocols_to_csv.many?
-
-    csv = if File.exist? self.path 
-        if self.protocols.reorder("updated_at desc").first.updated_at > File.ctime (self.path)
-            create_csv( cik ) 
-        else
-            File.read self.path
-        end
-    else
-        create_csv( cik )
-    end
-
-    return csv
+  def update_csv cik = false
+    childs = Commission.child_uik self.id
+    return true if File.exist?(self.path) and childs.maximum(:updated_at) < File.ctime(self.path)
+    create_csv childs, cik
+  rescue Exception => e
+    logger.error "[CSV ERROR] "+e.inspect
+    return false
   end
 
-  def create_csv( cik = false )
-      translate = { "id" => "Номер уик", "created_at" => "Дата загрузки" }
-      VOTING_DICTIONARY[self.election_id].map{|k,v| translate[ "v"+k.to_s ] = v }
-      
-      option = {:col_sep => ";", :encoding => "UTF-8"}
-          
-      text = FasterCSV.generate(option) do |csv|
-            csv << [self.name]
-            csv << translate.values
-            ( cik ? self.protocols.first : self.protocols.size - 1 ).each do |protocol|
-                csv << translate.map{|k,v| puts k; protocol.attributes[k] }
-            end
+ def create_csv( childs, cik = false )
+    
+    option = {:col_sep => ";", :encoding => "UTF-8"}
+        
+    FasterCSV.open( self.path( cik ? "_cik" : "" ), "w", option) do |csv|
+      csv << [self.name]
+      csv << [ "Номер уик", "Дата загрузки" ] + VOTING_DICTIONARY[self.election_id].values
+      childs.each do |child|
+        next unless state = child.state[ cik ? :uik : :checked ]
+        csv << [ child.name, child.updated_at, state ].flatten.compact 
       end
-      File.write(self.path ,"w") {|f| f.write text }
-      text
+    end
   end
 
-private
-  def path
-    Rails.root.join( "public/uik_csv/"+(self.id || "recycle")+".csv")
+  def path postfix = ''
+    Rails.root.join( "public/uik_csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
   end
   
 end

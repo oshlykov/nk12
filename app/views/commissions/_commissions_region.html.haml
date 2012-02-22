@@ -41,6 +41,10 @@
       %span{:title => "Проверенных протоколов"}= @checked_count
       - if @unchecked_count
         %sup.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
+    -if current_user
+      #get_csv
+        = link_to "Скачать данные КАРИК", get_csv_commission_path(@commission, "uik"), :class => "btn btn-warning"
+        = link_to "Скачать данные ЦИК", get_csv_commission_path(@commission, "cik"), :class => "btn btn-warning"
     #vk_com
       Наблюдатели в данном регионе:
       =raw '<script type="text/javascript" src="http://userapi.com/js/api/openapi.js?48"></script><!-- VK Widget --><div id="vk_groups"></div><script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 0, width: "200", height: "290"}, "'+VK_GROUP[@commission.root.id].to_s+'");</script>'
