@@ -9,7 +9,7 @@
     .span10
       %h2 2011 — Выборы депутатов
       %ul
-      - @commissions.each do |child|
+      - @commissions_1.each do |child|
         %li
           %a{:href => commission_path(child[0].id)}
             = "#{child[0].name}"
@@ -19,7 +19,7 @@
     .span10
       %h2 2012 — Выборы Президента
       %ul
-      - @commissions.each do |child|
+      - @commissions_2.each do |child|
         %li
           %a{:href => commission_path(child[0].id)}
             = "#{child[0].name}"
