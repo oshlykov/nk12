@@ -14,6 +14,7 @@ Nkapp::Application.routes.draw do
     end
     get 'add_watcher', :on => :member
     get 'del_watcher', :on => :collection
+    get 'get_csv/:cik' => "commissions#get_csv", :on => :member, :as => "get_csv"
   end
 
   #get "protocols/cheking", :controller => 'protocols', :action => 'cheking'

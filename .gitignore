@@ -50,6 +50,7 @@ tmp/*
 /spec/views
 /specifications
 /db/data.yml
+/public/uik_csv/*.csv
 
 # scm revert files
 **.orig

@@ -57,3 +57,4 @@ gem 'yaml_db', :git => 'git://github.com/ludicast/yaml_db.git'
 #Uploads
 gem 'carrierwave'
 gem 'mini_magick'
+gem 'fastercsv'

@@ -23,6 +23,7 @@ before_filter :auth, :except => [:index, :show]
     end
   end
 
+#FIXME move to watcher controller
   def add_watcher
     @commission = Commission.find(params[:id])
     if @commission and @commission.watchers.size < 5 and not @commission.watchers.include? current_user
@@ -38,6 +39,15 @@ before_filter :auth, :except => [:index, :show]
   def del_watcher
     current_user.update_attribute :commission_id, current_user.commission.root if current_user.commission
     redirect_to :back
+  end
+
+  def get_csv
+    @commission = Commission.find(params[:id])
+    if @commission.update_csv params[:cik] == "cik"
+      redirect_to  "/uik_csv/#{@commission.id}"+(params[:cik] ? "_cik" : "")+".csv"
+    else
+      render :nothing => true, :status => 404
+    end
   end
 
 end
