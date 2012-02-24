@@ -1,7 +1,7 @@
 class CommissionsController < ApplicationController
 
 #-before_filter :authenticate_user!, :except => [:index, :show]
-before_filter :auth, :except => [:index, :show]
+before_filter :auth, :except => [:index, :show, :get_csv]
 
   def index
     @uiks = Commission.find :all, :joins => :comments

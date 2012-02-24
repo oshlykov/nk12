@@ -101,11 +101,11 @@ VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT2
   16: 
   17: 
   18: 
-  19: Зю
-  20: Мр
-  21: Жр
-  22: Пт
-  23: Пр
+  19: <img src="/assets/icons/Prohorov.png" />
+  20: <img src="/assets/icons/G-Rick.png" />
+  21: <img src="/assets/icons/Putin.png" />
+  22: <img src="/assets/icons/Zyuganov.png" />
+  23: <img src="/assets/icons/Miironov.png" />
   24: 
 YAML_TEXT2
 
