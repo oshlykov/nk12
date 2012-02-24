@@ -18,7 +18,7 @@
       -if election.id == 1
         .row
           .span12
-            -Commission.where(:id => [18, 85911, 78266, 89960]).each do |c|
+            -Commission.where(:id => [18, 85911, 78266, 89960, 54]).each do |c|
               %div.tree-root
                 %h4
                   = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id
@@ -30,7 +30,7 @@
           %br
       .row
         .span12
-          - election.commissions.roots.all(:order => :name, :conditions => ["id NOT IN (?)", [18, 85911, 78266, 89960]]).each do |c|
+          - election.commissions.roots.all(:order => :name, :conditions => ["id NOT IN (?)", [18, 85911, 78266, 89960, 54, 31957]]).each do |c|
             %div.tree-root
               %h4
                 = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id

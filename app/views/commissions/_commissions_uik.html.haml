@@ -42,7 +42,7 @@
               #pictures
                 - p.pictures.each do |pic|
                   .picture[pic]
-                    %a{:href => pic.image_url}
+                    %a{:href => pic.image_url, :target => '_blank'}
                       = image_tag pic.image_url(:thumb) if pic.image?
 
     - unless @unchecked.blank?

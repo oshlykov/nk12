@@ -6,5 +6,7 @@
     %p
       = "Моё имя — #{@user.name}"
     %p
-      = "Регион — #{@user.commission.name} "
-      = link_to 'УИК', commission_path(@user.commission)
+      = "Мой адрес — #{@user.email}"
+    %p
+      = raw "Регион — #{@user.commission.root.name}"
+      = link_to 'УИК', commission_path(@user.commission_id)
