@@ -1,5 +1,7 @@
 Nkapp::Application.routes.draw do
 
+  resources :folders
+
   get "sessions/new"
 
   #resources :comments
@@ -7,6 +9,10 @@ Nkapp::Application.routes.draw do
 #  scope '(:elections)', :elections => /1|2/ do
   
   resources :users
+  resources :elections do
+    get 'region_list', :on => :member
+  end
+
   resources :commissions, :path => '/uik' do
     resources :protocols do
       resources :votings

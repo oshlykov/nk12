@@ -3,6 +3,7 @@ class Picture < ActiveRecord::Base
   include Rails.application.routes.url_helpers
   validates_presence_of :image
   belongs_to :protocol
+  belongs_to :folder
   belongs_to :user
   
   after_destroy :remove_image!

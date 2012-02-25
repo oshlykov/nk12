@@ -36,4 +36,5 @@ class Commission < ActiveRecord::Base
     Rails.root.join( "public/uploads/csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
   end
   
+  default_scope order(:name)
 end

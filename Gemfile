@@ -3,6 +3,8 @@ HOST_OS = RbConfig::CONFIG['host_os']
 source 'http://rubygems.org'
 gem 'rails', '3.1.1'
 gem 'mysql2'
+gem 'mysql', :group => :wild
+gem 'nokogiri'
 gem 'sqlite3'
 gem 'ancestry'
 group :assets do
@@ -14,6 +16,7 @@ gem 'jquery-rails'
 #if HOST_OS =~ /linux/i
 gem 'therubyracer', '>= 0.9.8', :platform => :ruby
 #end
+gem "inherited_resources", ">= 1.3.0"
 gem "haml", ">= 3.1.2"
 gem "haml-rails", ">= 0.3.4", :group => :development
 gem "rspec-rails", ">= 2.8.0.rc1", :group => [:development, :test]

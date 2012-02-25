@@ -1,0 +1,19 @@
+= form_for @folder do |f|
+  - if @folder.errors.any?
+    %div#error_explanation
+      %h2= "#{pluralize(@folder.errors.count, "error")} prohibited this folder from being saved:"
+      %ul
+        - @folder.errors.full_messages.each do |msg|
+          %li= msg
+  %div.field
+    = f.collection_select :election_id, Election.all, :id, :name,
+    :prompt => 'Choose elections'
+  %div.field
+    = f.collection_select :commission_id,
+    Commission.where(:election_id => @folder.election_id), :id, :name,
+    :prompt => 'Choose commission'
+  %div.field
+    = f.label :comment
+    = f.text_field :comment
+  %div.actions
+    = f.submit
