@@ -66,3 +66,10 @@ tmp/*
 
 # vim artifacts
 **.swp
+
+# IntelliJ Idea artifacts
+/.idea
+*.iml
+
+# Debug database
+*.sqlite
