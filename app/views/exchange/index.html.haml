@@ -1,0 +1,30 @@
+%header
+  %h1 Обмен данными
+
+%br
+%h3 Выгрузка данных для партнеров
+= form_tag '/exchange/export', :method => "post", :class => "well" do
+  = label_tag :uiks, "Список интересующих УИК:"
+  = text_field_tag :uiks, params[:uiks], :class => "input-medium span8", :placeholder => "Все УИК"
+  %span.help-inline иды через запятую, пусто для всех
+  = label_tag :filter, "Фильтр по источнику протокола:"
+  = text_field_tag :filter, params[:filter], :class => "input-medium span8", :placeholder => "Все источники"
+  %span.help-inline выражение для поиска типа "like"
+  = label_tag :updated, "Дата обновления протокола в формате YYYYMMDD или диапазон YYYYMMDD-YYYYMMDD:"
+  = text_field_tag :updated, params[:updated], :class => "input-medium span8", :placeholder => "Любая дата"
+  %span.help-inline дата или диапазон
+  %br
+  %button.btn.primary.start{:type => "submit"} Отправить запрос
+
+
+%h3 Загрузка данных от партнёров
+%form#export.well{:action => "/exchange/import", :enctype => "multipart/form-data", :method => "POST"}
+  %label{:for => "source"} Источник данных:
+  %input#source.span8{:name => "source", :type => "text", :placeholder => "Укажите источник данных"}
+  %span.help-inline урл партнёра, название партии и т.д.
+  %label{:for => "file"} Файл архива (zip) с файлом данных и фотокопиями протоколов:
+  %input#file.span8{:name => "file", :type => "file", :placeholder => "Выберите файл"}
+  %span.help-inline
+    %a{:href => "/exchange/import-help"} описание формата файла
+  %br
+  %button.btn.primary.start{:type => "submit"} Загрузить данные
