@@ -1,6 +1,5 @@
 Nkapp::Application.routes.draw do
 
-  resources :folders
 
   get "sessions/new"
 
@@ -9,6 +8,13 @@ Nkapp::Application.routes.draw do
 #  scope '(:elections)', :elections => /1|2/ do
   
   resources :users
+
+  resources :pictures, :only => [:destroy]
+
+  resources :folders do
+    resources :pictures, :only => [:create, :destroy]
+  end
+
   resources :elections do
     get 'region_list', :on => :member
   end
