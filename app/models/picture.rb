@@ -20,7 +20,7 @@ class Picture < ActiveRecord::Base
     "size" => image.size,
     "url" => image.url,
     "thumbnail_url" => image.thumb.url,
-    "delete_url" => commission_protocol_picture_path(protocol.commission_id, protocol,  id),
+    "delete_url" => picture_path(id),
     "delete_type" => "DELETE" 
    }
   end

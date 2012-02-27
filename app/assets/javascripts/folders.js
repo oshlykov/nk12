@@ -23,7 +23,12 @@ $(document).ready(function(){
 	  '<button class="ui-state-default ui-corner-all" title="Cancel">' +
 	  '<img src="/assets/cancel.png"/>' +
 	  '<\/button><\/td><\/tr>');
+      },
+      downloadTable: $('#pictures'),
+      buildDownloadRow: function (file) {
+        return $('<div id="picture_'+file.id+'" class="picture">'+
+	  '<a href="'+file.url+'"><img src="'+file.thumbnail_url+'"/></a>'+
+	  '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалит цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
       }
     });
-    //alert('test');
 });

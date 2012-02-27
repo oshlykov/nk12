@@ -9,10 +9,8 @@ Nkapp::Application.routes.draw do
   
   resources :users
 
-  resources :pictures, :only => [:destroy]
-
   resources :folders do
-    resources :pictures, :only => [:create, :destroy]
+    resources :pictures, :only => [:create]
   end
 
   resources :elections do
@@ -36,7 +34,7 @@ Nkapp::Application.routes.draw do
     resources :votings
   end
 
-  resources :pictures, :only => [:index, :create]
+  resources :pictures, :only => [:index, :create, :destroy]
   #get "verify/index"
 
   match 'uik_by/:id' => 'home#uik_by'

@@ -1,32 +1,29 @@
-class PicturesController < ApplicationController
+class PicturesController < InheritedResources::Base
+  belongs_to :protocol, :folder, :polymorphic => true, :optional => true
 
-  before_filter :auth, :except => [:index, :show, :create]
-  before_filter :get_protocol
-  
+  before_filter :auth, :except => [:index, :show]
 
   def create
-    @picture = @protocol.pictures.new(params[:picture])
-    @picture.user = current_user
-    if @picture.save
-      render :json => @picture.to_jq_upload, :content_type => 'text/html'
-    else 
-      render :json => [{:error => "custom_failure"}], :status => 304
+    create! do |ok, nok|
+      ok.js do
+	render :json => resource.to_jq_upload, :content_type => 'text/html' 
+      end
+      nok.js do
+	render :json => [{:error => "custom_failure"}], :status => 304 
+      end
     end
   end
 
-   def destroy
-    @picture = @protocol.pictures.find(params[:id])
-    respond_to do |format|
-      if can? :destroy, @protocol
-        flash[:error] = 'Photo could not be deleted' unless @picture.destroy
-      end
-        format.js
+  def destroy
+    raise 'Not authorized' unless can?(:destroy, resource)
+    destroy! do |ok, nok|
+      ok.js
     end
-   end
-  
-private
-  def  get_protocol
-    redirect_to :back unless @protocol = Protocol.find_by_id(params[:protocol_id])
   end
-  
+
+  protected
+  def create_resource pic
+    pic.user = current_user
+    pic.save
+  end
 end

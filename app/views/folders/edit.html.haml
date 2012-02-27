@@ -7,7 +7,7 @@
 
 = form_for :picture, :url => folder_pictures_path(@folder),
 :html => { :class => 'pics_upload', :multipart => true} do |f|
-  = f.file_field :image, :multiple => true
+  = f.file_field :image, :multiple => true, :name => 'picture[image]'
   %table.upload_files
 
 = link_to 'Show', @folder

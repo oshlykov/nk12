@@ -16,6 +16,10 @@ class Ability
       can [:update, :destroy], Protocol do |p|
         p.priority >= 100 and p.user_id == user.id
       end
+      can :destroy, Picture do |pic|
+	user.id == (pic.folder ? pic.folder.created_by_id :
+		    pic.protocol.user_id)
+      end
     end
 
     if user.role? :observer
