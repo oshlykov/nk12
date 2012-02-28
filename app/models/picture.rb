@@ -6,6 +6,7 @@ class Picture < ActiveRecord::Base
   belongs_to :folder
   belongs_to :user
   
+  before_save :vacate_folder
   after_destroy :remove_image!
   
   mount_uploader :image, PictureUploader
@@ -23,5 +24,10 @@ class Picture < ActiveRecord::Base
     "delete_url" => picture_path(id),
     "delete_type" => "DELETE" 
    }
+  end
+
+  protected
+  def vacate_folder
+    self.folder_id = nil if protocol_id
   end
 end
