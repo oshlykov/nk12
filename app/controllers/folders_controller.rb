@@ -8,6 +8,10 @@ class FoldersController < InheritedResources::Base
     end
   end
 
+  def update
+    update! { edit_resource_path }
+  end
+
   protected
   def create_resource folder
     folder.created_by = current_user

@@ -1,4 +1,4 @@
-class ProtocolsController < ApplicationController
+class ProtocolsController < InheritedResources::Base
 
 #-before_filter :authenticate_user!, :except => [:index, :show]
 before_filter :auth, :except => [:index, :show]
@@ -37,9 +37,17 @@ before_filter :auth, :except => [:index, :show]
     #@protocol = Protocol.find_by_id!(params[:id])
     redirect_to root_url unless @protocol = Protocol.find_by_id(params[:id]) and (@uik = @protocol.commission)
   end
+
+  def unfold
+    build_resource
+  end
     
   def create
-    #p = Protocol.new(params[:protocol])
+    create! do |ok, nok|
+      nok.html do
+	render 'unfold'
+      end
+    end
   end  
 
   def destroy
@@ -121,4 +129,18 @@ before_filter :auth, :except => [:index, :show]
 
   end
   
+  protected
+  def build_resource
+    if params[:folder_id]
+      @pictures = Folder.find(params[:folder_id]).pictures
+    end
+    super.folder_pics ||= []
+    super
+  end
+
+  def create_resource protocol
+    protocol.attach_to_uik_from params[:folder_id] if params[:folder_id]
+    protocol.user = current_user
+    protocol.save
+  end
 end

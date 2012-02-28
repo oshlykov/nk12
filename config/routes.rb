@@ -29,7 +29,10 @@ Nkapp::Application.routes.draw do
 
   #get "protocols/cheking", :controller => 'protocols', :action => 'cheking'
   resources :protocols do
-    get 'checking', :on => :collection
+    collection do
+      get 'checking'
+      get 'unfold/:folder_id', :action => :unfold
+    end
     post 'check', :on => :member
     resources :votings
   end
