@@ -9,7 +9,7 @@
   - @pictures.each do |picture|
     = check_box_tag 'protocol[folder_pics][]', picture.id,
       @protocol.folder_pics.include?(picture.id.to_s)
-    = image_tag picture.image_url(:thumb) if picture.image?
+    = image_tag picture.image_url(:preview) if picture.image?
 
   = f.text_field :uik_num
   = f.submit
