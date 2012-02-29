@@ -54,7 +54,7 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def destroy
-    redirect_to :back unless @p = Protocol.find_by_id(params[:id])
+    return redirect_to :back unless @p = Protocol.find_by_id(params[:id])
     commission = @p.commission if @p.priority == 1
     respond_to do |format|
       unless can?(:destroy, @p) and @p.destroy
@@ -72,10 +72,7 @@ before_filter :auth, :except => [:index, :show]
   def update  
     #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
-    unless can?(:update, @protocol)
-      redirect_to :back, :notice => "У вас нет прав редактировать протокол"
-      return
-    end
+    return redirect_to :back, :notice => "У вас нет прав редактировать протокол" unless can?(:update, @protocol)
 
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
@@ -91,7 +88,7 @@ before_filter :auth, :except => [:index, :show]
     end
     commission.save #fixme
     @protocol.save #fixme
-    redirect_to :back
+    redirect_to commission_path(commission)#:back
   end
 
   def checking
