@@ -1,7 +1,7 @@
 - folders = current_user.folders.reserved
 - unless folders.empty?
-  .my_folders
-    %p You have reserved folders:
+  #reserved_folders
+    %p Вы работаете с папками:
     - folders.each do |folder|
       %p= link_to folder.commission.name, "/protocols/unfold/#{folder.id}",
         :method => :post
