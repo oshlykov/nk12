@@ -15,7 +15,7 @@ module CommissionsHelper
   end
 
   def vote_class_uik(commission, index)
-    #СДЕЛАТЬ Оптимизировать
+    #СДЕЛАТЬ Оптимизировать и индекс с 26 адаптировать к презедентским
     return 'gray' unless commission.votes_taken
     return 'green' if index == 26 
     if commission.state and commission.state[:uik] and commission.state[:checked] and commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
