@@ -1,16 +1,13 @@
 %html
-  %head
-    %meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
   %body
     %h1 Я хочу стать наблюдателем
     %p
       = "Моё имя — #{@user.name}"
     %p
-      = "адрес — #{@user.email}"
+      = "Адрес — #{@user.email}"
     %p
-      = "уик — #{@user.commission.name}"
+      = "УИК — #{@user.commission.name}"
     %p
       = "Номер профиля — #{@user.id}"
     %p
-      = raw "Регион — #{@user.commission.root.name}"
-      = link_to 'УИК', commission_path(@user.commission_id)
+      = "Регион — #{@user.commission.root.name}"
