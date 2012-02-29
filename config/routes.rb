@@ -11,6 +11,7 @@ Nkapp::Application.routes.draw do
 
   resources :folders do
     resources :pictures, :only => [:create]
+    post :release, :on => :member
   end
 
   resources :elections do
@@ -31,7 +32,7 @@ Nkapp::Application.routes.draw do
   resources :protocols do
     collection do
       get 'checking'
-      get 'unfold/:folder_id', :action => :unfold
+      post 'unfold/:folder_id', :action => :unfold
     end
     post 'check', :on => :member
     resources :votings

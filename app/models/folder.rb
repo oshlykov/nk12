@@ -1,8 +1,17 @@
 class Folder < ActiveRecord::Base
+  RESERVE_TIMEOUT = 2.hours
   belongs_to :commission # Region
   belongs_to :created_by, :class_name => "User"
   belongs_to :user # Operator working with folder atm
   has_many :pictures
+
+  scope :reserved, lambda {
+    where :reserved_at => (RESERVE_TIMEOUT.ago..Time.now)
+  }
+
+  scope :available, lambda {
+    where 'reserved_at is NULL or reserved_at < ?', RESERVE_TIMEOUT.ago
+  }
 
   validates_presence_of :commission_id
 

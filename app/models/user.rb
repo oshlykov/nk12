@@ -7,7 +7,8 @@ class User < ActiveRecord::Base
   
   has_many :protocols
   has_many :pictures
-  belongs_to  :commission
+  has_many :folders
+  belongs_to :commission
 
   validates :name, :presence => true
   validates :commission, :presence => true

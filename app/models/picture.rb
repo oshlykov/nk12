@@ -11,6 +11,8 @@ class Picture < ActiveRecord::Base
   
   mount_uploader :image, PictureUploader
 
+  default_scope order(:created_at)
+
 #  def own?(user)
 #    user_id == user.id
 # =>   end

@@ -40,6 +40,9 @@ before_filter :auth, :except => [:index, :show]
 
   def unfold
     build_resource
+    @folder.user = current_user
+    @folder.reserved_at = Time.now
+    @folder.save!
   end
     
   def create
@@ -131,9 +134,7 @@ before_filter :auth, :except => [:index, :show]
   
   protected
   def build_resource
-    if params[:folder_id]
-      @pictures = Folder.find(params[:folder_id]).pictures
-    end
+    @folder = Folder.find(params[:folder_id]) if params[:folder_id]
     super.folder_pics ||= []
     super
   end

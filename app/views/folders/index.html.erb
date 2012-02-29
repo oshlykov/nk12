@@ -17,7 +17,7 @@
     <td><%= folder.comment %></td>
     <td><%= folder.created_by_id %></td>
     <td><%= folder.user_id %></td>
-    <td><%= link_to 'Show', folder %></td>
+    <td><%= link_to 'Unfold', "/protocols/unfold/#{folder.id}", :method => :post %></td>
     <td><%= link_to 'Edit', edit_folder_path(folder) %></td>
     <td><%= link_to 'Destroy', folder, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
