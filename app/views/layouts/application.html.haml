@@ -29,7 +29,7 @@
 
       -#main{:role => "main"}
       = yield
-      = render 'shared/folders'
+      = render 'shared/folders' if login?
       %footer
         .row
           .offset8.span2

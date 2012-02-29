@@ -1,6 +1,10 @@
-%h1 Editing folder
+%header
+  %h1 Загрузка цифровых копий
 
-= render 'form'
+= form_for @folder do |f|
+  = render 'form', :f => f
+  .actions
+  = f.submit 'Сохранить'
 
 #pictures
   = render :partial => '/pictures/picture', :collection => @folder.pictures
@@ -10,6 +14,4 @@
   = f.file_field :image, :multiple => true, :name => 'picture[image]'
   %table.upload_files
 
-= link_to 'Show', @folder
-|
-= link_to 'Back', folders_path
+= link_to 'Назад', folders_path

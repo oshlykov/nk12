@@ -38,13 +38,13 @@ class Protocol < ActiveRecord::Base
   end  
 
   def attach_to_uik_from folder_id
-    errors.add(:uik_num, 'invalid') unless uik_num && uik_num.to_i > 0
+    errors.add(:uik_num, 'указан неправильно') unless uik_num && uik_num.to_i > 0
     uik = Folder.find(folder_id).commission.descendants.
       first :conditions => ['name like ?', "%№#{uik_num}"]
     if uik
       self.commission = uik
     else
-      errors.add :uik_num, 'not found'
+      errors.add :uik_num, 'не найден'
     end
   end
 

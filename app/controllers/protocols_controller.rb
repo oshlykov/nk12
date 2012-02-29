@@ -142,6 +142,7 @@ before_filter :auth, :except => [:index, :show]
 
   def create_resource protocol
     protocol.attach_to_uik_from params[:folder_id] if params[:folder_id]
+    return false if protocol.errors.any?
     protocol.user = current_user
     protocol.save
   end

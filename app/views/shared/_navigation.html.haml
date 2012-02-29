@@ -5,6 +5,8 @@
     = link_to('Профиль', edit_user_path(current_user))
   %li
     = link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
+  %li
+    = link_to('Массовая загрузка', folders_path)
 - else
   %li
     = link_to('Войти', new_session_path)

@@ -1,6 +1,12 @@
+%header
+  %h1 Работа с папкой
+
+%h2= @folder.commission.name
+%p= @folder.comment
+
 - if @protocol.errors.any?
   #error_explanation
-    %h2= "#{pluralize(@protocol.errors.count, "error")} prohibited this protocol from being saved:"
+    %h2 Не удалось создать протокол
     %ul
       - @protocol.errors.full_messages.each do |msg|
         %li= msg
@@ -10,8 +16,11 @@
     = check_box_tag 'protocol[folder_pics][]', picture.id,
       @protocol.folder_pics.include?(picture.id.to_s)
     = image_tag picture.image_url(:preview) if picture.image?
-
-  = f.text_field :uik_num
-  = f.submit
+  
+  #uik_panel
+    = f.label :uik_num
+    (номер)
+    = f.text_field :uik_num
+    = f.submit
 
 = button_to 'Release', release_folder_path(@folder)

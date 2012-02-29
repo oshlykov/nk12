@@ -3,10 +3,11 @@ class Folder < ActiveRecord::Base
   belongs_to :commission # Region
   belongs_to :created_by, :class_name => "User"
   belongs_to :user # Operator working with folder atm
-  has_many :pictures
+  has_many :pictures, :dependent => :destroy
 
   scope :reserved, lambda {
-    where :reserved_at => (RESERVE_TIMEOUT.ago..Time.now)
+    includes(:commission).where(
+      :reserved_at => (RESERVE_TIMEOUT.ago..Time.now)).order 'commissions.name'
   }
 
   scope :available, lambda {

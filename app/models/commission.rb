@@ -8,6 +8,8 @@ class Commission < ActiveRecord::Base
   has_many :watchers, :class_name => "User", :foreign_key => "commission_id"
 #  scope :child_uik, lambda{|id| Commission.where(["ancestry like ?", "%/#{id}/%"]).where(:is_uik => true) }
 
+  default_scope order(:name)
+
   def update_csv cik = false
     commissions = Commission.descendants_of(self.id).where(:is_uik => true)
 
@@ -349,7 +351,4 @@ class Commission < ActiveRecord::Base
   rescue Exception => ex
     print "Error: #{ex}\n"
   end
-
-  
-  default_scope order(:name)
 end

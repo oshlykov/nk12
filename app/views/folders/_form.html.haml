@@ -1,19 +1,18 @@
-= form_for @folder do |f|
-  - if @folder.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@folder.errors.count, "error")} prohibited this folder from being saved:"
-      %ul
-        - @folder.errors.full_messages.each do |msg|
-          %li= msg
-  .field
-    = f.collection_select :election_id, Election.all, :id, :name,
-    :prompt => 'Choose elections'
-  .field
-    = f.collection_select :commission_id,
+- if f.object.errors.any?
+  #error_explanation
+    %h2 При попытке сохранения возникли ошибки
+    %ul
+      - f.object.errors.full_messages.each do |msg|
+        %li= msg
+.field
+  = f.label :election_id
+  = f.collection_select :election_id, Election.all, :id, :name,
+    :prompt => 'Укажите выборы'
+.field
+  = f.label :commission_id
+  = f.collection_select :commission_id,
     Commission.where(:election_id => @folder.election_id).roots, :id, :name,
-    :prompt => 'Choose commission'
-  .field
-    = f.label :comment
-    = f.text_field :comment
-  .actions
-    = f.submit
+    :prompt => 'Укажите регион'
+.field
+  = f.label :comment
+  = f.text_field :comment

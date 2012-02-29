@@ -1,0 +1,12 @@
+%header
+  %h1 Массовая загрузка
+
+%p= link_to 'Создать папку', new_folder_path, :class => 'btn'
+
+- @folders.each do |folder|
+  %p
+    %h3= folder.commission.name
+    .folder_comment= folder.comment
+    .folder_info= "Создана: #{l folder.created_at}, создал: #{folder.created_by.name}, файлов: #{folder.pictures.size}"
+    = link_to 'Начать работу', "/protocols/unfold/#{folder.id}",
+      :method => :post, :class => 'btn btn-danger'
