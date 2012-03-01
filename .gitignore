@@ -52,6 +52,7 @@ tmp/*
 /specifications
 /db/data.yml
 /public/uik_csv/*.csv
+/.local
 
 # scm revert files
 **.orig
