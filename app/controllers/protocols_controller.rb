@@ -43,9 +43,15 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def destroy
-    redirect_to :back unless @p = Protocol.find_by_id(params[:id])
+    return redirect_to :back unless @p = Protocol.find_by_id(params[:id])
+    commission = @p.commission if @p.priority == 1
     respond_to do |format|
       unless can?(:destroy, @p) and @p.destroy
+        if commission
+          commission.conflict = false 
+          commission.votes_taken = false
+          commission.save
+        end
         flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
       end
       format.js
@@ -55,10 +61,7 @@ before_filter :auth, :except => [:index, :show]
   def update  
     #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
-    unless can?(:update, @protocol)
-      redirect_to :back, :notice => "У вас нет прав редактировать протокол"
-      return
-    end
+    return redirect_to :back, :notice => "У вас нет прав редактировать протокол" unless can?(:update, @protocol)
 
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
@@ -66,20 +69,15 @@ before_filter :auth, :except => [:index, :show]
     conflict = false
     @protocol.votings.each_with_index do |v,i|
       @protocol.send("v#{i+1}=", params["#{i+1}"])
-      commission.state[:checked][i] = @protocol.send("v#{i+1}") if @protocol.priority == 1
-      conflict = true if params[i+1] != uik_protocol.votings[i+1]
-=begin - заполнение кэша
-    if @protocol is 
-    state = Hash.new
-    state[:uik] = @protocol.votings
-    uik_protocol
-=end
-
-      commission.conflict = conflict if @protocol.priority == 1 and commission.conflict != conflict
+      if @protocol.priority == 1
+        commission.state[:checked][i] = @protocol.send("v#{i+1}") 
+        conflict = true if params[i+1] != uik_protocol.votings[i+1] and i != 25
+        commission.conflict = conflict if commission.conflict != conflict
+      end
     end
     commission.save #fixme
     @protocol.save #fixme
-    redirect_to :back
+    redirect_to commission_path(commission)#:back
   end
 
   def checking
