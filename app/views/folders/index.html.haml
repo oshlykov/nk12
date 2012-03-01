@@ -5,8 +5,15 @@
 
 - @folders.each do |folder|
   %p
-    %h3= folder.commission.name
+    %h3
+      - if can? :edit, folder
+        = link_to folder.commission.name, folder_path(folder)
+      - else
+        = folder.commission.name
     .folder_comment= folder.comment
     .folder_info= "Создана: #{l folder.created_at}, создал: #{folder.created_by.name}, файлов: #{folder.pictures.size}"
     = link_to 'Начать работу', "/protocols/unfold/#{folder.id}",
-      :method => :post, :class => 'btn btn-danger'
+      :method => :post, :class => 'btn'
+    - if can? :destroy, folder
+      = link_to 'Удалить', folder_path(folder), :method => :delete,
+        :confirm => 'Вы уверены?', :class => 'btn btn-danger'

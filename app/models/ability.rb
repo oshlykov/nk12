@@ -20,6 +20,10 @@ class Ability
 	user.id == (pic.folder ? pic.folder.created_by_id :
 		    pic.protocol.user_id)
       end
+      can [:edit, :destroy], Folder, :created_by_id => user.id
+      can :unfold, Folder do |folder|
+	folder.created_by_id == user.id or !folder.reserved?
+      end
     end
 
     if user.role? :observer

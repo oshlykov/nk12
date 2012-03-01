@@ -9,12 +9,22 @@ class FoldersController < InheritedResources::Base
   end
 
   def update
+    authorize! :edit, resource
     update! { edit_resource_path }
   end
 
+  def destroy
+    authorize! :destroy, resource
+    destroy!
+  end
+
   def release
-    resource.reserved_at = nil
-    resource.save!
+    if can? :unfold, resource
+      resource.reserved_at = nil
+      resource.save!
+    else
+      flash[:error] = 'С папкой уже работает другой пользователь'
+    end
     redirect_to collection_path
   end
 

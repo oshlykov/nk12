@@ -40,9 +40,14 @@ before_filter :auth, :except => [:index, :show]
 
   def unfold
     build_resource
-    @folder.user = current_user
-    @folder.reserved_at = Time.now
-    @folder.save!
+    if can? :unfold, @folder
+      @folder.user = current_user
+      @folder.reserved_at = Time.now
+      @folder.save!
+    else
+      flash[:error] = 'С папкой уже работает другой пользователь'
+      redirect_to folders_path
+    end
   end
     
   def create

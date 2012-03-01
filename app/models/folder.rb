@@ -21,4 +21,8 @@ class Folder < ActiveRecord::Base
   def election_id
     commission.election_id if commission
   end
+
+  def reserved?
+    reserved_at && reserved_at >= RESERVE_TIMEOUT.ago
+  end
 end
