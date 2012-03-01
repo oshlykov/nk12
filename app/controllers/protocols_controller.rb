@@ -51,6 +51,8 @@ before_filter :auth, :except => [:index, :show]
   end
     
   def create
+    build_resource
+    authorize! :unfold, @folder if @folder
     create! do |ok, nok|
       nok.html do
 	render 'unfold'
@@ -137,7 +139,7 @@ before_filter :auth, :except => [:index, :show]
   
   protected
   def build_resource
-    @folder = Folder.find(params[:folder_id]) if params[:folder_id]
+    @folder ||= Folder.find(params[:folder_id]) if params[:folder_id]
     super.folder_pics ||= []
     super
   end
