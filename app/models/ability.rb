@@ -22,7 +22,7 @@ class Ability
       end
       can [:edit, :destroy], Folder, :created_by_id => user.id
       can :unfold, Folder do |folder|
-	folder.created_by_id == user.id or !folder.reserved?
+	folder.user_id == user.id or !folder.reserved?
       end
     end
 

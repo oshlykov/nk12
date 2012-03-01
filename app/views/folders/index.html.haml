@@ -7,7 +7,7 @@
   %p
     %h3
       - if can? :edit, folder
-        = link_to folder.commission.name, folder_path(folder)
+        = link_to folder.commission.name, edit_folder_path(folder)
       - else
         = folder.commission.name
     .folder_comment= folder.comment
@@ -17,3 +17,29 @@
     - if can? :destroy, folder
       = link_to 'Удалить', folder_path(folder), :method => :delete,
         :confirm => 'Вы уверены?', :class => 'btn btn-danger'
+
+%p
+  %h2 Зарезервированные
+
+- if current_user.role? :admin
+  %table.folders
+    %tr
+      %th Регион
+      %th Комментарий
+      %th Создана
+      %th Автор
+      %th Зарезервировал
+      %th Файлов
+      %th ...
+      %th ...
+    - @reserved_folders.each do |folder|
+      %tr
+        %td= link_to folder.commission.name, edit_folder_path(folder)
+        %td= folder.comment
+        %td= l folder.created_at
+        %td= folder.created_by.name
+        %td= folder.user.name
+        %td= folder.pictures.size
+        %td= link_to 'Освободить', release_folder_path(folder), :method => :post
+        %td= link_to 'Удалить', folder_path(folder), :method => :delete,
+          :confirm => 'Вы уверены?'
