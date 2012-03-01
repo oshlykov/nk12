@@ -5,13 +5,14 @@
 
 - @folders.each do |folder|
   %p
-    %h3
+    %h3.region
       - if can? :edit, folder
         = link_to folder.commission.name, edit_folder_path(folder)
       - else
         = folder.commission.name
-    .folder_comment= folder.comment
-    .folder_info= "Создана: #{l folder.created_at}, создал: #{folder.created_by.name}, файлов: #{folder.pictures.size}"
+    = "(#{folder.comment})" unless folder.comment.empty?
+    = " - создана: #{l folder.created_at}, создал: #{folder.created_by.name}, файлов: #{folder.pictures.size}"
+    %br
     = link_to 'Начать работу', "/protocols/unfold/#{folder.id}",
       :method => :post, :class => 'btn'
     - if can? :destroy, folder
