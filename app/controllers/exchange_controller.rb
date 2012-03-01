@@ -36,32 +36,23 @@ class ExchangeController < ApplicationController
     if uiks_str != ""
       @uiks = uiks_str.gsub(" ", "").split(',')
       @comms = Commission.where("id IN (?)", @uiks).map { |c| [c, get_ancestors(c.ancestry)] }
-    end
-    @filter = params[:filter].to_s
-    if @filter != ""
-      @sources = Protocol.find(:all, :select => "distinct source", :conditions => ["source like ?", @filter]).map { |p| p.source }
+      final_uiks = get_commission_uiks(@comms.map {|c, a| c})
+    else
+      final_uiks = nil
     end
 
     @updated, range_start, range_end = parse_updated_param(params[:updated].to_s)
+    conditions, vals = prepare_query_conditions(final_uiks, nil, range_start, range_end)
 
-    query = "select count(id) from protocols where priority = 0"
-    query_params = []
-
-    if uiks_str != ""
-      ids = get_commission_uiks @comms.map { |c, ancestors| c }
-      query += " and commission_id in (?)"
-      query_params += [ids]
-    end
+    @filter = params[:filter].to_s
     if @filter != ""
-      query += " and source like ?"
-      query_params += [@filter]
-    end
-    if @updated != ""
-      query += " and updated_at >= ? and updated_at <= ?"
-      query_params += [range_start, range_end]
+      conditions = conditions + " and source like ?"
+      vals = vals + [@filter]
+
+      @sources = Protocol.find(:all, :select => "distinct source", :conditions => ([conditions] + vals)).map { |p| p.source }
     end
 
-    @count = Protocol.count_by_sql([query] + query_params)
+    @count = Protocol.count_by_sql(["select count(id) from protocols where " + conditions] + vals)
   end
 
   def get_commission_uiks(commissions)
@@ -70,11 +61,11 @@ class ExchangeController < ApplicationController
       if c.is_uik
         ids.add(c.id)
       else
-        ancestry = c.id
+        ancestry = c.id.to_s
         if c.ancestry
           ancestry = c.ancestry + '/' + ancestry
         end
-        r = Commission.find(:all, :select => "distinct id", :conditions => ["is_uik = 1 and ancestry like '?%'", ancestry]).map { |p| p.id }
+        r = Commission.find(:all, :select => "distinct id", :conditions => ["is_uik = 1 and ancestry like ?", "#{ancestry}%"]).map { |p| p.id }
         r.each do |id|
           ids.add(id)
         end
@@ -96,7 +87,7 @@ class ExchangeController < ApplicationController
     if res
       res[0]
     else
-      null
+      nil
     end
   end
 
@@ -125,8 +116,27 @@ class ExchangeController < ApplicationController
     path
   end
 
+  def delete_older(dir, time)
+    save = Dir.getwd
+    Dir.chdir(dir)
+    Dir.foreach(".") do |entry|
+      # We're not handling directories here
+      next if File.stat(entry).directory?
+      # Use the modification time
+      if File.mtime(entry) < time
+        File.unlink(entry)
+      end
+    end
+    Dir.chdir(save)
+  end
+
   def unique_export_zip
-    base = './public/uploads/export/' + Time.now().strftime("%Y%m%d.%H%M%S")
+    export_path = './public/uploads/export/'
+    if not File.exists? export_path
+      FileUtils.mkpath export_path
+    end
+    delete_older(export_path, Time.now - 1.day)
+    base = export_path + Time.now().strftime("%Y%m%d.%H%M%S")
     path = base + '.zip'
     while File.exists? path do
       path = base + '.' + rand(999999).to_s + '.zip'
@@ -136,7 +146,7 @@ class ExchangeController < ApplicationController
 
   def prepare_query_conditions(uiks, sources, range_start, range_end)
     # `priority` = 0 and `source` in ('test', 'test1') and `commission_id` in (5814, 5815) and `updated_at` >= '2012-02-19 00:00:00' and `updated_at` <= '2012-02-19 23:59:59'
-    conditions = "priority = 0"
+    conditions = "priority < 100"
     vals = []
     if uiks
       conditions += " and commission_id in (?)"
@@ -150,20 +160,20 @@ class ExchangeController < ApplicationController
       conditions += " and updated_at >= ? and updated_at <= ?"
       vals += [range_start, range_end]
     end
-    [conditions] + vals
+    return conditions, vals
   end
 
   def prepare_data_file file
     if not File.exists? file
       File.open(file, 'w:UTF-8') do |f|
-        f << "id\tuik\tv1\tv2\tv3\tv4\tv5\tv6\tv7\tv8\tv9\tv10\tv11\tv12\tv13\tv14\tv15\tv16\tv17\tv18\tv19\tv20\tv21\tv22\tv23\tv24\tv25\tv26\tv27\tv28\tv29\tv30\n"
+        f << "id\tuik\tv1\tv2\tv3\tv4\tv5\tv6\tv7\tv8\tv9\tv10\tv11\tv12\tv13\tv14\tv15\tv16\tv17\tv18\tv19\tv20\tv21\tv22\tv23\tv24\tv25\tv26\tv27\tv28\tv29\tv30\tsource\tpriority\n"
       end
     end
   end
 
   def append_protocol_data file, protocol, uik
     File.open(file, 'a:UTF-8') do |f|
-      f << "#{protocol.id}\t\"#{uik.name}\"\t#{protocol.v1}\t#{protocol.v2}\t#{protocol.v3}\t#{protocol.v4}\t#{protocol.v5}\t#{protocol.v6}\t#{protocol.v7}\t#{protocol.v8}\t#{protocol.v9}\t#{protocol.v10}\t#{protocol.v11}\t#{protocol.v12}\t#{protocol.v13}\t#{protocol.v14}\t#{protocol.v15}\t#{protocol.v16}\t#{protocol.v17}\t#{protocol.v18}\t#{protocol.v19}\t#{protocol.v20}\t#{protocol.v21}\t#{protocol.v22}\t#{protocol.v23}\t#{protocol.v24}\t#{protocol.v25}\t#{protocol.v26}\t#{protocol.v27}\t#{protocol.v28}\t#{protocol.v29}\t#{protocol.v30}\n"
+      f << "#{protocol.id}\t\"#{uik.name}\"\t#{protocol.v1}\t#{protocol.v2}\t#{protocol.v3}\t#{protocol.v4}\t#{protocol.v5}\t#{protocol.v6}\t#{protocol.v7}\t#{protocol.v8}\t#{protocol.v9}\t#{protocol.v10}\t#{protocol.v11}\t#{protocol.v12}\t#{protocol.v13}\t#{protocol.v14}\t#{protocol.v15}\t#{protocol.v16}\t#{protocol.v17}\t#{protocol.v18}\t#{protocol.v19}\t#{protocol.v20}\t#{protocol.v21}\t#{protocol.v22}\t#{protocol.v23}\t#{protocol.v24}\t#{protocol.v25}\t#{protocol.v26}\t#{protocol.v27}\t#{protocol.v28}\t#{protocol.v29}\t#{protocol.v30}\t\"#{protocol.source}\"\t#{protocol.priority}\n"
     end
   end
 
@@ -200,19 +210,20 @@ class ExchangeController < ApplicationController
 
     updated, range_start, range_end = parse_updated_param(params[:updated].to_s)
 
-    where = prepare_query_conditions uiks, params[:sources], range_start, range_end
+    conditions, vals = prepare_query_conditions uiks, params[:sources], range_start, range_end
+    where = [conditions] + vals
 
     protocols = Protocol.where where
     if protocols
       protocols.each do |p|
-        uik = get_commission_by_id(p.commission_id)
-        protocol_path = path + commission_path(uik)
-        data_file = protocol_path + '/data.csv'
-        FileUtils.mkpath protocol_path
-        prepare_data_file data_file
-        append_protocol_data data_file, p, uik
-        pictures = Picture.find_all_by_protocol_id(p.id)
-        if pictures
+        pictures = p.pictures
+        if pictures and pictures.length > 0
+          uik = get_commission_by_id(p.commission_id)
+          protocol_path = path + commission_path(uik)
+          data_file = protocol_path + '/data.csv'
+          FileUtils.mkpath protocol_path
+          prepare_data_file data_file
+          append_protocol_data data_file, p, uik
           pictures.each_with_index do |pic, index|
             FileUtils.copy src_picture_file(pic.image.to_s), dst_picture_file(protocol_path, p.id, index, File.extname(pic.image.to_s))
           end
