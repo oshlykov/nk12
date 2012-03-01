@@ -18,10 +18,10 @@
       = link_to 'Удалить', folder_path(folder), :method => :delete,
         :confirm => 'Вы уверены?', :class => 'btn btn-danger'
 
-%p
-  %h2 Зарезервированные
-
 - if current_user.role? :admin
+  %p
+    %h2 Зарезервированные
+
   %table.folders
     %tr
       %th Регион
