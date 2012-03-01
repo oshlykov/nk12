@@ -21,6 +21,6 @@
     = f.label :uik_num
     (номер)
     = f.text_field :uik_num
-    = f.submit
+    = f.submit 'Создать протокол'
 
-= button_to 'Release', release_folder_path(@folder)
+= button_to 'Закончить работу с папкой', release_folder_path(@folder)
