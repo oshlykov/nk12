@@ -33,3 +33,17 @@ class Picture < ActiveRecord::Base
     self.folder_id = nil if protocol_id
   end
 end
+
+module CarrierWave 
+  class SanitizedFile 
+    private 
+      def file_with_base64_parser=(file) 
+        file = file.with_indifferent_access if file.is_a?(Hash) 
+        if file.is_a?(Hash) && file.has_key?(:filename) && file.has_key?(:content_type) && file.has_key?(:data) && !file.has_key?(:tempfile) 
+          file[:tempfile] = StringIO.new(Base64.decode64(file.delete(:data))) 
+        end 
+        self.file_without_base64_parser = file 
+      end 
+      alias_method_chain :file=, :base64_parser 
+  end 
+end 

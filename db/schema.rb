@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120222182744) do
+ActiveRecord::Schema.define(:version => 20120226175157) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20120222182744) do
 
   add_index "commissions", ["ancestry"], :name => "index_commissions_on_ancestry"
   add_index "commissions", ["conflict"], :name => "index_commissions_on_conflict"
+  add_index "commissions", ["url"], :name => "index_commissions_on_url", :unique => true
 
   create_table "elections", :force => true do |t|
     t.string   "name"

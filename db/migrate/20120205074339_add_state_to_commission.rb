@@ -4,13 +4,23 @@ class AddStateToCommission < ActiveRecord::Migration
     #Система кэширования голосов
    
 =begin
-  state = Hash.new
-    Commission.where("is_uik = ? and state is null", 1).each do |c|
-      state[:uik] = c.protocols.first.votings
-      c.state = state
-      c.save
+state = Hash.new
+Commission.where(:conflict => 1).each do |c|
+  state[:uik] = c.protocols[0].votings
+  karik = c.protocols[1]
+  
+  conflict = false
+  if karik.priority == 1
+    state[:checked] = Array.new
+    karik.votings.each_with_index do |v,i|
+      state[:checked][i] = karik.send("v#{i+1}")
+      conflict = true if c.state[:checked][i] != c.state[:uik][i] and i != 25
     end
-
+  end
+  c.conflict = conflict
+  c.state = state
+  c.save
+end
     # Получение голосов
     Protocol.where('user_id > 0').each do |p|
       p.commission.votes_taken = 1

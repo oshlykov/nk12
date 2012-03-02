@@ -48,15 +48,38 @@ class Protocol < ActiveRecord::Base
     end
   end
 
-  protected
+protected
   def load_pics
     if folder_pics
       @folder_pics.each do |pic_id|
-	self.pictures << Picture.find(pic_id)
+      	self.pictures << Picture.find(pic_id)
       end
     end
   end
 
+  def android_upload
+    if user = User.find_by_email(params[:email]) and user.authenticate(params[:password])
+      # file = file.with_indifferent_access if file.is_a?(Hash) 
+      # if file.is_a?(Hash) && file.has_key?(:filename) && 
+      #   file.has_key?(:content_type) && file.has_key?(:data) && !file.has_key?(:tempfile) 
+      # file[:tempfile] = StringIO.new(Base64.decode64(file.delete(:data)))       
+    end
+=begin
+    print_r($_FILES);
+    $heades_printed = print_r($_SERVER, true);
+
+    $new_image_name = "namethisimage.MMMMM";
+    move_uploaded_file($_FILES["file"]["tmp_name"], "/home/borki/public_html/67/sites/default/files/UploadedDocs/".$new_image_name);
+
+    $myFile = "/home/borki/public_html/67/sites/default/files/UploadedDocs/headers";
+    $fh = fopen($myFile, 'w');
+    fwrite($fh, $heades_printed);
+    fwrite($fh, print_r($_FILES, true));
+    fclose($fh);
+=end
+
+  end
+   
 =begin
   def self.with_votes    
     self.includes(:votings,:voting_dictionaries)
