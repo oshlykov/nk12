@@ -1,3 +1,8 @@
+require 'net/http'
+require 'nokogiri'
+require 'open-uri'
+require 'pp'
+
 class Commission < ActiveRecord::Base
   has_ancestry
   serialize :state
@@ -63,6 +68,58 @@ class Commission < ActiveRecord::Base
 ################################################################################################################################################
 ################################################################################################################################################
 
+  def self.url_normalize(url)
+    host = url.match(".+\:\/\/([^\/]+)")[1]
+    path = url.partition(host)[2] || "/"
+    begin
+      return Net::HTTP.get(host, path)
+    rescue Timeout::Error
+      print "timeout-error - sleeping 5 seconds"
+      sleep 5
+      url_normalize(url)
+    end
+  end
+
+#Commission.get_children(200076)
+
+  def self.get_children(parent_commission, url = '')
+    #идем по урл, забираем html селект или переходим на сайт субъекта
+    url = parent_commission.url
+    agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
+    
+    agent.search("a").search("a").each do |href|
+      if (href.content.to_str == "Результаты выборов")
+        parent_commission.voting_table_url = href['href']    
+        parent_commission.save          
+      end
+    end
+
+    agent.search("a").each do |href|
+      if (href.content.to_str == "сайт избирательной комиссии субъекта Российской Федерации")
+        parent_commission.url = href['href']
+        parent_commission.save          
+        url = parent_commission.url
+        agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
+      end
+    end
+
+    agent.search("select option").each do |option|
+      if option['value']
+        name = option.content.gsub(/^\d+ /,'')
+        unless child = Commission.find_by_url(option['value'])
+          child = parent_commission.children.create(:name => name, :url => option['value'], :is_uik => name.include?("УИК"), :election_id => parent_commission.election_id)
+        end
+
+        if name.include?("УИК")
+          #ставим флаг, что коммиссия содержит уики
+          parent_commission.update_attributes(:uik_holder => true)                                     
+        else
+          print "Taken: #{name}\n"
+        end                    
+        get_children(child)
+      end
+    end
+  end
 
 
 ## encoding: utf-8
@@ -114,7 +171,6 @@ class Commission < ActiveRecord::Base
 # get commission and flag is_uik
 # get votes
 # get subcommission if need
-
 
 
 
@@ -227,7 +283,7 @@ class Commission < ActiveRecord::Base
   }
   end
 =end
-
+=begin
   # The function below is almost copy of get_children_from_raw_html. Temporary solution. Not very effective in terms of execution time
   def get_children_from_raw_html(dir, parent_commission, url)
     return if /Regional\/Regional/ =~ dir
@@ -265,10 +321,11 @@ class Commission < ActiveRecord::Base
       print "Error: #{ex}\n"
     end
   end
-
+=end
 
 #  desc "Grab all the commissions out there from 4-dec elections"
 #  task :get => :environment do        
+=begin
   def task_get_enviroment
     Rake::Task['grab:clean_up'].invoke
     
@@ -299,45 +356,7 @@ class Commission < ActiveRecord::Base
     
     # print "\n-- data taken, taken votes --\n"
   end  
-
-
-  def url_normalize(url)
-    host = url.match(".+\:\/\/([^\/]+)")[1]
-    path = url.partition(host)[2] || "/"
-    begin
-      return Net::HTTP.get(host, path)
-    rescue Timeout::Error
-      print "timeout-error - sleeping 5 seconds"
-      sleep 5
-      url_normalize(url)
-    end
-  end
-
-  def get_children(parent_commission,url)
-    #идем по урл, забираем html селект или переходим на сайт субъекта
-    agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
-    
-    agent.search("a").search("a").each do |href|
-      if (href.content.to_str == "Результаты выборов")
-        parent_commission.voting_table_url = href['href']    
-        parent_commission.save          
-      end
-    end
-
-    agent.search("select option").each do |option|
-      if option['value']
-        name = option.content.gsub(/^\d+ /,'')
-        child = parent_commission.children.create(:name => name, :url => option['value'], :is_uik => name.include?("УИК"), :election_id => @election.id)
-                            
-        if name.include?("УИК")
-          #ставим флаг, что коммиссия содержит уики
-          parent_commission.update_attributes(:uik_holder => true)                                     
-        else
-          print "Taken: #{name}\n"
-        end                    
-        get_children(child,option['value'])
-      end
-    end
+=end
 
     # обходим рекурсивно все внутренние ссылки
 =begin    
@@ -348,7 +367,7 @@ class Commission < ActiveRecord::Base
     end
 =end
 #2012      voting_table(parent_commission)
-  rescue Exception => ex
-    print "Error: #{ex}\n"
-  end
+#   rescue Exception => ex
+#     print "Error: #{ex}\n"
+#   end
 end
