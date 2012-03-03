@@ -24,9 +24,9 @@ class PictureUploader < CarrierWave::Uploader::Base
   end
 
   version :preview do
-    process :resize_to_fit => [300, 300]
+    process :resize_to_limit => [600, 600]
   end
-  
+
   def watermark(path_to_file)
     manipulate! do |img|
         logo = MiniMagick::Image.open(path_to_file)

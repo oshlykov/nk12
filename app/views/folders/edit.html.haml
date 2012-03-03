@@ -7,7 +7,7 @@
   = f.submit 'Сохранить'
 
 #pictures
-  = render :partial => '/pictures/picture', :collection => @folder.pictures
+  = render :partial => 'picture', :collection => @folder.pictures
 
 = form_for :picture, :url => folder_pictures_path(@folder),
 :html => { :class => 'pics_upload', :multipart => true} do |f|

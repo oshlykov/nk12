@@ -43,7 +43,7 @@ gem "guard-rails", ">= 0.0.3", :group => :development
 gem "guard-livereload", ">= 0.3.0", :group => :development
 gem "guard-rspec", ">= 0.4.3", :group => :development
 gem "guard-cucumber", ">= 0.6.1", :group => :development
-gem "devise", ">= 1.5.0"
+#gem "devise", ">= 1.5.0"
 gem 'bcrypt-ruby'
 gem 'cancan'
 gem "twitter-bootstrap-rails", ">= 2.0.0", :platform => :ruby

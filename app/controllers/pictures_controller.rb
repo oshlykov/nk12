@@ -8,7 +8,7 @@ class PicturesController < InheritedResources::Base
       #mobile upload
       if user = User.find_by_email(params['login'])
         unless user.authenticate(params['password'])
-          render(:file => "public/403.html", :status => '403') and return 
+          render(:file => "public/403.html", :status => '207') and return 
         end
 
         params['picture'] = {"image" => params['file']}
@@ -25,27 +25,10 @@ class PicturesController < InheritedResources::Base
           end
           params['commission_id'] = user.commission_id
         else
-          render :file => "public/404.html", :status => '404' and return
+          # ИСПРАВИТЬ добавить сохранение неприкреплённых протоколов в Спецхран
+          render :file => "public/404.html", :status => '208' and return
         end
-
-        # file = file.with_indifferent_access if file.is_a?(Hash) 
-        # if file.is_a?(Hash) && file.has_key?(:filename) && 
-        #   file.has_key?(:content_type) && file.has_key?(:data) && !file.has_key?(:tempfile) 
-        # file[:tempfile] = StringIO.new(Base64.decode64(file.delete(:data)))       
       end
-=begin
-    print_r($_FILES);
-    $heades_printed = print_r($_SERVER, true);
-
-    $new_image_name = "namethisimage.MMMMM";
-    move_uploaded_file($_FILES["file"]["tmp_name"], "/home/borki/public_html/67/sites/default/files/UploadedDocs/".$new_image_name);
-
-    $myFile = "/home/borki/public_html/67/sites/default/files/UploadedDocs/headers";
-    $fh = fopen($myFile, 'w');
-    fwrite($fh, $heades_printed);
-    fwrite($fh, print_r($_FILES, true));
-    fclose($fh);
-=end      
     end
     create! do |ok, nok|
       ok.js do

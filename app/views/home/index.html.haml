@@ -9,15 +9,15 @@
       = raw '<button class="btn" type="submit">показать</button>'
   .span6
     %h1
-      %a{:href => "#1"}
-        2012 Выборы Президента
-  .span9
-    - @elections.each do |election|
+      %a{:href => "#2"}
+        2011 думские выборы
+  .span12
+    - @elections.reverse.each do |election|
       %h2
         = election.name
       -if election.id == 1
         .row
-          .span12
+          .span11
             -Commission.where(:id => [18, 85911, 78266, 89960, 54]).each do |c|
               %div.tree-root
                 %h4
@@ -26,6 +26,31 @@
                     %small
                       = c.descendants.where('votes_taken=true').size
             %nobr — наиболее полные сведения
+          .span1
+            Протоколов:
+            %h2.green
+              %span{:title => "Проверенных протоколов"}= @checked_count
+              - if @unchecked_count
+                %sup
+                  %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
+        - else
+          .row
+            -#.span11
+              -Commission.where(:id => []).each do |c|
+                %div.tree-root
+                  %h4
+                    = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id
+                    %sup
+                      %small
+                        = c.descendants.where('votes_taken=true').size
+              %nobr — наиболее полные сведения
+            .span1{:style => "float: right"}
+              Наблюдателей:
+              %h2
+                %span.green{:title => "Зарегистрировано на сайте"}= @users_count
+                %sup
+                  %small.green{:title => "Данные из Вконтакта и школ наблюдателей КАРИК"} (>2000)
+
         %p
           %br
       .row
@@ -42,16 +67,3 @@
         %br
       %p
         %br
-  .span2
-    Протоколов:
-    %h2.green
-      %span{:title => "Проверенных протоколов"}= @checked_count
-      - if @unchecked_count
-        %sup
-          %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count})"
-  .span2
-    Наблюдателей:
-    %h2
-      %span.green{:title => "Зарегистрировано на сайте"}= @users_count
-      %sup
-        %small.green{:title => "Данные из Вконтакта и школ наблюдателей КАРИК"} (>2000)

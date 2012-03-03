@@ -1,0 +1,7 @@
+.picture[picture]
+  %a{:href => picture.image_url,  :target => '_blank'}
+    = image_tag picture.image_url(:preview) if picture.image?
+  - if can? :destroy, picture
+    = link_to raw('<i class="icon-remove"></i>'),
+      picture_path(picture.id), :method => :delete,
+      :confirm => "Удалить цифровую копию?", :remote => :true

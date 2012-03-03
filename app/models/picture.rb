@@ -23,6 +23,7 @@ class Picture < ActiveRecord::Base
     "size" => image.size,
     "url" => image.url,
     "thumbnail_url" => image.thumb.url,
+    "preview_url" => image.preview.url,
     "delete_url" => picture_path(id),
     "delete_type" => "DELETE" 
    }
