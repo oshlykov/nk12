@@ -1,6 +1,7 @@
 class FoldersController < InheritedResources::Base
   before_filter :auth
 
+
   def create
     create! do |ok, nok|
       ok.html { redirect_to edit_resource_path }

@@ -34,6 +34,7 @@ class Picture < ActiveRecord::Base
   end
 end
 
+=begin
 module CarrierWave 
   class SanitizedFile 
     private 
@@ -47,3 +48,4 @@ module CarrierWave
       alias_method_chain :file=, :base64_parser 
   end 
 end 
+=end

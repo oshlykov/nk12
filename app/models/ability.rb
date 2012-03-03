@@ -16,13 +16,14 @@ class Ability
       can [:update, :destroy], Protocol do |p|
         p.priority >= 100 and p.user_id == user.id
       end
+      
       can :destroy, Picture do |pic|
-	user.id == (pic.folder ? pic.folder.created_by_id :
-		    pic.protocol.user_id)
+        user.id == (pic.folder ? pic.folder.created_by_id : pic.protocol.user_id)
       end
+
       can [:edit, :destroy], Folder, :created_by_id => user.id
       can :unfold, Folder do |folder|
-	folder.user_id == user.id or !folder.reserved?
+        folder.user_id == user.id or !folder.reserved?
       end
     end
 

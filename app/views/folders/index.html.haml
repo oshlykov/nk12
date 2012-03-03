@@ -42,5 +42,4 @@
         %td= folder.user.name
         %td= folder.pictures.size
         %td= link_to 'Освободить', release_folder_path(folder), :method => :post
-        %td= link_to 'Удалить', folder_path(folder), :method => :delete,
-          :confirm => 'Вы уверены?'
+        %td= link_to 'Удалить', folder_path(folder), :method => :delete, :confirm => 'Вы уверены?' if can? :destroy, folder
