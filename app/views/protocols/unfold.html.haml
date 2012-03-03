@@ -13,9 +13,9 @@
 = form_for @protocol, :as => :protocol,
   :url => protocols_path(:folder_id => params[:folder_id]) do |f|
   - @folder.pictures.each do |picture|
-    = check_box_tag 'protocol[folder_pics][]', picture.id,
-      @protocol.folder_pics.include?(picture.id.to_s)
-    = image_tag picture.image_url(:preview) if picture.image?
+    .photo{:style => "display: inline"}
+      = check_box_tag 'protocol[folder_pics][]', picture.id, @protocol.folder_pics.include?(picture.id.to_s), :id => "pic_#{picture.id.to_s}", :class => "photo_checkbox"
+      = image_tag picture.image_url(:preview), :onClick => "change_state(#{picture.id.to_s})", :class=>"folder-pic" if picture.image?
   
   #uik_panel
     = f.label :uik_num
@@ -24,3 +24,16 @@
     = f.submit 'Создать протокол'
 
 = button_to 'Закончить работу с папкой', release_folder_path(@folder)
+
+:javascript
+  function change_state( id ){
+    pic = $('#pic_'+id);
+    img = $( 'img', pic.parent() );
+    if ( pic.attr('checked') ){
+      img.removeClass('alert-info');
+      pic.removeAttr('checked');
+    }else{
+      img.addClass('alert-info');
+      pic.attr('checked', 'checked');
+    }
+  }

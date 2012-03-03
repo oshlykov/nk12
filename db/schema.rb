@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120226175157) do
+ActiveRecord::Schema.define(:version => 20120222182744) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -39,7 +39,6 @@ ActiveRecord::Schema.define(:version => 20120226175157) do
 
   add_index "commissions", ["ancestry"], :name => "index_commissions_on_ancestry"
   add_index "commissions", ["conflict"], :name => "index_commissions_on_conflict"
-  add_index "commissions", ["url"], :name => "index_commissions_on_url", :unique => true
 
   create_table "elections", :force => true do |t|
     t.string   "name"
@@ -125,26 +124,5 @@ ActiveRecord::Schema.define(:version => 20120226175157) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-
-  create_table "voting_dictionaries", :force => true do |t|
-    t.string   "name"
-    t.string   "en_name"
-    t.integer  "election_id"
-    t.integer  "source_identifier"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "main_role",         :default => false
-  end
-
-  create_table "votings", :force => true do |t|
-    t.integer  "commission_id"
-    t.integer  "votes"
-    t.integer  "voting_dictionary_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "votings", ["commission_id"], :name => "index_votings_on_commission_id"
-  add_index "votings", ["voting_dictionary_id"], :name => "index_votings_on_voting_dictionary_id"
 
 end
