@@ -99,7 +99,8 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def checking
-    @protocols = Protocol.where("priority >= 100 and created_at < ?", 1.hour.ago).limit(100).all(:order => "created_at")
+    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 1.hour.ago).limit(50).all(:order => "created_at")
+    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 1.hour.ago).limit(50).all(:order => "created_at")
     
     if can? :cheking, Protocol
 
