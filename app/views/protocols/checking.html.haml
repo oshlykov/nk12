@@ -1,4 +1,4 @@
-%h1 Проверка протоколов
+%h1 Проверка протоколов 2012
 %table.voting-table
   - @protocols_2.each do |p|
     %tr{:id => ("protocol_#{p.id}")}
@@ -26,6 +26,7 @@
                 %a{:href => pic.image_url,  :target => '_blank'}
                   = image_tag pic.image_url(:thumb) if pic.image?
           %br
+%h1 Проверка протоколов 2011
   - @protocols_1.each do |p|
     %tr{:id => ("protocol_#{p.id}")}
       %td

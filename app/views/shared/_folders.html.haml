@@ -3,5 +3,6 @@
   #reserved_folders
     %p Вы работаете с папками:
     - folders.each do |folder|
-      %p= link_to folder.commission.name, "/protocols/unfold/#{folder.id}",
-        :method => :post
+      %p
+        = link_to folder.commission.name, "/protocols/unfold/#{folder.id}", :method => :post
+        = "(#{folder.comment})" if folder.comment != ""

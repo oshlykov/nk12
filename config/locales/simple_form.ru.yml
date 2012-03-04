@@ -1,4 +1,7 @@
 ru:
+  datetime:
+    distance_in_words:
+      about_x_hour: "около ? часов"
   time:
     formats:
       default: "%d.%m.%Y %H:%M"

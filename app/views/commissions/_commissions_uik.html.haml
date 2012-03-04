@@ -7,8 +7,12 @@
       %li
         %a{:href => commission_path(c.id)}= c.name
         %span.divider →
-  %h1
-    =raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
+  - if @commission.election_id == 1
+    %h5 Думские выборы 2011
+  - else
+    %h5 Выборы Президента 2012
+  %h1=raw "#{@commission.name} <sup><small>#{link_to('цик', @commission.url)}</small></sup>"
+
 .row
   .span12
     %table.voting-table

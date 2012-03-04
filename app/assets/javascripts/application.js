@@ -6,6 +6,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree ../../../vendor/assets/javascripts/.
+//= require ../../../vendor/assets/javascripts/jquery.fileupload
+//= require ../../../vendor/assets/javascripts/jquery.fileupload-ui
+//= require ../../../vendor/assets/javascripts/jquery.fileupload-uix
+//= require ../../../vendor/assets/javascripts/zoom
+//require_tree ../../../vendor/assets/javascripts/.
 //= require twitter/bootstrap
 //= require_tree .

@@ -1,0 +1,4 @@
+ru:
+  datetime:
+    distance_in_words:
+      about_x_hour: "около ? часов"
