@@ -15,9 +15,9 @@
     - @elections.reverse.each do |election|
       %h2
         = election.name
-      -if election.id == 1
-        .row
-          .span11
+      .row
+        -if election.id == 1
+          .span8
             -Commission.where(:id => [18, 85911, 78266, 89960, 54]).each do |c|
               %div.tree-root
                 %h4
@@ -26,66 +26,14 @@
                     %small
                       = c.descendants.where('votes_taken=true').size
             %nobr — наиболее полные сведения
-          .span1
+          .span4
             Протоколов:
             %h2.green
               %span{:title => "Проверенных протоколов"}= @checked_count_1
               - if @unchecked_count_1
                 %sup
                   %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_1})"
-        - else
-          .row
-            -#.span11
-              -Commission.where(:id => []).each do |c|
-                %div.tree-root
-                  %h4
-                    = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id
-                    %sup
-                      %small
-                        = c.descendants.where('votes_taken=true').size
-              %nobr — наиболее полные сведения
-            .span11
-              %h2 Живая лента
-              %table.table
-                %tr
-                  %th{:width => "100px"}
-                  -#%th{:colspan => 18}
-                  - VOTING_DICTIONARY_SHORT[@protocols_new.first.commission.election_id].each_with_index do |s,i|
-                    %th{:style => "text-align: right"}
-                      %small{"title"=>Protocol.voting_name(i+1, @protocols_new.first.commission.election_id)}=raw vds(i+1, @protocols_new.first.commission.election_id)
-                - @protocols_new.each do |p|
-                  %tr
-                    %td
-                      %a{:href => commission_path(p.commission.id)}
-                        = p.commission.name
-                      %small= " #{p.commission.root.name}"
-                      - if p.commission.state and p.commission.state.include?(:uik)
-                        - (uik_protocol = p.commission.state[:uik]).each_with_index do |vote,i|
-                          %td{"title"=>Protocol.voting_name(i+1, p.commission.election_id), :class => vote_color_uik(p.commission, i+1)}
-                            - if p.commission.state[:checked] and p.commission.state[:uik][i] != p.commission.state[:checked][i]
-                              = "#{vote} (#{p.commission.state[:checked][i]})"
-                            - else
-                              = vote
-                      - else
-                        - (uik_protocol = p.commission.state[:checked]).each_with_index do |vote,i|
-                          %td{"title"=>Protocol.voting_name(i+1, p.commission.election_id), :class => 'green'}
-                            = vote
-
-            .span1
-              Наблюдателей:
-              %h2
-                %span.green{:title => "Зарегистрировано на сайте"}= @users_count
-              Протоколов:
-              %h2.green
-                %span{:title => "Проверенных протоколов"}= @checked_count_2
-                - if @unchecked_count_2
-                  %sup
-                    %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
-
-        %p
-          %br
-      .row
-        .span12
+        .span8
           - election.commissions.roots.all(:order => :name, :conditions => ["id NOT IN (?)", [18, 85911, 78266, 89960, 54, 31957]]).each do |c|
             %div.tree-root
               %h4
@@ -93,6 +41,59 @@
                 %sup
                   %small
                     = c.descendants.where('votes_taken=true').size
+        - if election.id == 2
+          -#.span11
+            -Commission.where(:id => []).each do |c|
+              %div.tree-root
+                %h4
+                  = link_to "#{c.name}", :controller => "commissions", :action => "show", :id => c.id
+                  %sup
+                    %small
+                      = c.descendants.where('votes_taken=true').size
+            %nobr — наиболее полные сведения
+          .span4
+            %h2 Живая лента
+            %table.table
+              %tr
+                %th{:width => "100px"}
+                -#%th{:colspan => 18}
+                - VOTING_DICTIONARY_SHORT[@protocols_new.first.commission.election_id].each_with_index do |s,i|
+                  -if i > 17
+                    %th{:style => "text-align: right"}
+                      %small{"title"=>Protocol.voting_name(i+1, @protocols_new.first.commission.election_id)}=raw vds(i+1, @protocols_new.first.commission.election_id)
+              - @protocols_new.each do |p|
+                %tr
+                  %td
+                    %a{:href => commission_path(p.commission.id)}
+                      = p.commission.name
+                    %small= " #{p.commission.root.name}"
+                    - if p.commission.state and p.commission.state.include?(:uik)
+                      - (uik_protocol = p.commission.state[:uik]).each_with_index do |vote,i|
+                        -if i > 17
+                          %td{"title"=>Protocol.voting_name(i+1, p.commission.election_id), :class => vote_color_uik(p.commission, i+1)}
+                            - if p.commission.state[:checked] and p.commission.state[:uik][i] != p.commission.state[:checked][i]
+                              = "#{vote} (#{p.commission.state[:checked][i]})"
+                            - else
+                              = vote
+                    - else
+                      - (uik_protocol = p.commission.state[:checked]).each_with_index do |vote,i|
+                        -if i > 17
+                          %td{"title"=>Protocol.voting_name(i+1, p.commission.election_id), :class => 'green'}
+                            = vote
+
+          .span2
+            Наблюдателей:
+            %h2
+              %span.green{:title => "Зарегистрировано на сайте"}= @users_count
+            Протоколов:
+            %h2.green
+              %span{:title => "Проверенных протоколов"}= @checked_count_2
+              - if @unchecked_count_2
+                %sup
+                  %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
+
+          %p
+            %br
       %span{:id=>election.id}
       %p
         %br

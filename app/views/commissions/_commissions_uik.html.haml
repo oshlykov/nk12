@@ -23,7 +23,7 @@
           %th{:style => "text-align: right"}
             %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}= raw vds(i+1, @commission.election_id)
       - @checked.each do |p|
-        - if p == @checked.first
+        - if p == @checked.first and @checked.priority == 0
           %tr
             %td{:width => "100px"}
               %a{:href=>@commission.url} ЦИК
