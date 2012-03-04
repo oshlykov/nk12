@@ -46,11 +46,11 @@ VOTING_DICTIONARY = YAML::load <<YAML_TEXT
   16: Число утраченных открепительных удостоверений
   17: Число утраченных избирательных бюллетеней
   18: Число избирательных бюллетеней, не учтенных при получении
-  19: Прохоров
-  20: Жириновский
-  21: Путин
-  22: Зюганов
-  23: Миронов
+  19: Жириновский
+  20: Зюганов
+  21: Миронов
+  22: Прохоров
+  23: Путин
   24: Число зафиксированных заявлениями нарушений
 YAML_TEXT
 
@@ -101,11 +101,11 @@ VOTING_DICTIONARY_SHORT = YAML::load <<YAML_TEXT2
   16: 
   17: 
   18: 
-  19: <img src="/assets/icons/Prohorov.png" />
-  20: <img src="/assets/icons/G-Rick.png" />
-  21: <img src="/assets/icons/Putin.png" />
-  22: <img src="/assets/icons/Zyuganov.png" />
-  23: <img src="/assets/icons/Miironov.png" />
+  19: <img src="/assets/icons/G-Rick.png" />
+  20: <img src="/assets/icons/Zyuganov.png" />
+  21: <img src="/assets/icons/Miironov.png" />
+  22: <img src="/assets/icons/Prohorov.png" />
+  23: <img src="/assets/icons/Putin.png" />
   24: 
 YAML_TEXT2
 
