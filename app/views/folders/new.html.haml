@@ -4,6 +4,6 @@
 = form_for @folder do |f|
   = render 'form', :f => f
   .actions
-    = f.submit 'Сохранить и перейти к загрузке файлов'
+    = f.submit 'Сохранить и перейти к загрузке файлов', :class => "btn btn-primary"
 
 = link_to 'Назад', folders_path

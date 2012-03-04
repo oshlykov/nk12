@@ -55,7 +55,7 @@ before_filter :auth, :except => [:index, :show]
     authorize! :unfold, @folder if @folder
     create! do |ok, nok|
       nok.html do
-	render 'unfold'
+        render 'unfold'
       end
     end
   end  
@@ -99,8 +99,8 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def checking
-    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 1.hour.ago).limit(50).all(:order => "created_at")
-    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 1.hour.ago).limit(50).all(:order => "created_at")
+    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.min.ago).limit(50).all(:order => "created_at")
+    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.min.ago).limit(50).all(:order => "created_at")
     @protocols_1 ||= Array.new
     @protocols_2 ||= Array.new
 
@@ -117,11 +117,12 @@ before_filter :auth, :except => [:index, :show]
         unless @commission.protocols.where('priority = 1').first
           @protocol.priority = 1
           @commission.votes_taken = true
+          @commission.state = Hash.new unless @commission.state
           @commission.state[:checked] = Array.new(VOTING_DICTIONARY[@commission.election_id].size)
           
           @protocol.votings.each_with_index do |v,i|
             @commission.state[:checked][i] = @protocol.send("v#{i+1}")
-            if @commission.state[:uik][i] != @commission.state[:checked][i]
+            if @commission.state.include?(:uik) @commission.state[:uik][i] != @commission.state[:checked][i]
               @commission.conflict = true
             end
           end

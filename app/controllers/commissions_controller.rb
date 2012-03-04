@@ -33,7 +33,7 @@ before_filter :auth, :except => [:index, :show, :get_csv]
     else
       flash[:error] = "Вы не можете стать наблюдателем этого участка!"
     end
-    redirect_to :back
+    redirect_to commission_path(@commission)
   end
 
   def del_watcher

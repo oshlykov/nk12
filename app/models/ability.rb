@@ -13,6 +13,9 @@ class Ability
 
     if user.role? :auth
       can :new, Protocol
+      can :edit, User do |u|
+        user.id == u.id
+      end
       can [:update, :destroy], Protocol do |p|
         p.priority >= 100 and p.user_id == user.id
       end

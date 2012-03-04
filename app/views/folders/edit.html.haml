@@ -1,17 +1,19 @@
 %header
   %h1 Загрузка цифровых копий
+.row
+  .span12
+    = form_for @folder do |f|
+      = render 'form', :f => f
+      .actions
+      = f.submit 'Сохранить'
+    %h1 Загрузка файлов
+    #pictures
+      = render :partial => 'picture', :collection => @folder.pictures
 
-= form_for @folder do |f|
-  = render 'form', :f => f
-  .actions
-  = f.submit 'Сохранить'
+.row
+  .span12
+    = form_for :picture, :url => folder_pictures_path(@folder), :html => { :class => 'pics_upload', :multipart => true} do |f|
+      = f.file_field :image, :multiple => true, :name => 'picture[image]'
+      %table.upload_files
 
-#pictures
-  = render :partial => 'picture', :collection => @folder.pictures
-
-= form_for :picture, :url => folder_pictures_path(@folder),
-:html => { :class => 'pics_upload', :multipart => true} do |f|
-  = f.file_field :image, :multiple => true, :name => 'picture[image]'
-  %table.upload_files
-
-= link_to 'Назад', folders_path
+    = link_to 'Назад', folders_path
