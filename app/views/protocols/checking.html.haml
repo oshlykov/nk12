@@ -27,6 +27,7 @@
                   = image_tag pic.image_url(:thumb) if pic.image?
           %br
 %h1 Проверка протоколов 2011
+%table.voting-table
   - @protocols_1.each do |p|
     %tr{:id => ("protocol_#{p.id}")}
       %td
