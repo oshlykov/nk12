@@ -8,7 +8,7 @@ class PicturesController < InheritedResources::Base
       #mobile upload
       if user = User.find_by_email(params['login'])
         unless user.authenticate(params['password'])
-          render(:file => "public/403.html", :status => '207') and return 
+          render(:nothing => true, :status => '207') and return 
         end
 
         params['picture'] = {"image" => params['file']}
@@ -26,7 +26,7 @@ class PicturesController < InheritedResources::Base
           params['commission_id'] = user.commission_id
         else
           # ИСПРАВИТЬ добавить сохранение неприкреплённых протоколов в Спецхран
-          render :file => "public/404.html", :status => '208' and return
+          render :nothing => true, :status => '208' and return
         end
       end
     end

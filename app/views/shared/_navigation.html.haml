@@ -1,12 +1,16 @@
 - if login?
   %li
-    = link_to('Выйти', session_path(session.object_id), :method=>'delete')
+    %div 
+      %a.btn.btn-info{:href => 'http://www.youtube.com/watch?feature=player_embedded&v=N49O8cPE9uM'}
+        Обучение
   %li
     = link_to('Профиль', edit_user_path(current_user))
   %li
     = link_to( 'Проверить протоколы', checking_protocols_path()) if can? :cheking, Protocol
   %li
     = link_to('Массовая загрузка', folders_path)
+  %li
+    = link_to('Выйти', session_path(session.object_id), :method=>'delete')
 - else
   %li
     = link_to('Войти', new_session_path)

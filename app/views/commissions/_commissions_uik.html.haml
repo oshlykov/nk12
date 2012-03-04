@@ -109,7 +109,7 @@
       %div
         = "Наблюдатели на участке:" if @commission.watchers.first
         - @commission.watchers.each do |watcher|
-          = link_to watcher.name, user_path(watcher), :class => "btn"
+          = link_to watcher.name, user_path(watcher), :class => "btn btn-info"
           %br
           %br
         -if current_user and current_user.commission and current_user.commission.is_uik?

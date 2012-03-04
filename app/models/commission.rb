@@ -25,7 +25,7 @@ class Commission < ActiveRecord::Base
     return false
   end
 
- def create_csv( childs, cik = false )
+  def create_csv( childs, cik = false )
     option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
         
     FasterCSV.open( self.path( cik ? "_cik" : "" ), "w", option) do |csv|

@@ -1,7 +1,7 @@
 class CommissionsController < ApplicationController
 
 #-before_filter :authenticate_user!, :except => [:index, :show]
-before_filter :auth, :except => [:index, :show, :get_csv]
+  before_filter :auth, :except => [:index, :show, :get_csv]
 
   def index
     @uiks = Commission.find :all, :joins => :comments
@@ -39,6 +39,17 @@ before_filter :auth, :except => [:index, :show, :get_csv]
   def del_watcher
     current_user.update_attribute :commission_id, current_user.commission.root if current_user.commission
     redirect_to :back
+  end
+
+  def get_full_karik
+    option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
+    FasterCSV.open( './public/uploads/csv/full_karik.csv', "w", option) do |csv|
+      protocols = Protocol.includes(:commission).where("commission_id >= 200000 and priority = 1")
+      protocols.each do |p|
+        csv << [p.commission.name, p.commission.root.name, p.v19, "", p.v20, "", p.v21, "", p.v22, "", p.v23, ""].flatten.compact
+      end
+    end
+    redirect_to  "/uploads/csv/full_karik.csv"
   end
 
   def get_csv
