@@ -30,6 +30,12 @@ class PicturesController < InheritedResources::Base
         end
       end
     end
+
+    if params['picture']
+      params['picture']['original_filename'] = params['picture']['image'].original_filename
+      #Rails.logger.debug params['picture']['image'].original_filename
+    end
+
     create! do |ok, nok|
       ok.js do
         render :json => resource.to_jq_upload, :content_type => 'text/html' 
