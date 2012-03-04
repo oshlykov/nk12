@@ -99,8 +99,8 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def checking
-    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.min.ago).limit(50).all(:order => "created_at")
-    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.min.ago).limit(50).all(:order => "created_at")
+    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.minutes.ago).limit(50).all(:order => "created_at")
+    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.minutes.ago).limit(50).all(:order => "created_at")
     @protocols_1 ||= Array.new
     @protocols_2 ||= Array.new
 
@@ -122,7 +122,7 @@ before_filter :auth, :except => [:index, :show]
           
           @protocol.votings.each_with_index do |v,i|
             @commission.state[:checked][i] = @protocol.send("v#{i+1}")
-            if @commission.state.include?(:uik) @commission.state[:uik][i] != @commission.state[:checked][i]
+            if @commission.state.include?(:uik) and @commission.state[:uik][i] != @commission.state[:checked][i]
               @commission.conflict = true
             end
           end

@@ -7,7 +7,7 @@ module CommissionsHelper
 
   def vote_class(commission, p, index)
     return 'green' if (index == 26 and commission.election_id == 1) or (index == 24 and commission.election_id == 2)
-    return 'green' if commission.state and commission.state.include?(:uik)
+    return 'green' unless commission.state and commission.state.include?(:uik)
     if commission.state and p.votings and commission.state[:uik] and commission.state[:uik][index-1] ==  p.votings[index-1]
       'green'
     else
@@ -19,7 +19,7 @@ module CommissionsHelper
     #СДЕЛАТЬ Оптимизировать и индекс с 26 адаптировать к презедентским
     return 'gray' unless commission.votes_taken
     return 'green' if (index == 26 and commission.election_id == 1) or (index == 24 and commission.election_id == 2)
-    return 'green' if commission.state and commission.state.include?(:uik)
+    return 'green' unless commission.state and commission.state.include?(:uik)
     if commission.state and commission.state[:uik] and commission.state[:checked] and commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
       'green'
     else
@@ -31,7 +31,7 @@ module CommissionsHelper
     #СДЕЛАТЬ Оптимизировать
     return 'gray' unless commission.votes_taken
     return 'green' if (index == 26 and commission.election_id == 1) or (index == 24 and commission.election_id == 2)
-    return 'green' if commission.state and commission.state.include?(:uik)
+    return 'green' unless commission.state and commission.state.include?(:uik)
     if commission.state and commission.state[:uik] and commission.state[:checked] and commission.state[:checked] and commission.state[:uik][index-1] ==  commission.state[:checked][index-1]
       'green'
     else
