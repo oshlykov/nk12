@@ -25,9 +25,10 @@
                 - else
                   = vote
           - else
-            - (uik_protocol = c.state[:checked]).each_with_index do |vote,i|
-              %td{"title"=>Protocol.voting_name(i+1, c.election_id), :class => 'green'}
-                = vote
+            - if c.state and c.state.include? :checked
+              - (uik_protocol = c.state[:checked]).each_with_index do |vote,i|
+                %td{"title"=>Protocol.voting_name(i+1, c.election_id), :class => 'green'}
+                  = vote
 
 
 
