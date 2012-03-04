@@ -37,10 +37,10 @@ class PicturesController < InheritedResources::Base
     end
 
     create! do |ok, nok|
-      ok.js do
-        render :json => resource.to_jq_upload, :content_type => 'text/html' 
+      ok.html do
+        render :json => resource.to_jq_upload
       end
-      nok.js do
+      nok.html do
         render :json => [{:error => "custom_failure"}], :status => 304 
       end
     end
