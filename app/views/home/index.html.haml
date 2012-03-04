@@ -51,6 +51,16 @@
                     %small
                       = c.descendants.where('votes_taken=true').size
             %nobr — наиболее полные сведения
+          .span2
+            Наблюдателей:
+            %h2
+              %span.green{:title => "Зарегистрировано на сайте"}= @users_count
+            Протоколов:
+            %h2.green
+              %span{:title => "Проверенных протоколов"}= @checked_count_2
+              - if @unchecked_count_2
+                %sup
+                  %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
           .span4
             %h2 Живая лента
             %table.table
@@ -80,18 +90,6 @@
                         -if i > 17
                           %td{"title"=>Protocol.voting_name(i+1, p.commission.election_id), :class => 'green'}
                             = vote
-
-          .span2
-            Наблюдателей:
-            %h2
-              %span.green{:title => "Зарегистрировано на сайте"}= @users_count
-            Протоколов:
-            %h2.green
-              %span{:title => "Проверенных протоколов"}= @checked_count_2
-              - if @unchecked_count_2
-                %sup
-                  %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
-
           %p
             %br
       %span{:id=>election.id}
