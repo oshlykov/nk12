@@ -17,7 +17,7 @@
         %td
           %a{:href => commission_path(c.id)}
             = c.name
-          - if c.state
+          - if c.state and c.state.include?(:uik)
             - (uik_protocol = c.state[:uik]).each_with_index do |vote,i|
               %td{"title"=>Protocol.voting_name(i+1, c.election_id), :class => vote_color_uik(c, i+1)}
                 - if c.state[:checked] and c.state[:uik][i] != c.state[:checked][i]
