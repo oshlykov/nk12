@@ -70,17 +70,16 @@
 .row
   .span9
     %br
-    -if @commission.election_id == 1
-      -if can? :new, Protocol
-        %a{:href => new_commission_protocol_path(@commission.id), :class => 'btn btn-danger'}
-          Загрузить новый протокол
-      -else
-        .alert.alert-info 
-          %b Загрузить протокол
-          Чтобы загрузить протокол, необходимо 
-          = link_to("зарегистрироваться", new_user_path)
-      %br
-      %br
+    -if can? :new, Protocol
+      %a{:href => new_commission_protocol_path(@commission.id), :class => 'btn btn-danger'}
+        Загрузить новый протокол
+    -else
+      .alert.alert-info 
+        %b Загрузить протокол
+        Чтобы загрузить протокол, необходимо 
+        = link_to("зарегистрироваться", new_user_path)
+    %br
+    %br
 
     - if request.env['HTTP_USER_AGENT'] =~ /Opera/ and (request.domain == 'xn----btbcb0bgnhbeargu4lna.xn--p1ai')
       %br
