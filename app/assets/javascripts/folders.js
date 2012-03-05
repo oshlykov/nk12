@@ -17,6 +17,7 @@ $(document).ready(function(){
     $('.pics_upload').fileUploadUI({
       uploadTable: $('.upload_files'),
       buildUploadRow: function (files, index) {
+        alert(index);
         return $('<tr><td>' + files[index].name + '<\/td>' +
 	  '<td class="file_upload_progress"><div><\/div><\/td>' +
 	  '<td class="file_upload_cancel">' +
