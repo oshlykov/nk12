@@ -31,7 +31,7 @@ $(document).ready(function(){
 	  '<a href="'+file.url+'"><img src="'+file.preview_url+'"/></a>'+
 	  '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалить цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
       },
-      sequentialUploads: true,
+      multiFileRequest: false,
       onChange: function (event) {
         $('.pics_upload').data('filecount', 0);
       }
