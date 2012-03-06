@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
                     :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false},
                     :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
 #  validates :password, :confirmation => true
+  validates_presence_of :password
   validates_confirmation_of :password, :message => "Пароли должны совпадать!"
 
 
@@ -29,4 +30,12 @@ class User < ActiveRecord::Base
     read_attribute(:name) || "Аноним"
   end
 
+  def send_password_reset
+    begin
+      self.password_reset_token = SecureRandom.base64
+    end while User.exists?(:password_reset_token => password_reset_token)
+    self.password_reset_sent_at = Time.now
+    save!
+    UserMailer.password_reset(self).deliver
+  end
 end

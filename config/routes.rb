@@ -1,13 +1,11 @@
 Nkapp::Application.routes.draw do
-
-
   get "sessions/new"
 
   #resources :comments
   
 #  scope '(:elections)', :elections => /1|2/ do
   
-  resources :users
+  resources :users, :password_resets
 
   resources :folders do
     resources :pictures, :only => [:create]
