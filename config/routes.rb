@@ -112,9 +112,8 @@ Nkapp::Application.routes.draw do
 
   namespace :exchange do
     get 'index'
-    post 'export'
-    post 'export_confirmed'
-    post 'import'
+    post 'export_prepare'
+    get 'export'
   end
 
 end

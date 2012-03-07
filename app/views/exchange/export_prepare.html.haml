@@ -17,7 +17,7 @@
   %button.btn.primary.start{:type => "submit"} Отправить запрос
 
 
-= form_tag '/exchange/export_confirmed', :method => "post", :class => "well" do
+= form_tag '/exchange/export', :method => "get", :class => "well" do
   %table
     %tr
       %td Список УИК:

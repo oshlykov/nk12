@@ -3,7 +3,7 @@
 
 %br
 %h3 Выгрузка данных для партнеров
-= form_tag '/exchange/export', :method => "post", :class => "well" do
+= form_tag '/exchange/export_prepare', :method => "post", :class => "well" do
   = label_tag :uiks, "Список интересующих УИК:"
   = text_field_tag :uiks, params[:uiks], :class => "input-medium span8", :placeholder => "Все УИК"
   %span.help-inline иды через запятую, пусто для всех
@@ -17,14 +17,14 @@
   %button.btn.primary.start{:type => "submit"} Отправить запрос
 
 
-%h3 Загрузка данных от партнёров
-%form#export.well{:action => "/exchange/import", :enctype => "multipart/form-data", :method => "POST"}
-  %label{:for => "source"} Источник данных:
-  %input#source.span8{:name => "source", :type => "text", :placeholder => "Укажите источник данных"}
-  %span.help-inline урл партнёра, название партии и т.д.
-  %label{:for => "file"} Файл архива (zip) с файлом данных и фотокопиями протоколов:
-  %input#file.span8{:name => "file", :type => "file", :placeholder => "Выберите файл"}
-  %span.help-inline
-    %a{:href => "/exchange/import-help"} описание формата файла
-  %br
-  %button.btn.primary.start{:type => "submit"} Загрузить данные
+-#%h3 Загрузка данных от партнёров
+-#%form#export.well{:action => "/exchange/import", :enctype => "multipart/form-data", :method => "POST"}
+-#  %label{:for => "source"} Источник данных:
+-#  %input#source.span8{:name => "source", :type => "text", :placeholder => "Укажите источник данных"}
+-#  %span.help-inline урл партнёра, название партии и т.д.
+-#  %label{:for => "file"} Файл архива (zip) с файлом данных и фотокопиями протоколов:
+-#  %input#file.span8{:name => "file", :type => "file", :placeholder => "Выберите файл"}
+-#  %span.help-inline
+-#    %a{:href => "/exchange/import-help"} описание формата файла
+-#  %br
+-#  %button.btn.primary.start{:type => "submit"} Загрузить данные
