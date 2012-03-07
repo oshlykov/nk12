@@ -1,40 +1,26 @@
-class UsersController < ApplicationController
-  #-before_filter :authenticate_user!
-
-before_filter :auth, :except => [:new, :create]
-
-  def new
-    @user = User.new
-  end
+class UsersController < InheritedResources::Base
+  before_filter :auth, :except => [:new, :create]
 
   def create
-    @user = User.new(params[:user])
-    @user.role = 'auth'
-    if @user.save
-      session[:user_id] = @user.id
-      
-      redirect_to root_url, :notice => "Рады вас видеть." and return 
+    create! do |ok, nok|
+      ok.html { 
+        session[:user_id] = resource.id
+        redirect_to root_url, :notice => "Рады вас видеть." and return 
+        redirect_to edit_resource_path 
+      }
+      nok.html { render new_resource_path }
     end
-    respond_to do |format|
-      format.html { render "new" }
-    end
-  end
-
-  def edit
-    @user = User.find params[:id]
-    redirect_to :back unless can? :edit, @user
-  end
-  
-  def show 
-    @user = User.find params[:id]
   end
 
   def update
-    current_user.role = params[:user][:role] if current_user.role == 'admin'
-    current_user.name = params[:user][:name]
-    current_user.commission = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
-    current_user.save
-    redirect_to :back
+    authorize! :edit, resource
+    params[:user][:role] = nil unless current_user.role == 'admin'
+    update! { edit_resource_path }
   end
 
+  protected
+  def create_resource user
+    user.role = 'auth'
+    user.save
+  end
 end

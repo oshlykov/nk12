@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
                     :uniqueness => {:message => "Почтовый адрес уже используется", :case_sensitive => false},
                     :format => {:with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i}
 #  validates :password, :confirmation => true
-  validates_presence_of :password
+#  validates_presence_of :password - вселенское зло
   validates_confirmation_of :password, :message => "Пароли должны совпадать!"
 
 

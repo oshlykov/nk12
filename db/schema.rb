@@ -63,16 +63,6 @@ ActiveRecord::Schema.define(:version => 20120306184557) do
   add_index "folders", ["reserved_at"], :name => "index_folders_on_reserved_at"
   add_index "folders", ["user_id"], :name => "index_folders_on_user_id"
 
-  create_table "nk12_development", :force => true do |t|
-    t.string   "body"
-    t.boolean  "violation"
-    t.integer  "commission_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "fio"
-    t.string   "email"
-  end
-
   create_table "pictures", :force => true do |t|
     t.string   "image"
     t.integer  "protocol_id"
