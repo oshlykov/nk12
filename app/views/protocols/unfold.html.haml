@@ -29,10 +29,11 @@
     = f.label :uik_num
     (номер)
     = f.text_field :uik_num
-    = f.submit 'Внести выделенные файлы'
+    = f.submit 'Внести выделенные файлы', :class => 'btn btn-primary'
     %br
     %br
-    = button_to 'Закончить работу с папкой', release_folder_path(@folder)
+#uik_panel2
+  = button_to 'Закончить работу с папкой', release_folder_path(@folder), :class => 'btn'
 
 
 :javascript

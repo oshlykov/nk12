@@ -15,12 +15,13 @@
 
 .row
   .span12
-    %table.voting-table
+    %table.voting-table.table
       %tr
-        %th{:width => "100px"}
+        %th
+        %th
         -#%th{:colspan => 18}
         - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
-          %th{:style => "text-align: right"}
+          %th
             %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}= raw vds(i+1, @commission.election_id)
       - @checked.each do |p|
         - if p == @checked.first and p.priority == 0
@@ -31,18 +32,19 @@
               %td{"title"=>p.voting_name(i+1)}= vote
         - else
           %tr{:id => ("protocol_#{p.id}")}
-            %td{:width => "100px"}
+            %td{:width => "120px", :style => "font-size: 12px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
-                = "КАРИК №#{p.id}"
-                - if can? :destroy, p
-                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+                %nobr= "КАРИК №#{p.id}"
+              - if can? :destroy, p
+                = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+            %td
               %span{:title => "#{p.source}", :class => "label label-info"} источник
 
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1), :class => vote_class(@commission, p, i+1)}
                 = vote
           %tr{:id => ("protocol_pic_#{p.id}")}
-            %td{:colspan => p.votings.count+1}
+            %td{:colspan => p.votings.count+2}
               #pictures
                 - p.pictures.each do |pic|
                   .picture[pic]

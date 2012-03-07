@@ -2,207 +2,210 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 .votings{
-	display:block;
-	clear:both;
+  display:block;
+  clear:both;
 }
 .loading{
-	display:none;
+  display:none;
 }
 .tree-root{
 
-	margin:5px;
-	padding:10px 10px;
-	font-size: 14px;
-	background:#F0F0F0;
+  margin:5px;
+  padding:10px 10px;
+  font-size: 14px;
+  background:#F0F0F0;
 
-	color: #444;
-	overflow: auto;
-	float:left;
-	
-	color: #333;
-	opacity: 0.7;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	background-color: #EAEAEA;
-	-webkit-transition: 0.10s ease-in;
-	-moz-transition: 0.10s ease-in;
-	
-//	&:hover{
-//		background :#ccc;
-//		opacity: 1;	
-//	}
-	a{
-//		color :#444;
-//		text-decoration:under;
-//		border-bottom: 1px dashed #444;
-	}
+  color: #444;
+  overflow: auto;
+  float:left;
+  
+  color: #333;
+  opacity: 0.7;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: #EAEAEA;
+  -webkit-transition: 0.10s ease-in;
+  -moz-transition: 0.10s ease-in;
+  
+//  &:hover{
+//    background :#ccc;
+//    opacity: 1; 
+//  }
+  a{
+//    color :#444;
+//    text-decoration:under;
+//    border-bottom: 1px dashed #444;
+  }
 
 }
 
-	a:hover{
-//		color :#444;
-//		text-decoration:none;
-	}
+  a:hover{
+//    color :#444;
+//    text-decoration:none;
+  }
 
 .navigation-holder{
-	position: relative;
-	.uik-navigation{
-		position: relative;
-		z-index: 15;
-		font-size:1.2em;
-		color:#980905;
-		text-decoration:underline;
-	}
-	.show-navigation{
-		position: relative;
-		z-index: 15;
-		font-size:1.4em;
-		color:#980905;
-		border-bottom:1px dashed #980905;
-		text-decoration:none;
-	}
-	.tree-navigation{
-		background:#fff;
-		width: 27em;
-		display: none;
-		border-radius: 1em;
-		-webkit-border-radius: 1em;
-		-moz-border-radius: 1em;
-		-webkit-box-shadow: 0.25em 0.25em 1em rgba(0, 0, 0, 0.25);
-		-moz-box-shadow: rgba(0, 0, 0, 0.25) 0.25em 0.25em 1em;
+  position: relative;
+  .uik-navigation{
+    position: relative;
+    z-index: 15;
+    font-size:1.2em;
+    color:#980905;
+    text-decoration:underline;
+  }
+  .show-navigation{
+    position: relative;
+    z-index: 15;
+    font-size:1.4em;
+    color:#980905;
+    border-bottom:1px dashed #980905;
+    text-decoration:none;
+  }
+  .tree-navigation{
+    background:#fff;
+    width: 27em;
+    display: none;
+    border-radius: 1em;
+    -webkit-border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-box-shadow: 0.25em 0.25em 1em rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: rgba(0, 0, 0, 0.25) 0.25em 0.25em 1em;
 
-		padding: 1.5em 2em;
-		position: absolute;
-		z-index: 10;
-		top: -0.5em;
-		left: -1em;
-		padding-top: 2em;
-		h4{
-			border-bottom:1px solid #eee;
-		}
-		ul{
-			padding:0;
-			margin:0;
-			li{
-				
-				list-style: none;
-			}
-		}
-	}
-	
+    padding: 1.5em 2em;
+    position: absolute;
+    z-index: 10;
+    top: -0.5em;
+    left: -1em;
+    padding-top: 2em;
+    h4{
+      border-bottom:1px solid #eee;
+    }
+    ul{
+      padding:0;
+      margin:0;
+      li{
+        
+        list-style: none;
+      }
+    }
+  }
+  
 }
 .filter{
-	clear:both;
+  clear:both;
 }
 .filter-popover{
-	cursor:pointer;
+  cursor:pointer;
 }
 .filter-item{
-	ul{		
-		margin:0;
-		display:inline;
-		li{
-			display:inline;
-			margin-right:5px;
-			a{
-				text-decoration:none;
-				cursor:pointer;
-				border-radius:10px;
-				background:#eee;
-				padding:3px 6px;
-				
-				&.active{					
-					background:#0064CD;
-					color:#fff;
-				}
-			}
-		}
-	}		
+  ul{   
+    margin:0;
+    display:inline;
+    li{
+      display:inline;
+      margin-right:5px;
+      a{
+        text-decoration:none;
+        cursor:pointer;
+        border-radius:10px;
+        background:#eee;
+        padding:3px 6px;
+        
+        &.active{         
+          background:#0064CD;
+          color:#fff;
+        }
+      }
+    }
+  }   
 }
 @for $i from 0 through 5{
-	.depth-#{$i}{
-		margin-left: $i*10px !important;
-		h3{
-			font-size: 25px-$i*2;
-		}
-	}
-}	
+  .depth-#{$i}{
+    margin-left: $i*10px !important;
+    h3{
+      font-size: 25px-$i*2;
+    }
+  }
+} 
 .node-name{
-	.name{
-		h3{
+  .name{
+    h3{
 
-		}		
-	}
-	.root-voting-table{
-		opacity:0;
-		ul{
-			padding-top:11px;			
-			li{
-				font-size:11px;
-				border:1px solid #eee;
-				background:#eee;
-				color:#3FA757;
-				padding:2px 4px;
-				display:inline;
-				margin-right:2px;
-				border-radius:10px;
-			}
-		}
-	}	
+    }   
+  }
+  .root-voting-table{
+    opacity:0;
+    ul{
+      padding-top:11px;     
+      li{
+        font-size:11px;
+        border:1px solid #eee;
+        background:#eee;
+        color:#3FA757;
+        padding:2px 4px;
+        display:inline;
+        margin-right:2px;
+        border-radius:10px;
+      }
+    }
+  } 
 }
 
 .voting-table{
-	width:100%;
-//	height:170px;
-//	padding:10px;
-//	font-size: 12px;
-//	margin: 7px 14px 7px 14px;
-	background-color: #EEE;
-	border: 1px solid #DDD;
-	border-spacing: 10px;
-//	color: #444;
-	overflow: auto;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.07) 0 1px 2px inset;
-	float:left;
-	position:relative;
-	@for $i from 1 through 10 {
-	  .attendance-#{$i} { color: darken(#fff,$i*10); }
-	}
-	text-shadow: 0 1px 0 rgba(255, 255, 255, 1.0);
-	h5{
-		padding:0;
-		margin-top:-10px;		
-	}
-	.controllers{
-		position:absolute;
-		z-index:5;
-		right:5px;
-	}
-	tr {
-		border: 1px solid #DDD;
-	}
-	th{
-	  text-align: left;
+  width:100%;
+//  height:170px;
+//  padding:10px;
+//  font-size: 12px;
+//  margin: 7px 14px 7px 14px;
+//  background-color: #EEE;
+//  border: 1px solid #DDD;
+//  border-spacing: 10px;
+//  color: #444;
+//  overflow: auto;
+//  -webkit-box-shadow: rgba(0, 0, 0, 0.07) 0 1px 2px inset;
+  float:left;
+  position:relative;
+//  @for $i from 1 through 10 {
+//    .attendance-#{$i} { color: darken(#fff,$i*10); }
+//  }
+//  text-shadow: 0 1px 0 rgba(255, 255, 255, 1.0);
+  h5{
+    padding:0;
+    margin-top:-10px;   
   }
-	td{
-		padding: 7px 7px 7px 7px;
-	  text-align: right;
+  .controllers{
+    position:absolute;
+    z-index:5;
+    right:5px;
   }
-	.item_holder{
-		.item{
-			width:auto;
-			float:left;
-		}
-		.value{
-			font-weight:800;
-		}
-		clear:both;
-	}
-	
+//  tr {
+//    border: 1px solid #DDD;
+//  }
+  th{
+    text-align: right;
+    padding: 7px 7px 0px 7px;
+    vertical-align: bottom;
+  }
+  td{
+    padding: 7px 7px 7px 7px;
+    vertical-align: top;
+    text-align: right;
+  }
+  .item_holder{
+    .item{
+      width:auto;
+      float:left;
+    }
+    .value{
+      font-weight:800;
+    }
+    clear:both;
+  }
+  
 }
 .tree-node-holder{
-	margin-left:10px;
-	clear:both;
-	display:block;
+  margin-left:10px;
+  clear:both;
+  display:block;
 }
