@@ -14,7 +14,7 @@ set :deploy_to, "/home/nk12/data/www/#{application}"
 set :scm, :git
 set :repository, "https://github.com/florineot/nk12.git"
 set :branch, "florin"
-set :deploy_via, :remote_cache
+#set :deploy_via, :remote_cache
 
 set :user, 'nk12'
 ssh_options[:username] = 'nk12'
