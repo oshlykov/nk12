@@ -1,7 +1,6 @@
 class FoldersController < InheritedResources::Base
   before_filter :auth
 
-
   def create
     create! do |ok, nok|
       ok.html { redirect_to edit_resource_path }
@@ -20,6 +19,7 @@ class FoldersController < InheritedResources::Base
   end
 
   def release
+    @title = "Прикрепление фотографий к протоколам"
     if can? :unfold, resource
       resource.reserved_at = nil
       resource.save!
@@ -31,6 +31,7 @@ class FoldersController < InheritedResources::Base
 
   protected
   def collection
+    @title = "Прикрепление фотографий к протоколам"
     @reserved_folders ||= Folder.reserved
     @folders ||= Folder.available
   end

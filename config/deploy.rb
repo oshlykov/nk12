@@ -31,6 +31,7 @@ namespace :deploy do
     run "rm -drf #{release_path}/public/uploads"
     run "ln -s #{shared_path}/uploads #{release_path}/public/uploads"
     run "ln -s #{shared_path}/database.yml #{release_path}/config/database.yml"
+    run "ln -s #{shared_path}/mail.rb #{release_path}/config/initializers/mail.rb"
     #run "rmdir #{current_release}/public/assets" # remove the folder present for development 
     #run "ln -s #{deploy_to}/#{shared_dir}/assets #{current_release}/public"
     

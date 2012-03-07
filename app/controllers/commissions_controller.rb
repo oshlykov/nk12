@@ -16,6 +16,7 @@ class CommissionsController < ApplicationController
     else
       @checked_count = @commission.subtree.where('votes_taken=1').size
     end
+    @title = "#{@commission.name} — #{@commission.root.name}"
     #@checked_protocol = @protocols[1] if @protocols.count > 1
     @election = @commission.election
     if request.xhr?

@@ -55,9 +55,6 @@ Nkapp::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
 
-  # Send deprecation notices to registered listeners
-  config.active_support.deprecation = :notify
-
   config.action_mailer.default_url_options = { :host => 'yandex.ru' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
@@ -65,11 +62,11 @@ Nkapp::Application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
-  config.action_mailer.smtp_settings = {
-    :address              => "smtp.yandex.ru",
-    :domain               => 'yandex.ru',
-    :user_name            => 'kapuk@yandex.ru',
-    :password             => 'rdfhntw',
-    :authentication       => 'plain'}
+  
+  #config\initializers\mail.rb
+  #config.action_mailer.smtp_settings
+
+  # Send deprecation notices to registered listeners
+  config.active_support.deprecation = :notify
 
 end

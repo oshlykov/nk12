@@ -8,7 +8,6 @@ before_filter :auth, :except => [:new, :create]
   end
 
   def create
-    params[:user][:commission] = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
     @user = User.new(params[:user])
     @user.role = 'auth'
     if @user.save
@@ -21,23 +20,20 @@ before_filter :auth, :except => [:new, :create]
     end
   end
 
-  def show 
-    @user = User.find params[:id]
-  end
-
   def edit
     @user = User.find params[:id]
     redirect_to :back unless can? :edit, @user
   end
+  
+  def show 
+    @user = User.find params[:id]
+  end
 
   def update
-    if can? :edit, @user
-      @user = User.find params[:id]
-      @user.role = params[:user][:role] if @user.role == 'admin'
-      @user.name = params[:user][:name]
-      @user.commission = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
-      @user.save
-    end
+    current_user.role = params[:user][:role] if current_user.role == 'admin'
+    current_user.name = params[:user][:name]
+    current_user.commission = Commission.roots.where(:id => params[:user][:commission]).first if params[:user].include? "commission"
+    current_user.save
     redirect_to :back
   end
 

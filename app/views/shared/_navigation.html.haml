@@ -28,18 +28,20 @@
         Регистрация
   %li
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-%li
-  .addthis_toolbox.addthis_default_style
-    %a{:class => "addthis_button_vk"}
-    %a{:class => "addthis_button_odnoklassniki_ru"}
-    %a{:class => "addthis_button_facebook"}
-    %a{:class => "addthis_button_twitter"}
-    %a{:class => "addthis_button_google_plusone"}
-    %a{:class => "addthis_counter addthis_bubble_style"}
+- unless @script_disable
+  %li
+    .addthis_toolbox.addthis_default_style
+      %a{:class => "addthis_button_vk"}
+      %a{:class => "addthis_button_odnoklassniki_ru"}
+      %a{:class => "addthis_button_facebook"}
+      %a{:class => "addthis_button_twitter"}
+      %a{:class => "addthis_button_google_plusone"}
+      %a{:class => "addthis_counter addthis_bubble_style"}
 %li
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 %li
   %a{:href => "http://kapuk.info", :style => "padding: 0px;"}
     %img{:src=>'/assets/karik_logo.png'}
 
-=raw '<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f40a3483dfcd5e4"></script>'
+- unless @script_disable
+  =raw '<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f40a3483dfcd5e4"></script>'

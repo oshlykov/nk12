@@ -2,7 +2,7 @@
 = simple_form_for @user do |f|
   = f.input :email, :label => "Электропочта"
   = f.input :name, :label => "ФИО"
-  = f.input :commission, :label => "Регион:", :collection => Commission.where(:ancestry => nil, :election_id => 2).all(:order => 'name ASC').collect{|c| [ c.name, c.id ]}, :selected => 1
+  = f.input :commission_id, :label => "Регион:", :collection => Commission.where(:ancestry => nil, :election_id => 2).all(:order => 'name ASC').collect{|c| [ c.name, c.id ]}, :selected => 1
   = f.input :password, :label =>  "Пароль"
   = f.input :password_confirmation, :label => "Повтор пароля"
   = f.button :submit, "Зарегистрироваться", :class =>"btn btn-primary"

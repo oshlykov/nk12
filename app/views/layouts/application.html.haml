@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %title Контроль-выборов.рф — Комитет по альтернативному расследованию и контролю
+    %title= @title != nil ? @title.to_s + " — Контроль-выборов.рф" : "Контроль-выборов.рф — Комитет по альтернативному расследованию и контролю"
     %meta{:charset => "utf-8"}
     %meta{"http-equiv" => "X-UA-Compatible", :content => "IE=edge,chrome=1"}
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1, maximum-scale=1"}
@@ -13,7 +13,6 @@
     = yield(:head)
 
   %body{:class => params[:controller]}
-
     .navbar
       .navbar-inner
         .container
@@ -32,16 +31,16 @@
       -#main{:role => "main"}
       = yield
       = render 'shared/folders' if login?
-      %footer
-        .row
-          .offset8.span2
-            %br
-            %a{:href => 'http://karik.su'} О проекте
-          .span2
-            %br Исходный код проекта
-            %iframe{:src=>"http://markdotto.github.com/github-buttons/github-btn.html?user=oshlykov&repo=nk12&type=watch&count=true",
-            :allowtransparency=>"true", :frameborder=>"0", :scrolling=>"0", :width=>"110px", :height=>"20px"}
-        - if Rails.env.production?
+      - if Rails.env.production? and !@script_disable
+        %footer
+          .row
+            .offset8.span2
+              %br
+              %a{:href => 'http://karik.su'} О проекте
+            .span2
+              %br Исходный код проекта
+              %iframe{:src=>"http://markdotto.github.com/github-buttons/github-btn.html?user=oshlykov&repo=nk12&type=watch&count=true",
+              :allowtransparency=>"true", :frameborder=>"0", :scrolling=>"0", :width=>"110px", :height=>"20px"}
           :javascript
             var reformalOptions = {
                 project_id: 54065,
