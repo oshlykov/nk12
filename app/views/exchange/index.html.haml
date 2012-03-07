@@ -3,7 +3,7 @@
 
 %br
 %h3 Выгрузка данных для партнеров
-= form_tag '/exchange/export_prepare', :method => "post", :class => "well" do
+= form_tag '/exchange/export_prepare', :method => "get", :class => "well" do
   = label_tag :uiks, "Список интересующих УИК:"
   = text_field_tag :uiks, params[:uiks], :class => "input-medium span8", :placeholder => "Все УИК"
   %span.help-inline иды через запятую, пусто для всех
