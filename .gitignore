@@ -27,7 +27,6 @@ tmp/*
 .sass-cache
 /config/config.yml
 /config/database.yml
-/config/deploy/staging.rb
 /coverage.data
 /coverage/
 /db/*.javadb/

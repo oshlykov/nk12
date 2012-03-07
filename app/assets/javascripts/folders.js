@@ -17,7 +17,8 @@ $(document).ready(function(){
     $('.pics_upload').fileUploadUI({
       uploadTable: $('.upload_files'),
       buildUploadRow: function (files, index) {
-        return $('<tr><td>' + files[index].name + '<\/td>' +
+        i = $('.pics_upload').data('filecount');
+        return $('<tr><td>' + files[i++].name + '<\/td>' +
 	  '<td class="file_upload_progress"><div><\/div><\/td>' +
 	  '<td class="file_upload_cancel">' +
 	  '<button class="ui-state-default ui-corner-all" title="Cancel">' +
@@ -28,7 +29,11 @@ $(document).ready(function(){
       buildDownloadRow: function (file) {
         return $('<div id="picture_'+file.id+'" class="picture">'+
 	  '<a href="'+file.url+'"><img src="'+file.preview_url+'"/></a>'+
-	  '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалит цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
+	  '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалить цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
+      },
+      multiFileRequest: false,
+      onChange: function (event) {
+        $('.pics_upload').data('filecount', 0);
       }
     });
 });

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120304120208) do
+ActiveRecord::Schema.define(:version => 20120306184557) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -62,6 +62,16 @@ ActiveRecord::Schema.define(:version => 20120304120208) do
   add_index "folders", ["commission_id"], :name => "index_folders_on_commission_id"
   add_index "folders", ["reserved_at"], :name => "index_folders_on_reserved_at"
   add_index "folders", ["user_id"], :name => "index_folders_on_user_id"
+
+  create_table "nk12_development", :force => true do |t|
+    t.string   "body"
+    t.boolean  "violation"
+    t.integer  "commission_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fio"
+    t.string   "email"
+  end
 
   create_table "pictures", :force => true do |t|
     t.string   "image"
@@ -116,15 +126,18 @@ ActiveRecord::Schema.define(:version => 20120304120208) do
   add_index "protocols", ["priority"], :name => "index_protocols_on_priority"
 
   create_table "users", :force => true do |t|
-    t.string   "email",           :default => ""
+    t.string   "email",                  :default => ""
     t.string   "password_digest"
     t.string   "name"
     t.string   "role"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "commission_id"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["password_reset_token"], :name => "index_users_on_password_reset_token"
 
 end
