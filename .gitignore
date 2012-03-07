@@ -75,3 +75,6 @@ tmp/*
 
 # Debug database
 *.sqlite
+
+#Почтовые пароли
+/config/initializers/mail.rb 
