@@ -13,6 +13,9 @@ ru:
         comment: 'Комментарий'
       protocol:
         uik_num: 'УИК'
+      user:
+        password: 'Пароль'
+        password_confirmation: 'Подтвердите пароль'
   errors:
     messages:
       confirmation: "Пароли не совпадают"
