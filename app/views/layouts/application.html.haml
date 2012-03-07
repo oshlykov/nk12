@@ -31,7 +31,7 @@
       -#main{:role => "main"}
       = yield
       = render 'shared/folders' if login?
-      - if Rails.env.production? and !@script_disable
+      - if social_enable
         %footer
           .row
             .offset8.span2

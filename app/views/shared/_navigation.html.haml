@@ -28,7 +28,7 @@
         Регистрация
   %li
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-- unless @script_disable
+- if social_enable
   %li
     .addthis_toolbox.addthis_default_style
       %a{:class => "addthis_button_vk"}
@@ -43,5 +43,5 @@
   %a{:href => "http://kapuk.info", :style => "padding: 0px;"}
     %img{:src=>'/assets/karik_logo.png'}
 
-- unless @script_disable
+- if social_enable
   =raw '<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4f40a3483dfcd5e4"></script>'

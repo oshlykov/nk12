@@ -68,7 +68,7 @@ class Commission < ActiveRecord::Base
 ################################################################################################################################################
 ################################################################################################################################################
 
-  def url_normalize(url)
+  def self.url_normalize(url)
     host = url.match(".+\:\/\/([^\/]+)")[1]
     path = url.partition(host)[2] || "/"
     begin
@@ -77,7 +77,7 @@ class Commission < ActiveRecord::Base
         n = Net::HTTP.get(host, path)
         sleep 1
       end
-      return 
+      return n
     rescue Timeout::Error
       print "timeout-error - sleeping 5 seconds"
       sleep 1

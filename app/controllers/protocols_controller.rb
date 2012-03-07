@@ -33,7 +33,6 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def show
-    @script_disable = true
     #@uik = Commission.find_by_id!(params[:commission_id])
     #@protocol = Protocol.find_by_id!(params[:id])
     @protocol = Protocol.find_by_id(params[:id]) and @uik = @protocol.commission
@@ -45,7 +44,6 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def unfold
-    @script_disable = true
     build_resource
     if can? :unfold, @folder
       @folder.user = current_user
@@ -84,7 +82,6 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def update  
-    @script_disable = true
     #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
     @protocol = Protocol.find_by_id!(params[:id]) 
     return redirect_to :back, :notice => "У вас нет прав редактировать протокол" unless can?(:update, @protocol)
@@ -107,7 +104,6 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def checking
-    @script_disable = true
     @title = "Проверка протоколов"
     @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.minutes.ago).limit(50).all(:order => "created_at")
     @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.minutes.ago).limit(50).all(:order => "created_at")

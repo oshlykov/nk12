@@ -17,4 +17,21 @@ module ApplicationHelper
   def vds(i=0, election_id=1)
     VOTING_DICTIONARY_SHORT[election_id][i]
   end
+
+  def social_enable
+    return false if Rails.env.development?
+    social_exclude = YAML::load <<SOCIAL_TEXT
+folders:
+  new:
+  edit:
+  index:
+protocols:
+  edit:
+  show:
+  checking:
+  unfold:
+SOCIAL_TEXT
+    return false if social_exclude.include? controller.controller_name and social_exclude[controller.controller_name.to_s].include? controller.action_name
+    true
+  end
 end

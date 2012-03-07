@@ -30,8 +30,10 @@
     (номер)
     = f.text_field :uik_num
     = f.submit 'Внести выделенные файлы'
+    %br
+    %br
+    = button_to 'Закончить работу с папкой', release_folder_path(@folder)
 
-= button_to 'Закончить работу с папкой', release_folder_path(@folder)
 
 :javascript
   function change_state( li ){
