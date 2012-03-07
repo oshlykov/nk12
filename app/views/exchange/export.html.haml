@@ -3,61 +3,8 @@
 
 %br
 %h3 Выгрузка данных для партнеров
-= form_tag '/exchange/export', :method => "post", :class => "well" do
-  = label_tag :uiks, "Список интересующих УИК:"
-  = text_field_tag :uiks, params[:uiks], :class => "input-medium span8", :placeholder => "Все УИК"
-  %span.help-inline иды через запятую, пусто для всех
-  = label_tag :filter, "Фильтр по источнику протокола:"
-  = text_field_tag :filter, params[:filter], :class => "input-medium span8", :placeholder => "Все источники"
-  %span.help-inline выражение для поиска типа "like"
-  = label_tag :updated, "Дата обновления протокола в формате YYYYMMDD или диапазон YYYYMMDD-YYYYMMDD:"
-  = text_field_tag :updated, params[:updated], :class => "input-medium span8", :placeholder => "Любая дата"
-  %span.help-inline дата или диапазон
-  %br
-  %button.btn.primary.start{:type => "submit"} Отправить запрос
 
+.alert.alert-error.alert-block
+  %h4.alert-heading Нет данных для выгрузки
+  По указанному вами запросу не найдено ни одного протокола для выгрузки. Пожалуйста уточните запрос и попробуйте ещё раз.
 
-= form_tag '/exchange/export_confirmed', :method => "post", :class => "well" do
-  %table
-    %tr
-      %td Список УИК:
-      %td
-        - if @uiks
-          %strong #{@uiks.join(", ")}
-        - else
-          &nbsp;
-    - if @comms
-      - @comms.each do |c, ancestors|
-        %tr
-          %td &nbsp;
-          %td
-            = check_box_tag 'uiks[]', c.id, :checked => true
-            #{c.id} - #{c.name}
-            - if c.ancestry
-              - ancestors.each do |ancestor|
-                %br
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{ancestor.name}
-    %tr
-      %td Фильтр по источнику:
-      %td
-        %strong #{@filter}
-    - if @sources
-      - @sources.each do |s|
-        %tr
-          %td &nbsp;
-          %td
-            = check_box_tag 'sources[]', s, :checked => true
-            #{s}
-    %tr
-      %td Фильтр по дате:
-      %td
-        %strong #{@updated}
-    = hidden_field_tag :updated, @updated
-    %tr
-      %td &nbsp;
-      %td &nbsp;
-    %tr
-      %td Количество найденных протоколов:
-      %td #{@count}
-  %br
-  %button.btn.primary.start{:type => "submit"} Выгрузить данные
