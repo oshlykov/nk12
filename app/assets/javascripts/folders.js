@@ -14,26 +14,20 @@ $(document).ready(function(){
       }
     });
 
-    $('.pics_upload').fileUploadUI({
-      uploadTable: $('.upload_files'),
-      buildUploadRow: function (files, index) {
-        i = $('.pics_upload').data('filecount');
-        return $('<tr><td>' + files[i++].name + '<\/td>' +
-	  '<td class="file_upload_progress"><div><\/div><\/td>' +
-	  '<td class="file_upload_cancel">' +
-	  '<button class="ui-state-default ui-corner-all" title="Cancel">' +
-	  '<img src="/assets/cancel.png"/>' +
-	  '<\/button><\/td><\/tr>');
+    $('.pics_upload').fileupload({
+      dataType: 'html',
+      autoUpload: true,
+      filesContainer: '.upload_files',
+      uploadTemplate: function (o) {
+        var rows = $();
+        $.each(o.files, function (index, file) {
+	  var row = $('<p>Загрузка ' + file.name + '...</p>');
+	  rows = rows.add(row);
+	});
+        return rows;
       },
-      downloadTable: $('#pictures'),
-      buildDownloadRow: function (file) {
-        return $('<div id="picture_'+file.id+'" class="picture">'+
-	  '<a href="'+file.url+'"><img src="'+file.preview_url+'"/></a>'+
-	  '<a rel="nofollow" data-remote="true" data-method="delete" data-confirm="Удалить цифровую копию?" href="'+file.delete_url+'"><i class="icon-remove"></i></a></div>');
-      },
-      multiFileRequest: false,
-      onChange: function (event) {
-        $('.pics_upload').data('filecount', 0);
+      always: function (e, data) {
+        $(data.result).appendTo('#pictures');
       }
     });
 });
