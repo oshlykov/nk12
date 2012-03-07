@@ -16,17 +16,22 @@ class PictureUploader < CarrierWave::Uploader::Base
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
-  
+
+  process :resize_to_limit => [1024,1024]
   process :watermark => Rails.root.join("app","assets","images", "watermark.png")
-  
+  process :convert => "jpg"
+
   version :thumb do
     process :resize_to_limit => [100,100]
+    process :convert => "jpg"
   end
 
   version :preview do
     process :resize_to_limit => [600, 600]
+    process :convert => "jpg"
   end
 
+  
   def watermark(path_to_file)
     manipulate! do |img|
         logo = MiniMagick::Image.open(path_to_file)
@@ -65,7 +70,7 @@ class PictureUploader < CarrierWave::Uploader::Base
   def filename
     if original_filename
       @@name ||= Digest::MD5.hexdigest(File.read(current_path))
-      "nk12_su-#{@@name}.#{file.extension}"
+      "nk12_su-#{@@name}.jpg"
     end
   end
 
