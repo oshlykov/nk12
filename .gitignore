@@ -75,6 +75,6 @@ tmp/*
 # Debug database
 *.sqlite
 
-#���⮢� ��஫�
-config/initializers/mail.rb 
-config/deploy/staging.rb 
+#Почтовые пароли
+config/initializers/mail.rb
+config/deploy/staging.rb
