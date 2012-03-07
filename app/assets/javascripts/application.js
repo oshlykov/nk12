@@ -7,6 +7,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require twitter/bootstrap
+//= require ../../../vendor/assets/javascripts/jquery.iframe-transport
 //= require ../../../vendor/assets/javascripts/jquery.ui.widget
 //= require ../../../vendor/assets/javascripts/jquery.fileupload
 //= require ../../../vendor/assets/javascripts/jquery.fileupload-ui

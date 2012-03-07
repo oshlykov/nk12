@@ -16,18 +16,6 @@ class Picture < ActiveRecord::Base
 #  def own?(user)
 #    user_id == user.id
 # =>   end
-    
-  def to_jq_upload
-  {
-    "name" => read_attribute(:avatar),
-    "size" => image.size,
-    "url" => image.url,
-    "thumbnail_url" => image.thumb.url,
-    "preview_url" => image.preview.url,
-    "delete_url" => picture_path(id),
-    "delete_type" => "DELETE" 
-   }
-  end
 
   protected
   def vacate_folder
