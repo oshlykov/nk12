@@ -1,0 +1,62 @@
+                   sessions_new GET    /sessions/new(.:format)                                               {:controller=>"sessions", :action=>"new"}
+                          users GET    /users(.:format)                                                      {:controller=>"users", :action=>"index"}
+                                POST   /users(.:format)                                                      {:controller=>"users", :action=>"create"}
+                       new_user GET    /users/new(.:format)                                                  {:controller=>"users", :action=>"new"}
+                      edit_user GET    /users/:id/edit(.:format)                                             {:controller=>"users", :action=>"edit"}
+                           user GET    /users/:id(.:format)                                                  {:controller=>"users", :action=>"show"}
+                                PUT    /users/:id(.:format)                                                  {:controller=>"users", :action=>"update"}
+                                DELETE /users/:id(.:format)                                                  {:controller=>"users", :action=>"destroy"}
+    commission_protocol_votings GET    /uik/:commission_id/protocols/:protocol_id/votings(.:format)          {:controller=>"votings", :action=>"index"}
+                                POST   /uik/:commission_id/protocols/:protocol_id/votings(.:format)          {:controller=>"votings", :action=>"create"}
+ new_commission_protocol_voting GET    /uik/:commission_id/protocols/:protocol_id/votings/new(.:format)      {:controller=>"votings", :action=>"new"}
+edit_commission_protocol_voting GET    /uik/:commission_id/protocols/:protocol_id/votings/:id/edit(.:format) {:controller=>"votings", :action=>"edit"}
+     commission_protocol_voting GET    /uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)      {:controller=>"votings", :action=>"show"}
+                                PUT    /uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)      {:controller=>"votings", :action=>"update"}
+                                DELETE /uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)      {:controller=>"votings", :action=>"destroy"}
+   commission_protocol_pictures POST   /uik/:commission_id/protocols/:protocol_id/pictures(.:format)         {:controller=>"pictures", :action=>"create"}
+    commission_protocol_picture DELETE /uik/:commission_id/protocols/:protocol_id/pictures/:id(.:format)     {:controller=>"pictures", :action=>"destroy"}
+           commission_protocols GET    /uik/:commission_id/protocols(.:format)                               {:controller=>"protocols", :action=>"index"}
+                                POST   /uik/:commission_id/protocols(.:format)                               {:controller=>"protocols", :action=>"create"}
+        new_commission_protocol GET    /uik/:commission_id/protocols/new(.:format)                           {:controller=>"protocols", :action=>"new"}
+       edit_commission_protocol GET    /uik/:commission_id/protocols/:id/edit(.:format)                      {:controller=>"protocols", :action=>"edit"}
+            commission_protocol GET    /uik/:commission_id/protocols/:id(.:format)                           {:controller=>"protocols", :action=>"show"}
+                                PUT    /uik/:commission_id/protocols/:id(.:format)                           {:controller=>"protocols", :action=>"update"}
+                                DELETE /uik/:commission_id/protocols/:id(.:format)                           {:controller=>"protocols", :action=>"destroy"}
+         add_watcher_commission GET    /uik/:id/add_watcher(.:format)                                        {:controller=>"commissions", :action=>"add_watcher"}
+        del_watcher_commissions GET    /uik/del_watcher(.:format)                                            {:controller=>"commissions", :action=>"del_watcher"}
+             get_csv_commission GET    /uik/:id/get_csv/:cik(.:format)                                       {:controller=>"commissions", :action=>"get_csv"}
+                    commissions GET    /uik(.:format)                                                        {:controller=>"commissions", :action=>"index"}
+                                POST   /uik(.:format)                                                        {:controller=>"commissions", :action=>"create"}
+                 new_commission GET    /uik/new(.:format)                                                    {:controller=>"commissions", :action=>"new"}
+                edit_commission GET    /uik/:id/edit(.:format)                                               {:controller=>"commissions", :action=>"edit"}
+                     commission GET    /uik/:id(.:format)                                                    {:controller=>"commissions", :action=>"show"}
+                                PUT    /uik/:id(.:format)                                                    {:controller=>"commissions", :action=>"update"}
+                                DELETE /uik/:id(.:format)                                                    {:controller=>"commissions", :action=>"destroy"}
+             checking_protocols GET    /protocols/checking(.:format)                                         {:controller=>"protocols", :action=>"checking"}
+                 check_protocol POST   /protocols/:id/check(.:format)                                        {:controller=>"protocols", :action=>"check"}
+               protocol_votings GET    /protocols/:protocol_id/votings(.:format)                             {:controller=>"votings", :action=>"index"}
+                                POST   /protocols/:protocol_id/votings(.:format)                             {:controller=>"votings", :action=>"create"}
+            new_protocol_voting GET    /protocols/:protocol_id/votings/new(.:format)                         {:controller=>"votings", :action=>"new"}
+           edit_protocol_voting GET    /protocols/:protocol_id/votings/:id/edit(.:format)                    {:controller=>"votings", :action=>"edit"}
+                protocol_voting GET    /protocols/:protocol_id/votings/:id(.:format)                         {:controller=>"votings", :action=>"show"}
+                                PUT    /protocols/:protocol_id/votings/:id(.:format)                         {:controller=>"votings", :action=>"update"}
+                                DELETE /protocols/:protocol_id/votings/:id(.:format)                         {:controller=>"votings", :action=>"destroy"}
+                      protocols GET    /protocols(.:format)                                                  {:controller=>"protocols", :action=>"index"}
+                                POST   /protocols(.:format)                                                  {:controller=>"protocols", :action=>"create"}
+                   new_protocol GET    /protocols/new(.:format)                                              {:controller=>"protocols", :action=>"new"}
+                  edit_protocol GET    /protocols/:id/edit(.:format)                                         {:controller=>"protocols", :action=>"edit"}
+                       protocol GET    /protocols/:id(.:format)                                              {:controller=>"protocols", :action=>"show"}
+                                PUT    /protocols/:id(.:format)                                              {:controller=>"protocols", :action=>"update"}
+                                DELETE /protocols/:id(.:format)                                              {:controller=>"protocols", :action=>"destroy"}
+                       pictures GET    /pictures(.:format)                                                   {:controller=>"pictures", :action=>"index"}
+                                POST   /pictures(.:format)                                                   {:controller=>"pictures", :action=>"create"}
+                                       /uik_by/:id(.:format)                                                 {:controller=>"home", :action=>"uik_by"}
+                         uik_by        /uik_by(.:format)                                                     {:controller=>"home", :action=>"uik_by"}
+                           root        /                                                                     {:controller=>"home", :action=>"index"}
+                       sessions GET    /sessions(.:format)                                                   {:controller=>"sessions", :action=>"index"}
+                                POST   /sessions(.:format)                                                   {:controller=>"sessions", :action=>"create"}
+                    new_session GET    /sessions/new(.:format)                                               {:controller=>"sessions", :action=>"new"}
+                   edit_session GET    /sessions/:id/edit(.:format)                                          {:controller=>"sessions", :action=>"edit"}
+                        session GET    /sessions/:id(.:format)                                               {:controller=>"sessions", :action=>"show"}
+                                PUT    /sessions/:id(.:format)                                               {:controller=>"sessions", :action=>"update"}
+                                DELETE /sessions/:id(.:format)                                               {:controller=>"sessions", :action=>"destroy"}

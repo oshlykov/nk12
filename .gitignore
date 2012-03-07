@@ -76,4 +76,5 @@ tmp/*
 *.sqlite
 
 #Почтовые пароли
-/config/initializers/mail.rb 
+config/initializers/mail.rb 
+config/deploy/staging.rb 

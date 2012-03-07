@@ -12,8 +12,9 @@ set :deploy_to, "/home/nk12/data/www/#{application}"
 
 # SVN and Auth
 set :scm, :git
-set :repository, "https://github.com/florineot/nk12.git"
-set :branch, "florin"
+#замените на свой репозиторий и бранч
+set :repository, "https://github.com/oshlykov/nk12.git"
+set :branch, "master"
 #set :deploy_via, :remote_cache
 
 set :user, 'nk12'

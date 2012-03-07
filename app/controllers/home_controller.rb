@@ -6,9 +6,7 @@ class HomeController < ApplicationController
     @checked_count_2 = Protocol.where('priority = 1 and commission_id >= 200000').size
     @unchecked_count_2 = Protocol.where('priority > 1 and commission_id >= 200000').size
 #    @protocols_new = Protocol.joins('INNER JOIN commissions c ON c.id = Protocols.commission_id').where("priority = 1 and commission_id >=200000").limit(40).all(:order => "created_at")
-    @protocols_new = Protocol.includes(:commission).where("priority = 1 and commission_id >=200000").limit(40).all(:order => "created_at")
-
-#Client.joins('LEFT OUTER JOIN addresses ON addresses.client_id = clients.id')
+    @protocols_new = Protocol.includes(:commission).where("priority = 1 and commission_id >=200000").limit(20).all(:order => "created_at")
 
     @users_count = User.count
   end
