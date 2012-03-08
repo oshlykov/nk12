@@ -18,5 +18,6 @@
         = form_for Picture.new,
           :url => commission_protocol_pictures_path(@protocol.commission_id, @protocol),
             :html => { :class => "upload", :multipart => true } do |f|
-          = f.file_field :image, :class => 'pics_upload'
+          = f.file_field :image, :class => 'pics_upload', :multiple => true,
+            :name => 'picture[image]'
           .upload_files
