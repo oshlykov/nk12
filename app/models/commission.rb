@@ -87,24 +87,26 @@ class Commission < ActiveRecord::Base
 
 #Commission.get_children(200076)
 
-  def self.get_children(parent_commission, url = '')
+  def self.get_children(parent_commission, url = '', hierarchy = '')
+    return true if hierarchy.count("/") > 6
     #идем по урл, забираем html селект или переходим на сайт субъекта
     url = parent_commission.url
     agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
     
-    agent.search("a").search("a").each do |href|
-      if (href.content.to_str == "Результаты выборов")
-        parent_commission.voting_table_url = href['href']    
-        parent_commission.save          
-      end
-    end
-
+    #Есть особые страницы которые переводят на такую-же портальную страницу, но региона. Если мы на такой, то подменяем её внутренней
     agent.search("a").each do |href|
       if (href.content.to_str == "сайт избирательной комиссии субъекта Российской Федерации")
         parent_commission.url = href['href']
         parent_commission.save          
         url = parent_commission.url
         agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
+      end
+    end
+
+    agent.search("a").search("a").each do |href|
+      if (href.content.to_str == "Результаты выборов")
+        parent_commission.voting_table_url = href['href']    
+        parent_commission.save          
       end
     end
 
@@ -121,9 +123,11 @@ class Commission < ActiveRecord::Base
         else
           print "Taken: #{name}\n"
         end                    
-        get_children(child)
+        get_children(child, '', "#{hierarchy}/#{child.name.to_s}")
       end
     end
+  rescue 
+    return false
   end
 
 
@@ -209,6 +213,7 @@ class Commission < ActiveRecord::Base
         commissions[name.strip] = option['value']
       end
     end
+
     # Looking for regional commission site
     agent.search("a").each do |href|
       if (href.content.to_str == "сайт избирательной комиссии субъекта Российской Федерации")

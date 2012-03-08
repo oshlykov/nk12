@@ -53,3 +53,8 @@ Commission.find_all_by_votes_taken(1).each do |c|
     c.save
   end
 end
+
+
+Commission.roots.each do |c|
+  Commission.get_children(c)
+end
