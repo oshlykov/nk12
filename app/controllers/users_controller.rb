@@ -14,7 +14,7 @@ class UsersController < InheritedResources::Base
 
   def update
     authorize! :edit, resource
-    params[:user][:role] = nil unless current_user.role == 'admin'
+    params[:user][:role] = resource.role unless current_user.role == 'admin'
     update! { edit_resource_path }
   end
 
