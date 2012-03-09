@@ -1,5 +1,6 @@
 .picture[picture]
-  %a{:href => picture.image_url,  :target => '_blank'}
+  %a{:href => picture.image_url,  :target => '_blank', :title => picture.original_filename}
+    = raw "<span>#{picture.original_filename}</span><br />"
     = image_tag picture.image_url(:thumb) if picture.image?
   - if can? :destroy, picture
     = link_to raw('<i class="icon-remove"></i>'),
