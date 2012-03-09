@@ -17,10 +17,8 @@
   .span12
     %table.voting-table.table
       %tr
-        - if can? :destroy, p
-          %th
         %th
-        -#%th{:colspan => 18}
+        %th
         - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
           %th
             %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}= raw vds(i+1, @commission.election_id)
@@ -29,6 +27,7 @@
           %tr
             %td{:width => "100px"}
               %a{:href=>@commission.url} ЦИК
+            %td
             - p.votings.each_with_index do |vote,i|
               %td{"title"=>p.voting_name(i+1)}= vote
         - else
@@ -54,14 +53,21 @@
 
     - unless @unchecked.blank?
       %h2 Непроверенные протоколы
-      %table.voting-table
+      %table.voting-table.table
+        %tr
+          %th
+          %th
+          - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
+            %th
+              %small{"title"=>Protocol.voting_name(i+1, @commission.election_id)}= raw vds(i+1, @commission.election_id)
         - @unchecked.each do |p|
           %tr{:id => ("protocol_#{p.id}")}
-            %td{:width => "100px"}
+            %td{:width => "120px", :style => "font-size: 12px"}
               %a{:href => commission_protocol_path(@commission.id, p.id)}
-                = "КАРИК №#{p.id}"
-                - if can? :destroy, p
-                  = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+                %nobr= "КАРИК №#{p.id}"
+              - if can? :destroy, p
+                = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+            %td
               %span{:title => "#{p.source}", :class => "label label-info"} источник
 
             - p.votings.each_with_index do |vote,i|

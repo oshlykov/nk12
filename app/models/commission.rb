@@ -142,6 +142,19 @@ class Commission < ActiveRecord::Base
       end
     end
     p.save
+    commission.state ||= Hash.new
+    commission.state[:uik] = p.votings
+    return commission.save if karik = commission.protocols.find_by_priority(1)
+    #Обновление кэша
+    conflict = false
+    karik.votings.each_with_index do |v,i|
+      # karik.size-1 так как неучитываем последгний столбец с кол заявлений
+      conflict = true if commission.state[:checked][i] != commission.state[:uik][i] and i != karik.size-1 
+    end
+    commission.conflict = conflict
+    commission.votes_taken = true
+    commission.save
+
   rescue Exception => ex
     print "Error: #{ex}\n"
   end

@@ -55,13 +55,14 @@ Nkapp::Application.configure do
   # the I18n.default_locale when a translation can not be found)
   config.i18n.fallbacks = true
 
-  config.action_mailer.default_url_options = { :host => 'yandex.ru' }
+  config.action_mailer.default_url_options = { :host => 'nk12.su' }
   # ActionMailer Config
   # Setup for production - deliveries, no errors raised
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default :charset => "utf-8"
+
   
   #config\initializers\mail.rb
   #config.action_mailer.smtp_settings
