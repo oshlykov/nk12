@@ -17,7 +17,8 @@
   .span12
     %table.voting-table.table
       %tr
-        %th
+        - if can? :destroy, p
+          %th
         %th
         -#%th{:colspan => 18}
         - VOTING_DICTIONARY_SHORT[@commission.election_id].each_with_index do |s,i|
@@ -84,6 +85,8 @@
         %b Загрузить протокол
         Чтобы загрузить протокол, необходимо 
         = link_to("зарегистрироваться", new_user_path)
+        или
+        = link_to("представиться", new_session_path)
     %br
     %br
 

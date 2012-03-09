@@ -8,7 +8,7 @@
       %td
         = raw"#{@u.name} #<span title='#{@u.email}'>#{@u.id}</span>" if @u = User.find(p.user_id)
         %br
-        %a{:href => protocol_path(p.id)}
+        %a{:href => commission_protocol_path(p.commission_id, p.id)}
           = "КАРИК № #{p.id} (#{p.commission.name})"
           - if can? :destroy, p
             = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
@@ -36,7 +36,7 @@
       %td
         = raw"#{@u.name} #<span title='#{@u.email}'>#{@u.id}</span>" if @u = User.find(p.user_id)
         %br
-        %a{:href => protocol_path(p.id)}
+        %a{:href => commission_protocol_path(p.commission_id, p.id)}
           = "КАРИК № #{p.id} (#{p.commission.name})"
           - if can? :destroy, p
             = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true

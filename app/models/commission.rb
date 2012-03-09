@@ -96,8 +96,9 @@ class Commission < ActiveRecord::Base
     #Есть особые страницы которые переводят на такую-же портальную страницу, но региона. Если мы на такой, то подменяем её внутренней
     agent.search("a").each do |href|
       if (href.content.to_str == "сайт избирательной комиссии субъекта Российской Федерации")
+        return parent_commission.destroy if Commission.find_by_url href['href']
         parent_commission.url = href['href']
-        parent_commission.save          
+        parent_commission.save
         url = parent_commission.url
         agent = Nokogiri::HTML(url_normalize(url), nil, 'Windows-1251')
       end
@@ -105,8 +106,8 @@ class Commission < ActiveRecord::Base
 
     agent.search("a").search("a").each do |href|
       if (href.content.to_str == "Результаты выборов")
-        parent_commission.voting_table_url = href['href']    
-        parent_commission.save          
+        parent_commission.voting_table_url = href['href']
+        parent_commission.save
       end
     end
 
@@ -130,6 +131,35 @@ class Commission < ActiveRecord::Base
     return false
   end
 
+  def self.voting_table(commission)
+    return unless commission.voting_table_url and commission.protocols.find_by_priority(0) == nil
+    agent_inner = Nokogiri::HTML(url_normalize(commission.voting_table_url), nil, 'Windows-1251')
+    p = commission.protocols.build :priority => 0, :user_id => 0 if agent_inner
+    agent_inner.xpath('//table/tr').collect do |row|
+      tds = row.xpath('td')
+      if (tds.first.text.to_i > 0) and VOTING_DICTIONARY[commission.election_id].has_key?(tds.first.text.to_i)
+        p.send("v#{tds.first.text.to_i}=", tds.last.first_element_child().text.to_i)
+      end
+    end
+    p.save
+  rescue Exception => ex
+    print "Error: #{ex}\n"
+  end
+
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
+################################################################################################################################################
 
 ## encoding: utf-8
 =begin
@@ -154,7 +184,6 @@ class Commission < ActiveRecord::Base
   def print_tm(tm)
       print tm.strftime("%d/%m/%y %H:%M:%S"), "; "
   end
-=end
   # Checks if the file fname exits. If it doesn't fetches the data from URL url and saves it to the file named fname
   # Returns the contents of the file
   def fetch_and_save(fname, url)
@@ -234,7 +263,6 @@ class Commission < ActiveRecord::Base
     Parallel.each(commissions, :in_threads => 8){ |name, url| fetch_commissions(dir + '/' + name, url) }
   end
 
-=begin  
   desc "Clean raw html data directory"
   task :clean_raw_html => :environment do
     print "*** Cleaning '", inp_data_dir, "' directory\n"
@@ -292,8 +320,7 @@ class Commission < ActiveRecord::Base
     Parallel.each(Commission.all, :in_threads => 15){|commission| get_children_from_raw_html(inp_data_dir + '/' + commission.name, commission, commission.url)}
   }
   end
-=end
-=begin
+
   # The function below is almost copy of get_children_from_raw_html. Temporary solution. Not very effective in terms of execution time
   def get_children_from_raw_html(dir, parent_commission, url)
     return if /Regional\/Regional/ =~ dir
@@ -331,11 +358,9 @@ class Commission < ActiveRecord::Base
       print "Error: #{ex}\n"
     end
   end
-=end
 
 #  desc "Grab all the commissions out there from 4-dec elections"
 #  task :get => :environment do        
-=begin
   def task_get_enviroment
     Rake::Task['grab:clean_up'].invoke
     
@@ -366,15 +391,40 @@ class Commission < ActiveRecord::Base
     
     # print "\n-- data taken, taken votes --\n"
   end  
-=end
 
     # обходим рекурсивно все внутренние ссылки
-=begin    
     agent.search("a").each do |href|
        if (href.content.to_str == "сайт избирательной комиссии субъекта Российской Федерации")
           get_children(parent_commission,href['href'])
       end
     end
+
+  def voting_table(commission)    
+    if commission.voting_table_url
+      begin            
+        agent_inner = Nokogiri::HTML(url_normalize(commission.voting_table_url), nil, 'Windows-1251')          
+        voting_table = Hash.new
+        rows = agent_inner.xpath('//table/tr')
+        details = rows.collect do |row|                            
+          tds = row.xpath('td')
+          if (tds.first.text.to_i > 0)   
+            if @voting_dictionaries.has_key?(tds.first.text.to_i) 
+              # добавляем голоса в коммисию
+              
+              commission.votings.build(:votes => tds.last.first_element_child().text.to_i, :voting_dictionary_id => @voting_dictionaries[tds.first.text.to_i])                             
+              
+            end 
+          end              
+        end        
+        commission.votes_taken = true            
+        commission.save                    
+              
+       rescue Exception => ex
+          print "Error: #{ex}\n"
+       end  
+    end
+  end
+
 =end
 #2012      voting_table(parent_commission)
 #   rescue Exception => ex
