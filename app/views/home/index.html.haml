@@ -62,7 +62,40 @@
                 %sup
                   %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
           .span4
-            %h2 Живая лента
+            - if !social_enable
+              %h2
+                %a{:href=>'http://twitter.com/kariksu'} Твиттер
+              %div{:style => "height: 161px"}
+                %script{:charset=>"utf-8", :src=>"http://widgets.twimg.com/j/2/widget.js"}
+                %script(type="text/javascript")
+                  :plain
+                    new TWTR.Widget({
+                      version: 2,
+                      type: 'profile',
+                      rpp: 6,
+                      interval: 30000,
+                      width: 300,
+                      height: 100,
+                      theme: {
+                        shell: {
+                          background: '#ffffff',
+                          color: '#000000'
+                        },
+                        tweets: {
+                          background: '#ffffff',
+                          color: '#4a404a',
+                          links: '#1f3885'
+                        }
+                      },
+                      features: {
+                        scrollbar: true,
+                        loop: false,
+                        live: false,
+                        behavior: "all"
+                      }
+                    }).render().setUser("KarikSu").start();
+
+            %h2 Новые протоколы
             %table.voting-table.table
               %tr
                 %th{:width => "100px"}

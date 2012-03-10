@@ -144,7 +144,7 @@ class Commission < ActiveRecord::Base
     p.save
     commission.state ||= Hash.new
     commission.state[:uik] = p.votings
-    return commission.save if karik = commission.protocols.find_by_priority(1)
+    return commission.save unless karik = commission.protocols.find_by_priority(1)
     #Обновление кэша
     conflict = false
     karik.votings.each_with_index do |v,i|

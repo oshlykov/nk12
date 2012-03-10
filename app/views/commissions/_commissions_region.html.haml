@@ -11,10 +11,30 @@
   .span9
     %div.navigation-holder
       %a.show-navigation{:href=>"#"}
-        = @commission.name
+        Содержание
+        -#@commission.name
       %div.tree-navigation
-        %br
-    - @commission.subtree.where(:is_uik => false).all.each do |c|
+    - if c = @commission
+      %div.tree-node-holder{"id" => c.id, "class" => "depth-#{c.depth}"}
+        %div.node-name
+          %div.name
+            %h3{"id"=>c.id,"data-depth"=>c.depth}
+              - if c.uik_holder
+                %a.load-new.ajax{ :href => "##{c.id}" }
+                  =raw "#{c.name}&nbsp;"
+                %sup
+                  %small{:title => "собрано протоколов / всего протоколов"}
+                    - if (c_size = c.descendants.where('votes_taken=true').size) > 0
+                      = "#{c_size}/#{c.descendants.size} " 
+              - else
+                =raw "#{c.name}&nbsp;"
+                %sup
+                  %small= link_to('цик', c.url)
+        - if c.uik_holder
+          %div.votings{"data-id"=>c.id, "data-loaded"=>"false", "data-url"=>"/uik/#{c.id}"}
+            %div.loading
+              = image_tag('ajax-loader.gif')
+    - @commission.descendants.where(:is_uik => false).all.each do |c|
       -# if c.depth != @commission.depth
       %div.tree-node-holder{"id" => c.id, "class" => "depth-#{c.depth}"}
         %div.node-name
@@ -22,16 +42,15 @@
             %h3{"id"=>c.id,"data-depth"=>c.depth}
               - if c.uik_holder
                 %a.load-new.ajax{ :href => "##{c.id}" }
-                  = c.name
+                  =raw "#{c.name}&nbsp;"
                 %sup
                   %small{:title => "собрано протоколов / всего протоколов"}
                     - if (c_size = c.descendants.where('votes_taken=true').size) > 0
                       = "#{c_size}/#{c.descendants.size}" 
               - else
-                = c.name
+                =raw "#{c.name}&nbsp;"
                 %sup
                   %small= link_to('цик', c.url)
-          .clearfix
         - if c.uik_holder
           %div.votings{"data-id"=>c.id, "data-loaded"=>"false", "data-url"=>"/uik/#{c.id}"}
             %div.loading

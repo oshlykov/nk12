@@ -54,7 +54,30 @@ Commission.find_all_by_votes_taken(1).each do |c|
   end
 end
 
-
+# загрузка структуры уиков
 Commission.roots.each do |c|
   Commission.get_children(c)
+end
+
+#стягивание всех данных по голосованиям с сайта ЦИК
+cs = Commission.where("voting_table_url IS NOT NULL and election_id=2").size
+Parallel.each(cs, :in_threads => 8){ |c| Commission.voting_table(c) }
+
+#особое обновление, кеширования - разовый случай
+Commission.where("election_id=2 and voting_table_url IS NOT NULL and state NOT LIKE '%:uik%'").each do |commission|
+  if commission.voting_table_url and uik = commission.protocols.find_by_priority(0)
+    commission.state ||= Hash.new
+    commission.state[:uik] = uik.votings
+    if karik = commission.protocols.find_by_priority(1)
+      #Обновление кэша
+      conflict = false
+      karik.votings.each_with_index do |v,i|
+        # karik.size-1 так как неучитываем последгний столбец с кол заявлений
+        conflict = true if commission.state[:checked][i] != commission.state[:uik][i] and i != karik.size-1 
+      end
+      commission.conflict = conflict
+      commission.votes_taken = true
+    end 
+    commission.save
+  end
 end
