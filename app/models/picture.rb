@@ -17,6 +17,15 @@ class Picture < ActiveRecord::Base
 #    user_id == user.id
 # =>   end
 
+  def rotate cw = true
+    file_paths = [ self.image.current_path ] + self.image.versions.map{|k,v| v.current_path }
+    file_paths.each do |fp| 
+      img = MiniMagick::Image.open fp
+      img.rotate(cw ? '90' : '-90')
+      img.write fp
+    end
+  end
+
   protected
   def vacate_folder
     self.folder_id = nil if protocol_id

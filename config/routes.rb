@@ -37,7 +37,9 @@ Nkapp::Application.routes.draw do
     resources :votings
   end
 
-  resources :pictures, :only => [:index, :create, :destroy]
+  resources :pictures, :only => [:index, :create, :destroy] do
+    get 'rotate/:direction' => "pictures#rotate", :as => 'rotate', :direction => /(cw|ccw)/
+  end
   #get "verify/index"
 
   match 'uik_by/:id' => 'home#uik_by'

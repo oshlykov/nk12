@@ -20,8 +20,10 @@
     - @folder.pictures.each do |picture|
       %li.pic-container{:onMouseOver => "$('span', this).show()", :onMouseOut => "$('span', this).hide()"}
         %span.pic-action
-          = link_to image_tag(asset_path("lens.png")), picture.image_url, :class => "zoom" if picture.image?
-          =# image_tag asset_path("lens.png") if picture.image?
+          - if picture.image?
+            = link_to image_tag(asset_path("lens.png")), picture.image_url, :class => "zoom"
+            = link_to image_tag(asset_path("rotate_cw.png")), picture_rotate_path( picture, "cw" ), :class => "rotate cw"
+            = link_to image_tag(asset_path("rotate_ccw.png")), picture_rotate_path( picture, "ccw" ), :class => "rotate ccw"
         = check_box_tag 'protocol[folder_pics][]', picture.id, @protocol.folder_pics.include?(picture.id.to_s), :class => "photo_checkbox"
         = image_tag picture.image_url(:preview), :onClick => "change_state($(this).parent())"
     
@@ -35,15 +37,36 @@
 #uik_panel2
   = button_to 'Закончить работу с папкой', release_folder_path(@folder), :class => 'btn'
 
+  :javascript
+    $('.rotate').click( function(e){
+      e.preventDefault();
+      link = $(e.delegateTarget);
+      
+      $.ajax({
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          url: link.attr('href'),
+          dataType:"html",
+          type: "get",
+          success: function(){
+          // FIXME I don't know how make it better
+                  img = link.parent().parent().children('img');
+                  timestamp = new Date().getTime();
+                  img.attr('src', img.attr('src') + '?' +timestamp );
+          }
+      });
+    });
 
-:javascript
-  function change_state( li ){
-    chk = $("input", $(li) );
-    if (chk.attr("checked")){
-      $(li).removeClass("alert-info");
-      chk.removeAttr("checked");
-    }else{
-      $(li).addClass("alert-info");
-      chk.attr("checked", "checked");
+    function change_state( li ){
+      chk = $("input", $(li) );
+      if (chk.attr("checked")){
+        $(li).removeClass("alert-info");
+        chk.removeAttr("checked");
+      }else{
+        $(li).addClass("alert-info");
+        chk.attr("checked", "checked");
+      }
     }
-  }
+
+
