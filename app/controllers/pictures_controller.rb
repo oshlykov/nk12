@@ -46,6 +46,12 @@ class PicturesController < InheritedResources::Base
     end
   end
 
+  def rotate
+    head :bad_request and return unless pic = Picture.find_by_id( params[:picture_id] )
+    pic.rotate params[:direction] == 'cw'
+    render :nothing => true
+  end
+
   def destroy
     raise 'Not authorized' unless can?(:destroy, resource)
     destroy! do |ok, nok|

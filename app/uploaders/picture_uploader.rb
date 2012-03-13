@@ -17,7 +17,7 @@ class PictureUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
-  process :resize_to_limit => [1024,1024]
+  process :resize_to_limit => [2500,2500]
   process :watermark => Rails.root.join("app","assets","images", "watermark.png")
   process :convert => "jpg"
 
