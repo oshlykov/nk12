@@ -62,10 +62,10 @@
                 %sup
                   %small.green{:title => "В ожидании проверки"}= "(#{@unchecked_count_2})"
           .span4
-            - if !social_enable
+            - if social_enable
               %h2
                 %a{:href=>'http://twitter.com/kariksu'} Твиттер
-              %div{:style => "height: 161px"}
+              %div{:style => "height: 160px"}
                 %script{:charset=>"utf-8", :src=>"http://widgets.twimg.com/j/2/widget.js"}
                 %script(type="text/javascript")
                   :plain
@@ -75,7 +75,7 @@
                       rpp: 6,
                       interval: 30000,
                       width: 300,
-                      height: 100,
+                      height: 160,
                       theme: {
                         shell: {
                           background: '#ffffff',

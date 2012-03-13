@@ -60,20 +60,24 @@ Commission.roots.each do |c|
 end
 
 #стягивание всех данных по голосованиям с сайта ЦИК
-cs = Commission.where("voting_table_url IS NOT NULL and election_id=2").size
-Parallel.each(cs, :in_threads => 8){ |c| Commission.voting_table(c) }
+cs = Commission.where("voting_table_url IS NOT NULL and election_id=2").includes(:protocols)
+Parallel.each(Commission.where("voting_table_url IS NOT NULL and election_id=2").includes(:protocols), :in_threads => 4){ |c| Commission.voting_table(c) }
+#или
+Commission.where("voting_table_url IS NOT NULL and election_id=2").includes(:protocols).each do |c| Commission.voting_table(c) end
 
 #особое обновление, кеширования - разовый случай
-Commission.where("election_id=2 and voting_table_url IS NOT NULL and state NOT LIKE '%:uik%'").each do |commission|
+Commission.where("election_id=2 and voting_table_url IS NOT NULL and state = '--- \n'").each do |commission|
   if commission.voting_table_url and uik = commission.protocols.find_by_priority(0)
     commission.state ||= Hash.new
     commission.state[:uik] = uik.votings
     if karik = commission.protocols.find_by_priority(1)
+      
+      commission.state[:checked] = karik.votings unless commission.state.include? :checked
       #Обновление кэша
       conflict = false
       karik.votings.each_with_index do |v,i|
         # karik.size-1 так как неучитываем последгний столбец с кол заявлений
-        conflict = true if commission.state[:checked][i] != commission.state[:uik][i] and i != karik.size-1 
+        conflict = true if commission.state[:checked][i] != commission.state[:uik][i] and i != karik.votings.size-1 
       end
       commission.conflict = conflict
       commission.votes_taken = true

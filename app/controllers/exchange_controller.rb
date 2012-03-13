@@ -39,7 +39,7 @@ class ExchangeController < ApplicationController
       conditions = conditions + " and source like ?"
       vals = vals + [@filter]
 
-      @sources = Protocol.find(:all, :select => "distinct source", :conditions => ([conditions] + vals)).map { |p| p.source }
+      @sources = Protocol.find(:all, :select => "distinct source", :conditions => ([conditions] + vals)).limit(100).map { |p| p.source }
     end
 
     @count = Protocol.count_by_sql(["select count(id) from protocols where " + conditions] + vals)
