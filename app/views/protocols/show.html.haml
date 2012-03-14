@@ -7,8 +7,9 @@
 .row
   .span8
     %h2 Данные с копии протокола
-    - if can? :check, p and @protocol.priority > 99
-      = link_to 'Одобрить', check_protocol_path(p.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить", :class => 'btn btn-danger'
+    - if can? :check, @protocol and @protocol.priority > 99
+      %div{:id => ("protocol_#{@protocol.id}")}
+        = link_to 'Одобрить', check_protocol_path(@protocol.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить", :class => 'btn btn-danger'
     = render "form"
   .span3.alert.alert-info 
     %h3

@@ -6,7 +6,7 @@
         - if can? :check, p
           = link_to raw('<i class="icon-ok"></i>'), check_protocol_path(p.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить"
       %td
-        = raw"#{@u.name} #<span title='#{@u.email}'>#{@u.id}</span>" if @u = User.find(p.user_id)
+        = raw"#{@u.name} #<span title='#{@u.id}'>#{@u.email}</span>" if @u = User.find(p.user_id)
         %br
         %a{:href => commission_protocol_path(p.commission_id, p.id)}
           = "КАРИК № #{p.id} (#{p.commission.name})"
@@ -34,7 +34,7 @@
         - if can? :check, p
           = link_to raw('<i class="icon-ok"></i>'), check_protocol_path(p.id), :method => :post, :confirm => "Подтвердить протокол?", :remote => :true, :title => "Подтвердить"
       %td
-        = raw"#{@u.name} #<span title='#{@u.email}'>#{@u.id}</span>" if @u = User.find(p.user_id)
+        = raw"#{@u.name} #<span title='#{@u.id}'>#{@u.email}</span>" if @u = User.find(p.user_id)
         %br
         %a{:href => commission_protocol_path(p.commission_id, p.id)}
           = "КАРИК № #{p.id} (#{p.commission.name})"
