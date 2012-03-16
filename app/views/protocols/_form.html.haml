@@ -8,6 +8,10 @@
 -#  = f.button :submit
 -#/uik/:commission_id/protocols/:protocol_id/votings/:id(.:format)
 -#%form{:action => commission_protocols_path(@protocol.commission.id)+'/'+@protocol.id.to_s, :method => 'post', :id => 'protocol_update'}
+
+.alert.alert-error 
+  Протоколы без фотокопий будут удалены.
+
 =form_for @protocol do |form|
   %table{:width => '100%'}
     %tr 

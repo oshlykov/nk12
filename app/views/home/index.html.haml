@@ -65,7 +65,7 @@
             - if social_enable
               %h2
                 %a{:href=>'http://twitter.com/kariksu'} Твиттер
-              %div{:style => "height: 160px"}
+              %div{:style => "height: 460px"}
                 %script{:charset=>"utf-8", :src=>"http://widgets.twimg.com/j/2/widget.js"}
                 %script(type="text/javascript")
                   :plain
@@ -75,7 +75,7 @@
                       rpp: 6,
                       interval: 30000,
                       width: 300,
-                      height: 160,
+                      height: 460,
                       theme: {
                         shell: {
                           background: '#ffffff',
@@ -95,8 +95,8 @@
                       }
                     }).render().setUser("KarikSu").start();
 
-            %h2 Новые протоколы
-            %table.voting-table.table
+            -#%h2 Новые протоколы
+            -#%table.voting-table.table
               %tr
                 %th{:width => "100px"}
                 -#%th{:colspan => 18}

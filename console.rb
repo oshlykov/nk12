@@ -9,6 +9,14 @@ FasterCSV.open( 'users-commissions.csv', "w", option) do |csv|
   end
 end
 
+#Перенов изображений протоколов
+src = Protocol.find 306850
+dst = Protocol.find 306857
+src.pictures.each do |pic|
+  pic.protocol_id = dst.id
+  pic.save
+end
+
 #уики
 cs = Commission.find_all_by_election_id(1)
 x = Array.new

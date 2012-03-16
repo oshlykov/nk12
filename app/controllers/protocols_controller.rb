@@ -105,8 +105,8 @@ before_filter :auth, :except => [:index, :show]
 
   def checking
     @title = "Проверка протоколов"
-    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.minutes.ago).limit(50).all(:order => "created_at", :offset => (current_user.id * 500) % 300)
-    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.minutes.ago).limit(50).all(:order => "created_at", :offset => (current_user.id * 500) % 300)
+    @protocols_1 = Protocol.where("priority >= 100 and created_at < ? and commission_id < 200000", 15.minutes.ago).limit(50).includes(:pictures).all(:order => "created_at", :offset => (current_user.id * 500) % 300)
+    @protocols_2 = Protocol.where("priority >= 100 and created_at < ? and commission_id >=200000", 15.minutes.ago).limit(50).includes(:pictures).all(:order => "created_at", :offset => (current_user.id * 500) % 300)
     @protocols_1 ||= Array.new
     @protocols_2 ||= Array.new
 
