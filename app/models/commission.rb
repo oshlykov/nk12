@@ -53,6 +53,46 @@ class Commission < ActiveRecord::Base
     Rails.root.join( "public/uploads/csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
   end
 
+  def refresh_summary recursive = true
+    self.state ||= {}
+    state[:summary] = Commission.get_summary children
+    save!
+    parent.refresh_summary if parent && recursive
+  end
+
+  def check_summary
+    unless state && state[:cik] && state[:cik][24] && state[:frauds]
+      refresh_summary false
+    end
+  end
+
+  def self.get_summary sum_scope
+    cik = {}
+    frauds = 0
+    (1..24).each { |i| cik[i] = 0 }
+    sum_scope.each do |child|
+      if child.is_uik?
+	if protocol = child.protocols.find_by_priority(0)
+	  trusty_protocol = child.protocols.find_by_priority(1)
+	  has_frauds = 0
+	  (1..24).each do |i|
+	    cik[i] += protocol.send("v#{i}") rescue nil
+	    if trusty_protocol &&
+	      trusty_protocol.send("v#{i}") != protocol.send("v#{i}")
+	      has_frauds = 1
+	    end
+	  end
+	  frauds += has_frauds
+	end
+      else
+	child.check_summary
+	(1..24).each { |i| cik[i] += (child.state[:summary][:cik][i] || 0) }
+	frauds += child.state[:summary][:frauds]
+      end
+    end
+    {:cik => cik, :frauds => frauds}
+  end
+
 ################################################################################################################################################
 ################################################################################################################################################
 ################################################################################################################################################

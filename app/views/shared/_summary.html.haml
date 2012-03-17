@@ -1,0 +1,10 @@
+%p
+  .summary
+    Всего избирателей:
+    = summary[:cik][1]
+  .summary
+    Проголосовало:
+    = summary[:cik][10]
+  .summary
+    Участков с расхождениями в протоколе:
+    = summary[:frauds]
