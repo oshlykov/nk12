@@ -61,7 +61,8 @@ class Commission < ActiveRecord::Base
   end
 
   def check_summary
-    unless state && state[:cik] && state[:cik][24] && state[:frauds]
+    unless state && state[:summary] && state[:summary][:cik] &&
+      state[:summary][:cik][24] && state[:summary][:frauds]
       refresh_summary false
     end
   end
