@@ -111,7 +111,7 @@
                   %td
                     %a{:href => commission_path(p.commission.id)}
                       = p.commission.name
-                    %small= " #{p.commission.root.name}"
+                    %small= " #{p.commission.root.name rescue ''}"
                     - if p.commission.state and p.commission.state.include?(:uik)
                       - (uik_protocol = p.commission.state[:uik]).each_with_index do |vote,i|
                         -if i > 17
