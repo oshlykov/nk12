@@ -61,16 +61,22 @@ class Commission < ActiveRecord::Base
   end
 
   def check_summary
-    unless state && state[:summary] && state[:summary][:cik] &&
-      state[:summary][:cik][24] && state[:summary][:frauds]
+    unless
+     state && state[:summary] && state[:summary][:cik] &&
+      state[:summary][:cik][24] && state[:summary][:frauds] &&
+      state[:summary][:trusty] && state[:summary][:trusty][24]
       refresh_summary false
     end
   end
 
   def self.get_summary sum_scope
     cik = {}
+    trusty = {}
     frauds = 0
-    (1..24).each { |i| cik[i] = 0 }
+    (1..24).each do |i|
+      cik[i] = 0
+      trusty[i] = 0
+    end
     sum_scope.each do |child|
       if child.is_uik?
 	if protocol = child.protocols.find_by_priority(0)
@@ -78,20 +84,27 @@ class Commission < ActiveRecord::Base
 	  has_frauds = 0
 	  (1..24).each do |i|
 	    cik[i] += protocol.send("v#{i}") rescue nil
-	    if trusty_protocol &&
-	      trusty_protocol.send("v#{i}") != protocol.send("v#{i}")
-	      has_frauds = 1
+	    if trusty_protocol
+              trusty[i] += trusty_protocol.send("v#{i}") rescue nil
+	      if trusty_protocol.send("v#{i}") != protocol.send("v#{i}")
+                has_frauds = 1 
+              end
+            else
+              trusty[i] += protocol.send("v#{i}") rescue nil
 	    end
 	  end
 	  frauds += has_frauds
 	end
       else
 	child.check_summary
-	(1..24).each { |i| cik[i] += (child.state[:summary][:cik][i] || 0) }
+	(1..24).each do |i|
+          cik[i] += (child.state[:summary][:cik][i] || 0)
+          trusty[i] += (child.state[:summary][:trusty][i] || 0)
+        end
 	frauds += child.state[:summary][:frauds]
       end
     end
-    {:cik => cik, :frauds => frauds}
+    {:cik => cik, :trusty => trusty, :frauds => frauds}
   end
 
 ################################################################################################################################################
