@@ -31,7 +31,8 @@
                 %sup
                   %small= link_to('цик', c.url)
             - if c.state && c.state[:summary]
-              = render 'shared/summary', :summary => c.state[:summary]
+              = render 'shared/summary', :summary => c.state[:summary],
+                :election => c.election
         - if c.uik_holder
           %div.votings{"data-id"=>c.id, "data-loaded"=>"false", "data-url"=>"/uik/#{c.id}"}
             %div.loading

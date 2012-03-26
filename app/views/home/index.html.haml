@@ -16,7 +16,8 @@
       %h2
         = election.name
       = render 'shared/summary',
-        :summary => Commission.get_summary(election.commissions.roots)
+        :summary => Commission.get_summary(election.commissions.roots, election.id),
+        :election => election
       .row
         -if election.id == 1
           .span8

@@ -1,10 +1,18 @@
 %p
-  .summary
-    Всего избирателей:
-    = summary[:cik][1]
-  .summary
-    Проголосовало:
-    = summary[:cik][10]
+  %table.voting-table.table
+    %tr
+      %th
+      - VOTING_DICTIONARY_SHORT[election.id].each_with_index do |s,i|
+        %th{:style => "text-align: right"}
+          %small{"title"=>Protocol.voting_name(i+1, election.id)}=raw vds(i+1, election.id)
+    %tr
+      %td ЦИК
+      - VOTING_DICTIONARY_SHORT[election.id].each_with_index do |s,i|
+        %td= summary[:cik][i + 1]
+    %tr
+      %td Протоколы
+      - VOTING_DICTIONARY_SHORT[election.id].each_with_index do |s,i|
+        %td= summary[:trusty][i + 1]
   .summary
     Участков с расхождениями в протоколе:
     = summary[:frauds]

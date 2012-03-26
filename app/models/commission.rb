@@ -55,7 +55,7 @@ class Commission < ActiveRecord::Base
 
   def refresh_summary recursive = true
     self.state ||= {}
-    state[:summary] = Commission.get_summary children
+    state[:summary] = Commission.get_summary children, election_id
     save!
     parent.refresh_summary if parent && recursive
   end
@@ -63,17 +63,19 @@ class Commission < ActiveRecord::Base
   def check_summary
     unless
      state && state[:summary] && state[:summary][:cik] &&
-      state[:summary][:cik][24] && state[:summary][:frauds] &&
-      state[:summary][:trusty] && state[:summary][:trusty][24]
+      state[:summary][:cik][VOTING_DICTIONARY_SHORT[election_id].size] &&
+      state[:summary][:frauds] && state[:summary][:trusty] &&
+      state[:summary][:trusty][VOTING_DICTIONARY_SHORT[election_id].size]
       refresh_summary false
     end
   end
 
-  def self.get_summary sum_scope
+  def self.get_summary sum_scope, election_id
     cik = {}
     trusty = {}
     frauds = 0
-    (1..24).each do |i|
+    fields_range = (1..VOTING_DICTIONARY_SHORT[election_id].size)
+    fields_range.each do |i|
       cik[i] = 0
       trusty[i] = 0
     end
@@ -82,7 +84,7 @@ class Commission < ActiveRecord::Base
 	if protocol = child.protocols.find_by_priority(0)
 	  trusty_protocol = child.protocols.find_by_priority(1)
 	  has_frauds = 0
-	  (1..24).each do |i|
+	  fields_range.each do |i|
 	    cik[i] += protocol.send("v#{i}") rescue nil
 	    if trusty_protocol
               trusty[i] += trusty_protocol.send("v#{i}") rescue nil
@@ -97,7 +99,7 @@ class Commission < ActiveRecord::Base
 	end
       else
 	child.check_summary
-	(1..24).each do |i|
+	fields_range.each do |i|
           cik[i] += (child.state[:summary][:cik][i] || 0)
           trusty[i] += (child.state[:summary][:trusty][i] || 0)
         end
