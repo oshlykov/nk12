@@ -4,6 +4,8 @@ class Protocol < ActiveRecord::Base
   
   has_many :pictures, :dependent => :destroy
 
+  default_scope where(:trash => false)
+
   after_create :load_pics
   after_save :refresh_parent
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120306184557) do
+ActiveRecord::Schema.define(:version => 20120329210727) do
 
   create_table "comments", :force => true do |t|
     t.string   "body"
@@ -63,6 +63,16 @@ ActiveRecord::Schema.define(:version => 20120306184557) do
   add_index "folders", ["reserved_at"], :name => "index_folders_on_reserved_at"
   add_index "folders", ["user_id"], :name => "index_folders_on_user_id"
 
+  create_table "nk12_development", :force => true do |t|
+    t.string   "body"
+    t.boolean  "violation"
+    t.integer  "commission_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "fio"
+    t.string   "email"
+  end
+
   create_table "pictures", :force => true do |t|
     t.string   "image"
     t.integer  "protocol_id"
@@ -75,8 +85,8 @@ ActiveRecord::Schema.define(:version => 20120306184557) do
   add_index "pictures", ["folder_id"], :name => "index_pictures_on_folder_id"
 
   create_table "protocols", :force => true do |t|
-    t.integer  "commission_id",                  :null => false
-    t.integer  "user_id",                        :null => false
+    t.integer  "commission_id",                    :null => false
+    t.integer  "user_id",                          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "priority",      :default => 100
@@ -111,9 +121,12 @@ ActiveRecord::Schema.define(:version => 20120306184557) do
     t.integer  "v29",           :default => 0
     t.integer  "v30",           :default => 0
     t.string   "source"
+    t.boolean  "trash",         :default => false, :null => false
   end
 
+  add_index "protocols", ["commission_id"], :name => "index_protocols_on_commission_id"
   add_index "protocols", ["priority"], :name => "index_protocols_on_priority"
+  add_index "protocols", ["trash"], :name => "index_protocols_on_trash"
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => ""

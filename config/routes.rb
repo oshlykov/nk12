@@ -33,7 +33,10 @@ Nkapp::Application.routes.draw do
       get 'checking'
       post 'unfold/:folder_id', :action => :unfold
     end
-    post 'check', :on => :member
+    member do
+      post 'check'
+      delete 'trash'
+    end
     resources :votings
   end
 

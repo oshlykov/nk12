@@ -1,7 +1,7 @@
 class ProtocolsController < InheritedResources::Base
 
 #-before_filter :authenticate_user!, :except => [:index, :show]
-before_filter :auth, :except => [:index, :show]
+  before_filter :auth, :except => [:show]
 
   def new
     #@@voting_dictionary[1]
@@ -33,10 +33,7 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def show
-    #@uik = Commission.find_by_id!(params[:commission_id])
-    #@protocol = Protocol.find_by_id!(params[:id])
-    @protocol = Protocol.find_by_id(params[:id]) and @uik = @protocol.commission
-    unless @protocol and @uik
+    unless @uik = resource.commission
       redirect_to root_url 
     else
       @title = "#{@protocol.id} — #{@uik.name} — #{@uik.root.name}"
@@ -66,7 +63,7 @@ before_filter :auth, :except => [:index, :show]
   end  
 
   def destroy
-    return redirect_to :back unless @p = Protocol.find_by_id(params[:id])
+    @p = resource
     commission = @p.commission if @p.priority == 1
     respond_to do |format|
       unless can?(:destroy, @p) and @p.destroy
@@ -81,10 +78,29 @@ before_filter :auth, :except => [:index, :show]
     end
   end  
 
+  def trash
+    return redirect_to :back unless current_user.role?(:admin)
+    @p = resource
+    commission = @p.commission if @p.priority == 1
+    respond_to do |format|
+      if can?(:destroy, @p)
+        @p.trash = true
+        @p.save!
+      else
+        if commission
+          commission.conflict = false 
+          commission.votes_taken = false
+          commission.save
+        end
+        flash[:error] = 'Протокол не удалён, обратитесь в тех поддержку (support@nk12.su)'
+      end
+      format.js
+    end
+  end  
+
   def update  
     #ИСПРАВИТЬ если протокол проверен, то запрет редактирования
-    @protocol = Protocol.find_by_id!(params[:id]) 
-    return redirect_to :back, :notice => "У вас нет прав редактировать протокол" unless can?(:update, @protocol)
+    return redirect_to :back, :notice => "У вас нет прав редактировать протокол" unless can?(:update, resource)
 
     uik_protocol = @protocol.commission.protocols.first
     commission = @protocol.commission
@@ -116,8 +132,7 @@ before_filter :auth, :except => [:index, :show]
   end
 
   def check
-    @protocol = Protocol.find_by_id!(params[:id])
-    @commission = @protocol.commission
+    @commission = resource.commission
     respond_to do |format|
       if can? :check, @protocol
         unless @commission.protocols.where('priority = 1').first
@@ -148,6 +163,14 @@ before_filter :auth, :except => [:index, :show]
   end
   
   protected
+  def collection
+    @protocols ||= Protocol.where :trash => true
+  end
+
+  def resource
+    @protocol ||= Protocol.unscoped.find params[:id]
+  end
+
   def build_resource
     @folder ||= Folder.find(params[:folder_id]) if params[:folder_id]
     super.folder_pics ||= []

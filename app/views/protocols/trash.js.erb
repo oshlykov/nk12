@@ -1,0 +1,4 @@
+<%- if flash[:error].blank? -%>
+  $('#protocol_<%= @p.id %>').remove();
+  $('#protocol_pic_<%= @p.id %>').remove();
+<%- end -%>
