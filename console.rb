@@ -17,7 +17,7 @@ src.pictures.each do |pic|
   pic.save
 end
 
-#уики
+#уики экспорт
 cs = Commission.find_all_by_election_id(1)
 x = Array.new
 cs.each_with_index do |c,i| 
@@ -31,6 +31,37 @@ cs.each_with_index do |c,i|
     x.each do |ccc|
       csv << [ccc[:id], ccc[:parent], ccc[:name]].flatten.compact
     end
+  end
+end
+
+#уики экспорт
+#
+x = Array.new
+Commission.where(:votes_taken => true).find_all_by_election_id(2).each_with_index do |c,i| 
+  if c.state.include? :uik and c.state.include? :checked
+    x << {
+    :id => c.id,
+    :name => c.name,
+    :region => c.root.name,
+    :uik => c.state[:uik],
+    :karik => c.state[:checked]}
+  else
+    puts "- " + c.id.to_s
+    if c.state[:uik] == nil and p = c.protocols.find_by_priority(0)
+      c.state[:uik] = p.votings 
+    else
+      Commission.voting_table(c)
+    end
+    c.state[:checked] = p.votings if c.state[:checked] == nil and p = c.protocols.find_by_priority(1)
+    c.votes_taken = true if p
+    c.save
+  end
+end
+option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
+FasterCSV.open('exp-sergey-18_03_2012.csv', "w", option) do |csv|
+  csv << ["УИК", "Область", "Жириновский(Протокол)", "Жириновский(ЦИК)", "Зюганов(Протокол)", "Зюганов(ЦИК)", " Миронов(Протокол)", "Миронов(ЦИК)", "Прохоров(Протокол)", "Прохоров(ЦИК)", "Путин(Протокол)", "Путин(ЦИК)"]
+  x.each do |ccc|
+    csv << [ccc[:name], ccc[:region], ccc[:karik][18],ccc[:uik][18],ccc[:karik][19],ccc[:uik][19],ccc[:karik][20],ccc[:uik][20],ccc[:karik][21],ccc[:uik][21],ccc[:karik][22],ccc[:uik][22]].flatten.compact
   end
 end
 

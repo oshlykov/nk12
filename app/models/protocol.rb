@@ -13,7 +13,7 @@ class Protocol < ActiveRecord::Base
 
   validates_presence_of :commission_id
 
-  validates_presence_of :pictures
+#  validates_presence_of :pictures
 
   #default_scope :order => :priority
 =begin
@@ -57,7 +57,7 @@ protected
   def load_pics
     if folder_pics
       @folder_pics.each do |pic_id|
-      	self.pictures << Picture.find(pic_id)
+        self.pictures << Picture.find(pic_id)
       end
     end
   end

@@ -161,7 +161,7 @@ class Commission < ActiveRecord::Base
     end
 
     agent.search("a").search("a").each do |href|
-      if (href.content.to_str == "Результаты выборов")
+      if (href.content.to_str == "Результаты выборов" or href.content.to_str == "Итоги голосования")
         parent_commission.voting_table_url = href['href']
         parent_commission.save
       end
