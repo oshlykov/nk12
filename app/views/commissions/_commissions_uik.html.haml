@@ -36,7 +36,7 @@
               %a{:href => commission_protocol_path(@commission.id, p.id)}
                 %nobr= "КАРИК №#{p.id}"
               - if can? :destroy, p
-                = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+                = link_to raw('<i class="icon-remove"></i>'), trash_protocol_path(p.id), :method => :delete, :confirm => "Удалить протокол?", :remote => :true
             %td
               %span{:title => "#{p.source}", :class => "label label-info"} источник
 
@@ -66,7 +66,7 @@
               %a{:href => commission_protocol_path(@commission.id, p.id)}
                 %nobr= "КАРИК №#{p.id}"
               - if can? :destroy, p
-                = link_to raw('<i class="icon-remove"></i>'), protocol_path(p.id), :method => :delete, :confirm => "Удалит протокол?", :remote => :true
+                = link_to raw('<i class="icon-remove"></i>'), trash_protocol_path(p.id), :method => :delete, :confirm => "Удалить протокол?", :remote => :true
             %td
               %span{:title => "#{p.source}", :class => "label label-info"} источник
 

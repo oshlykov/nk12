@@ -5,6 +5,9 @@
   - else
     = render :partial => 'commissions_region'
 - else
+  - if @commission.state && @commission.state[:summary]
+    = render 'shared/summary', :summary => @commission.state[:summary],
+      :election => @commission.election
   %table.voting-table.table
     %tr
       %th{:width => "100px"}

@@ -1,0 +1,10 @@
+%header
+  %h1 Корзина протоколов
+%table.table
+  - @protocols.each do |protocol|
+    %tr
+      %td= link_to protocol.commission.name, protocol_path(protocol)
+      %td= protocol.commission.root.name
+      %td= protocol.commission.parent.name
+      %td= link_to raw('<i class="icon-remove"></i>'), protocol_path(protocol),
+        :method => :delete, :confirm => "Удалить окончательно?", :remote => :true

@@ -10,6 +10,8 @@
   %li
     = link_to('Массовая загрузка', folders_path)
   %li
+    = link_to('Корзина', protocols_path) if current_user.role? :admin
+  %li
     = link_to('Выйти', session_path(session.object_id), :method=>'delete')
 - else
   %li

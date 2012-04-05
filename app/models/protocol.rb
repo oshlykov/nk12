@@ -4,7 +4,10 @@ class Protocol < ActiveRecord::Base
   
   has_many :pictures, :dependent => :destroy
 
+  default_scope where(:trash => false)
+
   after_create :load_pics
+  after_save :refresh_parent
 
   attr_accessor :uik_num, :folder_pics
 
@@ -57,6 +60,10 @@ protected
       	self.pictures << Picture.find(pic_id)
       end
     end
+  end
+
+  def refresh_parent
+    commission.refresh_summary
   end
 
   def android_upload

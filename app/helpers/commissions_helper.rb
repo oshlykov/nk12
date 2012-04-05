@@ -39,4 +39,6 @@ module CommissionsHelper
     end
   end
 
+  def summary commission
+  end
 end

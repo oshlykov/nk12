@@ -53,6 +53,62 @@ class Commission < ActiveRecord::Base
     Rails.root.join( "public/uploads/csv/"+(self.id.to_s || "recycle")+"#{postfix}.csv")
   end
 
+  def refresh_summary recursive = true
+    self.state ||= {}
+    state[:summary] = Commission.get_summary children, election_id
+    save!
+    parent.refresh_summary if parent && recursive
+  end
+
+  def check_summary
+    unless
+     state && state[:summary] && state[:summary][:cik] &&
+      state[:summary][:cik][VOTING_DICTIONARY_SHORT[election_id].size] &&
+      state[:summary][:frauds] && state[:summary][:trusty] &&
+      state[:summary][:trusty][VOTING_DICTIONARY_SHORT[election_id].size]
+      refresh_summary false
+    end
+  end
+
+  def self.get_summary sum_scope, election_id
+    cik = {}
+    trusty = {}
+    frauds = 0
+    fields_range = (1..VOTING_DICTIONARY_SHORT[election_id].size)
+    fields_range.each do |i|
+      cik[i] = 0
+      trusty[i] = 0
+    end
+    sum_scope.each do |child|
+      if child.is_uik?
+	if protocol = child.protocols.find_by_priority(0)
+	  trusty_protocol = child.protocols.find_by_priority(1)
+	  has_frauds = 0
+	  fields_range.each do |i|
+	    cik[i] += protocol.send("v#{i}") rescue nil
+	    if trusty_protocol
+              trusty[i] += trusty_protocol.send("v#{i}") rescue nil
+	      if trusty_protocol.send("v#{i}") != protocol.send("v#{i}")
+                has_frauds = 1 
+              end
+            else
+              trusty[i] += protocol.send("v#{i}") rescue nil
+	    end
+	  end
+	  frauds += has_frauds
+	end
+      else
+	child.check_summary
+	fields_range.each do |i|
+          cik[i] += (child.state[:summary][:cik][i] || 0)
+          trusty[i] += (child.state[:summary][:trusty][i] || 0)
+        end
+	frauds += child.state[:summary][:frauds]
+      end
+    end
+    {:cik => cik, :trusty => trusty, :frauds => frauds}
+  end
+
 ################################################################################################################################################
 ################################################################################################################################################
 ################################################################################################################################################

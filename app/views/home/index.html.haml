@@ -15,6 +15,9 @@
     - @elections.reverse.each do |election|
       %h2
         = election.name
+      = render 'shared/summary',
+        :summary => Commission.get_summary(election.commissions.roots, election.id),
+        :election => election
       .row
         -if election.id == 1
           .span8
@@ -109,7 +112,7 @@
                   %td
                     %a{:href => commission_path(p.commission.id)}
                       = p.commission.name
-                    %small= " #{p.commission.root.name}"
+                    %small= " #{p.commission.root.name rescue ''}"
                     - if p.commission.state and p.commission.state.include?(:uik)
                       - (uik_protocol = p.commission.state[:uik]).each_with_index do |vote,i|
                         -if i > 17

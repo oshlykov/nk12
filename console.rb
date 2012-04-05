@@ -93,3 +93,6 @@ Commission.where("election_id=2 and voting_table_url IS NOT NULL and state = '--
     commission.save
   end
 end
+
+#первичный обсчет итогов
+Commission.roots.each { |c| c.refresh_summary }
