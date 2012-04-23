@@ -24,7 +24,8 @@ Nkapp::Application.routes.draw do
     get 'add_watcher', :on => :member
     get 'del_watcher', :on => :collection
     get 'get_csv/:cik' => "commissions#get_csv", :on => :member, :as => "get_csv"
-    get 'get_full_karik', :on => :collection
+    get 'get_full_karik_2011', :on => :collection
+    get 'get_full_karik_2012', :on => :collection
   end
 
   #get "protocols/cheking", :controller => 'protocols', :action => 'cheking'

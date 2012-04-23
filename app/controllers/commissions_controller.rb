@@ -42,15 +42,50 @@ class CommissionsController < ApplicationController
     redirect_to :back
   end
 
-  def get_full_karik
-    option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
-    FasterCSV.open( './public/uploads/csv/full_karik.csv', "w", option) do |csv|
-      protocols = Protocol.includes(:commission).where("commission_id >= 200000 and priority = 1")
-      protocols.each do |p|
-        csv << [p.commission.name, p.commission.root.name, p.v19, "", p.v20, "", p.v21, "", p.v22, "", p.v23, ""].flatten.compact
+  def get_full_karik_2011
+    x = Array.new
+    Commission.includes(:protocols).where(:votes_taken => true).find_all_by_election_id(1).each_with_index do |c,i| 
+      if c.state.include? :uik and c.state.include? :checked
+        x << {
+        :id => c.id,
+        :name => c.name,
+        :region => c.root.name,
+        :uik => c.state[:uik],
+        :karik => c.state[:checked]}
       end
     end
-    redirect_to  "/uploads/csv/full_karik.csv"
+    option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
+    FasterCSV.open( './public/uploads/csv/full_karik_2011.csv', "w", option) do |csv|
+      csv << ["УИК", "Область", "СР", "ЛДПР", "ПР", "КПРФ", "ЯБЛ", "ЕР", "ПД"]
+      x.each do |ccc|
+        csv << [ccc[:name], ccc[:region], ccc[:karik][18],ccc[:uik][18],ccc[:karik][19],ccc[:uik][19],ccc[:karik][20],ccc[:uik][20],ccc[:karik][21],ccc[:uik][21],ccc[:karik][22],ccc[:uik][22],ccc[:karik][23],ccc[:uik][23],ccc[:karik][24],ccc[:uik][24]].flatten.compact
+      end
+    end
+
+    redirect_to  "/uploads/csv/full_karik_2011.csv"
+  end
+
+  def get_full_karik_2012
+    x = Array.new
+    Commission.includes(:protocols).where(:votes_taken => true).find_all_by_election_id(2).each_with_index do |c,i| 
+      if c.state.include? :uik and c.state.include? :checked
+        x << {
+        :id => c.id,
+        :name => c.name,
+        :region => c.root.name,
+        :uik => c.state[:uik],
+        :karik => c.state[:checked]}
+      end
+    end
+    option = {:col_sep => ";", :encoding => "WINDOWS_1251"}
+    FasterCSV.open( './public/uploads/csv/full_karik_2012.csv', "w", option) do |csv|
+      csv << ["УИК", "Область", "Жириновский(Протокол)", "Жириновский(ЦИК)", "Зюганов(Протокол)", "Зюганов(ЦИК)", " Миронов(Протокол)", "Миронов(ЦИК)", "Прохоров(Протокол)", "Прохоров(ЦИК)", "Путин(Протокол)", "Путин(ЦИК)"]
+      x.each do |ccc|
+        csv << [ccc[:name], ccc[:region], ccc[:karik][18],ccc[:uik][18],ccc[:karik][19],ccc[:uik][19],ccc[:karik][20],ccc[:uik][20],ccc[:karik][21],ccc[:uik][21],ccc[:karik][22],ccc[:uik][22]].flatten.compact
+      end
+    end
+
+    redirect_to  "/uploads/csv/full_karik_2012.csv"
   end
 
   def get_csv

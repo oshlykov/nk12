@@ -15,7 +15,7 @@
     - @elections.reverse.each do |election|
       %h2
         = election.name
-      = render 'shared/summary',
+      -#= render 'shared/summary',
         :summary => Commission.get_summary(election.commissions.roots, election.id),
         :election => election
       .row
